@@ -228,6 +228,43 @@ ENVIRONNEMENTS = {
         "description": "Framework Python pour développement web rapide et sécurisé.",
         "usage": "Applications web, APIs REST, sites dynamiques.",
         "image": "/static/images/django.jpg"
+    },
+}
+
+RESEAUX_IOT = {
+    "lora": {
+        "type": "Communication sans fil longue portée basse consommation",
+        "description": "Technologie radio propriétaire pour IoT, faible débit et longue portée.",
+        "usage": "Capteurs distants, agriculture connectée, domotique, réseaux LPWAN.",
+        "frequences": ["868 MHz (EU)", "915 MHz (US)", "433 MHz (ASIA)"],
+        "protocoles": ["LoRaWAN optionnel pour réseau structuré"],
+        "references": ["https://www.semtech.com/lora/what-is-lora"],
+        "image": "/static/images/lora.jpg"
+    },
+    "lorawan": {
+        "type": "Protocole réseau basé sur LoRa",
+        "description": "Gestion des communications LoRa entre nœuds et gateway, avec sécurité et classes A/B/C.",
+        "usage": "Réseaux LPWAN pour IoT, capteurs distants, smart city.",
+        "classes": ["A", "B", "C"],
+        "security": "AES-128 pour chiffrement des messages",
+        "references": ["https://lora-alliance.org/about-lorawan/"],
+        "image": "/static/images/lorawan.jpg"
+    },
+    "sigfox": {
+        "type": "Réseau LPWAN propriétaire",
+        "description": "Transmission de petites quantités de données à très faible consommation.",
+        "usage": "IoT bas débit, suivi d'objets, capteurs distants.",
+        "frequences": ["868 MHz (EU)", "902 MHz (US)"],
+        "references": ["https://www.sigfox.com/en/what-sigfox"],
+        "image": "/static/images/sigfox.jpg"
+    },
+    "nb-iot": {
+        "type": "Réseau cellulaire IoT",
+        "description": "Technologie 3GPP LPWAN utilisant les bandes LTE pour l'IoT.",
+        "usage": "Capteurs connectés, smart meters, villes intelligentes.",
+        "advantages": ["Couverture étendue", "Faible consommation", "Support standard LTE"],
+        "references": ["https://www.gsma.com/iot/narrowband-iot-nb-iot/"],
+        "image": "/static/images/nb-iot.jpg"
     }
 }
 
@@ -256,7 +293,9 @@ def chat_view(request):
     for key, val in ENVIRONNEMENTS.items():
         if question == key.lower():
             return JsonResponse({key: val}, safe=True)
-
+    for key, val in RESEAUX_IOT.items():
+        if question == key.lower():
+            return JsonResponse({key: val}, safe=True)
     # 4️⃣ Recherche par langages et IDE
     results = {}
     for key, carte in CARTE_INFO.items():

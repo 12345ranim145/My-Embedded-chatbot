@@ -45,7 +45,6 @@
             gap: 10px; 
             z-index: 2; 
             position: relative; 
-            perspective: 1000px;
         }
         .message { 
             max-width: 70%; 
@@ -55,11 +54,10 @@
             word-wrap: break-word; 
             opacity: 0; 
             transform: translateY(20px) rotate(-2deg); 
-            transition: all 0.5s cubic-bezier(0.68,-0.55,0.27,1.55), box-shadow 0.3s ease, transform 0.3s ease; 
+            transition: all 0.5s cubic-bezier(0.68,-0.55,0.27,1.55); 
             position: relative;
         }
         .message.show { opacity: 1; transform: translateY(0) rotate(0deg); }
-        .message:hover { transform: scale(1.05); box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
         .user { background: #9940cdff; color: #fff; align-self: flex-end; border-bottom-right-radius: 0; transform-origin: bottom right; }
         .bot { background: #e0e0e0; color: #000; align-self: flex-start; border-bottom-left-radius: 0; transform-origin: bottom left; }
         footer { display: flex; flex-direction: column; padding: 15px; background: #fff; border-top: 1px solid #ddd; z-index: 2; position: relative; }
@@ -275,20 +273,6 @@
 
         document.getElementById('question').addEventListener('keydown', (e) => {
             if(e.key === 'Enter') ask();
-        });
-
-        // Parallax effect for messages
-        chatContainer.addEventListener('scroll', () => {
-            const messages = document.querySelectorAll('.message');
-            const containerRect = chatContainer.getBoundingClientRect();
-            messages.forEach(msg => {
-                const msgRect = msg.getBoundingClientRect();
-                const offset = (msgRect.top - containerRect.top) / containerRect.height;
-                msg.style.transform = `translateY(${offset * 20}px) rotate(${offset * 2}deg)`;
-                if (msg.classList.contains('show')) {
-                    msg.style.transform += ' scale(1)';
-                }
-            });
         });
 
         // Profile image animation on load
