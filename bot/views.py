@@ -27,6 +27,21 @@ CARTE_INFO = {
                 "usage": "Wireless sensors, wearables, point-to-point data exchange.",
                 "references": ["https://www.bluetooth.com/specifications/"]
             },
+            "SPI": {
+                "description": "Serial Peripheral Interface for high-speed, full-duplex communication.",
+                "usage": "Interfacing with sensors, displays, and memory devices.",
+                "references": ["https://www.analog.com/en/technical-articles/spi-interface.html"]
+            },
+            "I2C": {
+                "description": "Inter-Integrated Circuit, a two-wire serial bus for short-range communication.",
+                "usage": "Connecting multiple sensors and peripherals with minimal pins.",
+                "references": ["https://www.nxp.com/docs/en/user-guide/UM10204.pdf"]
+            },
+            "UART": {
+                "description": "Universal Asynchronous Receiver/Transmitter for serial communication.",
+                "usage": "Serial communication with modules, sensors, or other microcontrollers.",
+                "references": ["https://www.ti.com/lit/an/slaa037/slaa037.pdf"]
+            }
         },
         "languages": ["C", "C++", "Python (MicroPython)", "Arduino IDE"],
         "ide": ["VS Code", "Arduino IDE", "PlatformIO", "Espressif IDF"],
@@ -59,6 +74,11 @@ CARTE_INFO = {
                 "usage": "Video streaming, embedded web server.",
                 "references": ["https://www.espressif.com/en/products/socs/esp32"]
             },
+            "SPI": {
+                "description": "Serial Peripheral Interface for high-speed communication.",
+                "usage": "Interfacing with camera and SD card.",
+                "references": ["https://www.analog.com/en/technical-articles/spi-interface.html"]
+            }
         },
         "languages": ["C", "C++", "Python (MicroPython)", "Arduino IDE"],
         "ide": ["VS Code", "Arduino IDE", "PlatformIO", "Espressif IDF"],
@@ -75,6 +95,66 @@ CARTE_INFO = {
         }
     },
 
+    # ===================== ESP32 TTGO T-Beam =====================
+    "esp32 ttgo t-beam": {
+        "type": "Microcontroller + LoRa + GPS",
+        "power_supply": "3.3V to 5V (USB or battery)",
+        "power_consumption": "100 mA (active with LoRa/GPS), ~20 µA (deep sleep)",
+        "gpio_logic_voltage": "3.3V",
+        "gpio_max_current": "12 mA per pin (source/sink)",
+        "cpu": "Tensilica Xtensa dual-core 32-bit LX6, up to 240 MHz",
+        "ram": "520 KB SRAM internal + 8 MB PSRAM",
+        "flash": "4-16 MB",
+        "gpio": "22 GPIO, 12 ADC (12-bit), PWM, I2C, SPI, UART",
+        "usage": "LoRa-based IoT, GPS tracking, remote sensing, smart agriculture",
+        "protocols_detail": {
+            "LoRa": {
+                "description": "Long-range, low-power wireless communication using Semtech SX1276.",
+                "usage": "Long-distance IoT, remote sensors, asset tracking.",
+                "references": ["https://www.semtech.com/lora/what-is-lora"]
+            },
+            "WiFi": {
+                "description": "802.11 b/g/n for local and internet connectivity.",
+                "usage": "IoT, embedded web servers.",
+                "references": ["https://www.espressif.com/en/products/socs/esp32"]
+            },
+            "Bluetooth BLE": {
+                "description": "Bluetooth 4.2 and BLE for low-power short-range communication.",
+                "usage": "Wireless sensors, wearables.",
+                "references": ["https://www.bluetooth.com/specifications/"]
+            },
+            "SPI": {
+                "description": "Serial Peripheral Interface for high-speed communication.",
+                "usage": "Interfacing with LoRa module and GPS.",
+                "references": ["https://www.analog.com/en/technical-articles/spi-interface.html"]
+            },
+            "I2C": {
+                "description": "Inter-Integrated Circuit for short-range communication.",
+                "usage": "Connecting sensors like BME680.",
+                "references": ["https://www.nxp.com/docs/en/user-guide/UM10204.pdf"]
+            },
+            "UART": {
+                "description": "Universal Asynchronous Receiver/Transmitter for serial communication.",
+                "usage": "GPS module communication, serial debugging.",
+                "references": ["https://www.ti.com/lit/an/slaa037/slaa037.pdf"]
+            }
+        },
+        "languages": ["C", "C++", "Python (MicroPython)", "Arduino IDE"],
+        "ide": ["VS Code", "Arduino IDE", "PlatformIO", "Espressif IDF"],
+        "image": "/static/images/esp32_ttgo_tbeam.jpg",
+        "firmware_development": {
+            "toolchain": "ESP-IDF, Arduino framework",
+            "debugging": "UART-based debugging, JTAG",
+            "power_optimization": "Deep sleep, ULP coprocessor"
+        },
+        "additional_electronics": {
+            "pinout": "GPIO0-39 (some reserved for LoRa/GPS), multiplexed functions.",
+            "voltage_regulator": "Built-in 3.3V regulator, supports LiPo battery.",
+            "gps_module": "U-blox NEO-6M/7M/8M, supports GPS, GLONASS.",
+            "lora_module": "Semtech SX1276, supports 433/868/915 MHz."
+        }
+    },
+
     # ===================== STM32F407VG =====================
     "stm32f407vg": {
         "type": "ARM Cortex-M4 Microcontroller",
@@ -87,9 +167,24 @@ CARTE_INFO = {
         "usage": "Advanced embedded projects, robotics, industrial systems",
         "protocols_detail": {
             "CAN": {
-                "description": "Robust communication bus for automotive and industrial applications.",
-                "usage": "Inter-microcontroller communication, vehicle networks.",
+                "description": "Controller Area Network for robust, real-time communication.",
+                "usage": "Automotive, industrial control, inter-device communication.",
                 "references": ["https://www.st.com/resource/en/application_note/an2606.pdf"]
+            },
+            "SPI": {
+                "description": "Serial Peripheral Interface for high-speed, full-duplex communication.",
+                "usage": "Interfacing with sensors, displays, and memory devices.",
+                "references": ["https://www.analog.com/en/technical-articles/spi-interface.html"]
+            },
+            "I2C": {
+                "description": "Inter-Integrated Circuit, a two-wire serial bus for short-range communication.",
+                "usage": "Connecting multiple sensors and peripherals with minimal pins.",
+                "references": ["https://www.nxp.com/docs/en/user-guide/UM10204.pdf"]
+            },
+            "UART": {
+                "description": "Universal Asynchronous Receiver/Transmitter for serial communication.",
+                "usage": "Serial communication with modules, sensors, or other microcontrollers.",
+                "references": ["https://www.ti.com/lit/an/slaa037/slaa037.pdf"]
             }
         },
         "languages": ["C", "C++", "Python (MicroPython)", "HAL/LL STM32"],
@@ -123,10 +218,20 @@ CARTE_INFO = {
         "gpio": "14 digital, 6 analog (10-bit ADC), PWM, UART, SPI, I2C",
         "usage": "Prototyping, simple IoT, educational robotics",
         "protocols_detail": {
-            "UART/SPI/I2C": {
-                "description": "Standard communication for sensors and actuators.",
-                "usage": "Board interconnection, simple IoT.",
-                "references": ["https://www.arduino.cc/en/Guide/ArduinoUno"]
+            "UART": {
+                "description": "Universal Asynchronous Receiver/Transmitter for serial communication.",
+                "usage": "Serial communication with modules, sensors, or other microcontrollers.",
+                "references": ["https://www.ti.com/lit/an/slaa037/slaa037.pdf"]
+            },
+            "SPI": {
+                "description": "Serial Peripheral Interface for high-speed, full-duplex communication.",
+                "usage": "Interfacing with sensors, displays, and memory devices.",
+                "references": ["https://www.analog.com/en/technical-articles/spi-interface.html"]
+            },
+            "I2C": {
+                "description": "Inter-Integrated Circuit, a two-wire serial bus for short-range communication.",
+                "usage": "Connecting multiple sensors and peripherals with minimal pins.",
+                "references": ["https://www.nxp.com/docs/en/user-guide/UM10204.pdf"]
             },
             "1-Wire": {
                 "description": "Simple protocol for sensors like DS18B20.",
@@ -160,15 +265,25 @@ CARTE_INFO = {
         "gpio": "54 digital, 16 analog (10-bit ADC), PWM, 4 UART, SPI, I2C",
         "usage": "Complex projects, robotics, automation",
         "protocols_detail": {
-            "UART/SPI/I2C": {
-                "description": "Standard communication for sensors and actuators.",
-                "usage": "Board interconnection, advanced IoT.",
-                "references": ["https://www.arduino.cc/en/Guide/ArduinoMega2560"]
+            "UART": {
+                "description": "Universal Asynchronous Receiver/Transmitter for serial communication.",
+                "usage": "Serial communication with modules, sensors, or other microcontrollers.",
+                "references": ["https://www.ti.com/lit/an/slaa037/slaa037.pdf"]
+            },
+            "SPI": {
+                "description": "Serial Peripheral Interface for high-speed, full-duplex communication.",
+                "usage": "Interfacing with sensors, displays, and memory devices.",
+                "references": ["https://www.analog.com/en/technical-articles/spi-interface.html"]
+            },
+            "I2C": {
+                "description": "Inter-Integrated Circuit, a two-wire serial bus for short-range communication.",
+                "usage": "Connecting multiple sensors and peripherals with minimal pins.",
+                "references": ["https://www.nxp.com/docs/en/user-guide/UM10204.pdf"]
             }
         },
         "languages": ["C", "C++", "Arduino IDE"],
         "ide": ["Arduino IDE", "VS Code + PlatformIO"],
-        "image": "/static/images/arduino_mega.jpg",
+        "image": "/static/images/arduino_mega.png",
         "firmware_development": {
             "toolchain": "AVR-GCC, Arduino framework",
             "debugging": "Serial monitor, limited debugging support",
@@ -178,6 +293,147 @@ CARTE_INFO = {
             "pinout": "Digital 0-53, Analog A0-A15; Multiple UARTs (0-3).",
             "voltage_regulator": "On-board 5V and 3.3V regulators.",
             "adc_resolution": "10-bit, with AREF pin for custom reference."
+        }
+    },
+
+    # ===================== Raspberry Pi 4 =====================
+    "raspberry pi 4": {
+        "type": "Single-Board Computer",
+        "power_supply": "5V DC via USB-C connector (minimum 3A)",
+        "power_consumption": "Idle: ~3W, Load: up to 7W",
+        "gpio_logic_voltage": "3.3V",
+        "gpio_max_current": "16 mA per pin (total max 50 mA)",
+        "cpu": "Broadcom BCM2711, Quad core Cortex-A72 (ARM v8) 64-bit SoC @ 1.8GHz",
+        "ram": "1GB, 2GB, 4GB or 8GB LPDDR4-3200 SDRAM",
+        "flash": "Micro-SD card slot",
+        "gpio": "40 pin GPIO header, I2C, SPI, UART",
+        "usage": "General-purpose computing, IoT, robotics, media centers, embedded projects",
+        "protocols_detail": {
+            "WiFi": {
+                "description": "2.4 GHz and 5.0 GHz IEEE 802.11ac wireless.",
+                "usage": "Wireless networking.",
+                "references": ["https://www.raspberrypi.com/products/raspberry-pi-4-model-b/specifications/"]
+            },
+            "Bluetooth": {
+                "description": "Bluetooth 5.0, BLE.",
+                "usage": "Short-range wireless communication.",
+                "references": ["https://www.raspberrypi.com/products/raspberry-pi-4-model-b/specifications/"]
+            },
+            "Ethernet": {
+                "description": "Gigabit Ethernet.",
+                "usage": "Wired networking.",
+                "references": ["https://www.raspberrypi.com/products/raspberry-pi-4-model-b/specifications/"]
+            },
+            "SPI": {
+                "description": "Serial Peripheral Interface for high-speed communication.",
+                "usage": "Interfacing with sensors, displays, and memory devices.",
+                "references": ["https://www.analog.com/en/technical-articles/spi-interface.html"]
+            },
+            "I2C": {
+                "description": "Inter-Integrated Circuit for short-range communication.",
+                "usage": "Connecting sensors like BME680.",
+                "references": ["https://www.nxp.com/docs/en/user-guide/UM10204.pdf"]
+            },
+            "UART": {
+                "description": "Universal Asynchronous Receiver/Transmitter for serial communication.",
+                "usage": "Serial communication with modules or sensors.",
+                "references": ["https://www.ti.com/lit/an/slaa037/slaa037.pdf"]
+            }
+        },
+        "languages": ["Python", "C", "C++", "Java", "Scratch"],
+        "ide": ["VS Code", "Thonny", "Geany"],
+        "image": "/static/images/raspberry_pi_4.jpg",
+        "firmware_development": {
+            "toolchain": "Raspberry Pi OS (Linux-based), supports various distros",
+            "debugging": "GDB, UART",
+            "power_optimization": "Power management via config"
+        },
+        "additional_electronics": {
+            "pinout": "40-pin header compatible with previous models",
+            "voltage_regulator": "On-board",
+            "adc_resolution": "No built-in ADC"
+        }
+    },
+
+    # ===================== Jetson Nano =====================
+    "jetson nano": {
+        "type": "AI Single-Board Computer",
+        "power_supply": "5V DC via Micro-USB or barrel jack (minimum 2A, recommended 4A)",
+        "power_consumption": "5W - 10W",
+        "gpio_logic_voltage": "3.3V",
+        "gpio_max_current": "Up to 16 mA per pin",
+        "cpu": "Quad-core ARM Cortex-A57 MPCore processor @ 1.43GHz",
+        "ram": "4GB 64-bit LPDDR4",
+        "flash": "16GB eMMC 5.1 or Micro-SD card",
+        "gpio": "40 pin GPIO header, 3x UART, 2x SPI, 2x I2S, 4x I2C, GPIOs",
+        "usage": "AI, machine learning, computer vision, robotics, embedded AI projects",
+        "protocols_detail": {
+            "Ethernet": {
+                "description": "1x GbE.",
+                "usage": "Wired networking.",
+                "references": ["https://developer.nvidia.com/embedded/jetson-nano"]
+            },
+            "USB": {
+                "description": "1x USB 3.0, 3x USB 2.0.",
+                "usage": "Peripheral connectivity.",
+                "references": ["https://developer.nvidia.com/embedded/jetson-nano"]
+            },
+            "SPI": {
+                "description": "Serial Peripheral Interface for high-speed communication.",
+                "usage": "Interfacing with sensors, displays, and memory devices.",
+                "references": ["https://www.analog.com/en/technical-articles/spi-interface.html"]
+            },
+            "I2C": {
+                "description": "Inter-Integrated Circuit for short-range communication.",
+                "usage": "Connecting sensors like BME680.",
+                "references": ["https://www.nxp.com/docs/en/user-guide/UM10204.pdf"]
+            },
+            "UART": {
+                "description": "Universal Asynchronous Receiver/Transmitter for serial communication.",
+                "usage": "Serial communication with modules or sensors.",
+                "references": ["https://www.ti.com/lit/an/slaa037/slaa037.pdf"]
+            }
+        },
+        "languages": ["Python", "C", "C++"],
+        "ide": ["VS Code", "JetPack SDK tools"],
+        "image": "/static/images/jetson_nano.jpg",
+        "firmware_development": {
+            "toolchain": "JetPack SDK, Ubuntu-based",
+            "debugging": "CUDA, TensorRT",
+            "power_optimization": "Power modes 5W/10W"
+        },
+        "additional_electronics": {
+            "pinout": "260-pin SO-DIMM connector for module",
+            "voltage_regulator": "On-board",
+            "adc_resolution": "No built-in ADC"
+        }
+    },
+
+    # ===================== SX1276 (LoRa Module) =====================
+    "sx1276": {
+        "type": "LoRa Transceiver Module",
+        "power_supply": "1.8V to 3.7V (3.3V typical)",
+        "power_consumption": "120 mA (transmit), 9.9 mA (receive), 0.2 µA (sleep)",
+        "frequency_bands": ["433 MHz, 868 MHz, 915 MHz"],
+        "interfaces": ["SPI"],
+        "usage": "Long-range IoT, remote sensors, smart agriculture, asset tracking",
+        "protocols_detail": {
+            "LoRa": {
+                "description": "Long-range, low-power wireless communication.",
+                "usage": "Long-distance IoT, remote sensors.",
+                "references": ["https://www.semtech.com/lora/what-is-lora"]
+            },
+            "SPI": {
+                "description": "Serial Peripheral Interface for communication with microcontrollers.",
+                "usage": "Interfacing with host microcontroller like ESP32 or STM32.",
+                "references": ["https://www.analog.com/en/technical-articles/spi-interface.html"]
+            }
+        },
+        "image": "/static/images/sx1276.jpg",
+        "additional_electronics": {
+            "pinout": "MISO, MOSI, SCK, NSS for SPI; DIO0-DIO5 for interrupts.",
+            "voltage_regulator": "Requires external 3.3V supply.",
+            "modulation": "LoRa, FSK, GFSK, OOK."
         }
     }
 }
@@ -310,7 +566,7 @@ CAPTEUR_INFO = {
         "range": "1 lux to 100k lux",
         "power_supply": "3V to 5V (with voltage divider)",
         "interfaces": ["Analog"],
-        "power_consumption": "Low (passive component)" ,
+        "power_consumption": "Low (passive component)",
         "usage": "Light detection, automatic lighting, environmental monitoring in IoT",
         "signal_type": "Analog",
         "references": ["https://www.adafruit.com/product/161"],
@@ -320,88 +576,6 @@ CAPTEUR_INFO = {
             "LDR with STM32: https://controllerstech.com/ldr-with-stm32-adc/"
         ],
         "image": "/static/images/ldr.jpg"
-    },
-    
-    "raspberry pi 4": {
-        "type": "Single-Board Computer",
-        "power_supply": "5V DC via USB-C connector (minimum 3A)",
-        "power_consumption": "Idle: ~3W, Load: up to 7W",
-        "gpio_logic_voltage": "3.3V",
-        "gpio_max_current": "16 mA per pin (total max 50 mA)",
-        "cpu": "Broadcom BCM2711, Quad core Cortex-A72 (ARM v8) 64-bit SoC @ 1.8GHz",
-        "ram": "1GB, 2GB, 4GB or 8GB LPDDR4-3200 SDRAM",
-        "flash": "Micro-SD card slot",
-        "gpio": "40 pin GPIO header, I2C, SPI, UART",
-        "usage": "General-purpose computing, IoT, robotics, media centers, embedded projects",
-        "protocols_detail": {
-            "WiFi": {
-                "description": "2.4 GHz and 5.0 GHz IEEE 802.11ac wireless.",
-                "usage": "Wireless networking.",
-                "references": ["https://www.raspberrypi.com/products/raspberry-pi-4-model-b/specifications/"]
-            },
-            "Bluetooth": {
-                "description": "Bluetooth 5.0, BLE.",
-                "usage": "Short-range wireless communication.",
-                "references": ["https://www.raspberrypi.com/products/raspberry-pi-4-model-b/specifications/"]
-            },
-            "Ethernet": {
-                "description": "Gigabit Ethernet.",
-                "usage": "Wired networking.",
-                "references": ["https://www.raspberrypi.com/products/raspberry-pi-4-model-b/specifications/"]
-            },
-        },
-        "languages": ["Python", "C", "C++", "Java", "Scratch"],
-        "ide": ["VS Code", "Thonny", "Geany"],
-        "image": "/static/images/raspberry_pi_4.jpg",
-        "firmware_development": {
-            "toolchain": "Raspberry Pi OS (Linux-based), supports various distros",
-            "debugging": "GDB, UART",
-            "power_optimization": "Power management via config"
-        },
-        "additional_electronics": {
-            "pinout": "40-pin header compatible with previous models",
-            "voltage_regulator": "On-board",
-            "adc_resolution": "No built-in ADC"
-        },
-        "image": "/static/images/raspberry pi 4.jpg"
-    },
-    # ===================== Jetson Nano =====================
-    "jetson nano": {
-        "type": "AI Single-Board Computer",
-        "power_supply": "5V DC via Micro-USB or barrel jack (minimum 2A, recommended 4A)",
-        "power_consumption": "5W - 10W",
-        "gpio_logic_voltage": "3.3V",
-        "gpio_max_current": "Up to 16 mA per pin",
-        "cpu": "Quad-core ARM Cortex-A57 MPCore processor @ 1.43GHz",
-        "ram": "4GB 64-bit LPDDR4",
-        "flash": "16GB eMMC 5.1 or Micro-SD card",
-        "gpio": "40 pin GPIO header, 3x UART, 2x SPI, 2x I2S, 4x I2C, GPIOs",
-        "usage": "AI, machine learning, computer vision, robotics, embedded AI projects",
-        "protocols_detail": {
-            "Ethernet": {
-                "description": "1x GbE.",
-                "usage": "Wired networking.",
-                "references": ["https://developer.nvidia.com/embedded/jetson-nano"]
-            },
-            "USB": {
-                "description": "1x USB 3.0, 3x USB 2.0.",
-                "usage": "Peripheral connectivity.",
-                "references": ["https://developer.nvidia.com/embedded/jetson-nano"]
-            },
-        },
-        "languages": ["Python", "C", "C++"],
-        "ide": ["VS Code", "JetPack SDK tools"],
-        "image": "/static/images/jetson_nano.jpg",
-        "firmware_development": {
-            "toolchain": "JetPack SDK, Ubuntu-based",
-            "debugging": "CUDA, TensorRT",
-            "power_optimization": "Power modes 5W/10W"
-        },
-        "additional_electronics": {
-            "pinout": "260-pin SO-DIMM connector for module",
-            "voltage_regulator": "On-board",
-            "adc_resolution": "No built-in ADC"
-        }
     }
 }
 
@@ -475,7 +649,7 @@ RESEAUX_IOT = {
         "usage": "Low-data-rate IoT, asset tracking, remote sensors.",
         "frequencies": ["868 MHz (EU)", "902 MHz (US)"],
         "references": ["https://www.sigfox.com/en/what-sigfox"],
-        "image": "/static/images/sigfox.jpg"
+        
     },
     "nb-iot": {
         "type": "Cellular IoT Network",
@@ -483,7 +657,30 @@ RESEAUX_IOT = {
         "usage": "Connected sensors, smart meters, smart cities.",
         "advantages": ["Extended coverage", "Low power consumption", "LTE standard support"],
         "references": ["https://www.gsma.com/iot/narrowband-iot-nb-iot/"],
-        "image": "/static/images/nb-iot.jpg"
+       
+    },
+    "spi": {
+        "type": "Communication Protocol",
+        "description": "Serial Peripheral Interface, a synchronous serial communication interface for short-distance, high-speed communication.",
+        "usage": "Interfacing microcontrollers with sensors, displays, and memory devices like SD cards or LoRa modules.",
+        "characteristics": ["Full-duplex", "Master-slave architecture", "4-wire (MISO, MOSI, SCK, SS)"],
+        "references": ["https://www.analog.com/en/technical-articles/spi-interface.html"],
+        "image": "/static/images/spi.jpg"
+    },
+    "i2c": {
+        "type": "Communication Protocol",
+        "description": "Inter-Integrated Circuit, a two-wire serial bus for short-range communication between devices.",
+        "usage": "Connecting multiple sensors (e.g., BME680, MPU6050) to microcontrollers with minimal pins.",
+        "characteristics": ["Half-duplex", "Master-slave", "SDA (data) and SCL (clock) lines", "Supports multiple devices on same bus"],
+        "references": ["https://www.nxp.com/docs/en/user-guide/UM10204.pdf"],
+        
+    },
+    "can": {
+        "type": "Communication Protocol",
+        "description": "Controller Area Network, a robust, real-time communication protocol for reliable data exchange.",
+        "usage": "Automotive systems, industrial automation, inter-device communication (e.g., STM32 networks).",
+        "characteristics": ["Differential signaling", "Multi-master", "Error detection", "Up to 1 Mbps"],
+        "references": ["https://www.ti.com/lit/an/sloa101b/sloa101b.pdf"],
     },
     "dragino lg308": {
         "type": "LoRaWAN Gateway",
@@ -503,7 +700,7 @@ RESEAUX_IOT = {
         "image": "/static/images/dragino_lg308.jpg"
     },
     "flybox": {
-        "type": "LoRaWAN Gateway (Orange Flybox)",
+        "type": "LoRaWAN Gateway",
         "description": "Compact LoRaWAN gateway with WiFi, 4G, and MQTT support for IoT applications.",
         "specifications": {
             "chipset": "Semtech SX1302 (LoRa concentrator)",
@@ -531,7 +728,7 @@ CLOUD_PLATFORMS = {
         "references": ["https://thingspeak.mathworks.com/"],
         "image": "/static/images/thingspeak.jpg"
     },
-    "the things network": {
+    " things network": {
         "type": "LoRaWAN Public Network",
         "description": "A global, open LoRaWAN network that enables low-power devices to communicate over long ranges. Provides gateways, network servers, and application integration.",
         "usage": "Building LoRaWAN-based IoT applications, smart cities, asset tracking, and community-driven networks.",
@@ -545,15 +742,15 @@ CLOUD_PLATFORMS = {
         "usage": "Setting up custom LoRaWAN networks, device management, live frame logging, and integration with external services like MQTT.",
         "features": ["Web interface for management", "Multi-tenant support", "API for integrations", "Gateway OS for embedded devices"],
         "references": ["https://www.chirpstack.io/"],
-        "image": "/static/images/chirpstack.jpg"
+        
     },
     "aws iot core": {
         "type": "Managed IoT Cloud Service",
         "description": "A managed cloud platform that lets connected devices easily and securely interact with cloud applications and other devices. Supports billions of devices and trillions of messages.",
         "usage": "Secure device connectivity, data processing, integration with AWS services like Lambda, S3, and Machine Learning.",
         "features": ["Device gateway", "Rules engine", "Device shadows", "Over-the-air updates", "Security and authentication"],
-        "references": ["https://aws.amazon.com/iot-core/"],
-        "image": "/static/images/aws_iot_core.jpg"
+        "references": ["https://aws.amazon.com/iot-core/"]
+    
     },
     "azure iot hub": {
         "type": "Managed IoT Cloud Service",
@@ -569,7 +766,7 @@ CLOUD_PLATFORMS = {
         "usage": "Large-scale device management, real-time data processing, and AI/ML integration.",
         "features": ["Device registry", "Telemetry events", "State synchronization", "Integration with Pub/Sub and BigQuery"],
         "references": ["https://cloud.google.com/iot-core"],
-        "image": "/static/images/google_cloud_iot.jpg"
+        
     }
 }
 
@@ -673,63 +870,31 @@ void loop() {
     "dht22 esp32": {
         "language": "C++ (Arduino IDE)",
         "code": """
-// Example testing sketch for various DHT humidity/temperature sensors written by ladyada
-// REQUIRES the following Arduino libraries:
-// - DHT Sensor Library: https://github.com/adafruit/DHT-sensor-library
-// - Adafruit Unified Sensor Lib: https://github.com/adafruit/Adafruit_Sensor
-
 #include "DHT.h"
 
-#define DHTPIN 4     // Digital pin connected to the DHT sensor
-// Feather HUZZAH ESP8266 note: use pins 3, 4, 5, 12, 13 or 14 --
-// Pin 15 can work but DHT must be disconnected during program upload.
+#define DHTPIN 4
+#define DHTTYPE DHT22
 
-// Uncomment whatever type you're using!
-//#define DHTTYPE DHT11   // DHT 11
-#define DHTTYPE DHT22   // DHT 22  (AM2302), AM2321
-//#define DHTTYPE DHT21   // DHT 21 (AM2301)
-
-// Connect pin 1 (on the left) of the sensor to +5V
-// NOTE: If using a board with 3.3V logic like an Arduino Due connect pin 1
-// to 3.3V instead of 5V!
-// Connect pin 2 of the sensor to whatever your DHTPIN is
-// Connect pin 4 (on the right) of the sensor to GROUND
-// Connect a 10K resistor from pin 2 (data) to pin 1 (power) of the sensor
-
-// Initialize DHT sensor.
-// Note that older versions of this library took an optional third parameter to
-// tweak the timings for faster processors.  This parameter is no longer needed
-// as the current DHT reading algorithm adjusts itself to work on faster procs.
 DHT dht(DHTPIN, DHTTYPE);
 
 void setup() {
   Serial.begin(9600);
   Serial.println(F("DHTxx test!"));
-
   dht.begin();
 }
 
 void loop() {
-  // Wait a few seconds between measurements.
   delay(2000);
-
-  // Reading temperature or humidity takes about 250 milliseconds!
-  // Sensor readings may also be up to 2 seconds 'old' (its a very slow sensor)
   float h = dht.readHumidity();
-  // Read temperature as Celsius (the default)
   float t = dht.readTemperature();
-  // Read temperature as Fahrenheit (isFahrenheit = true)
   float f = dht.readTemperature(true);
 
-  // Check if any reads failed and exit early (to try again).
   if (isnan(h) || isnan(t) || isnan(f)) {
     Serial.println(F("Failed to read from DHT sensor!"));
     return;
   }
 
-  // Compute heat index in Fahrenheit (the default)
   float hif = dht.computeHeatIndex(f, h);
-  // Compute heat index in Celsius (isFahreheit = false)
   float hic = dht.computeHeatIndex(t, h, false);
 
   Serial.print(F("Humidity: "));
@@ -753,19 +918,15 @@ void loop() {
 #include "main.h"
 #include "stdio.h"
 
-// Assuming these are defined in main.h or elsewhere
 #define DHT22_PORT GPIOA
 #define DHT22_PIN GPIO_PIN_1
 
-// Delay function for microseconds using TIM6
 void delay(uint16_t time)
 {
-    /* change your code here for the delay in microseconds */
     __HAL_TIM_SET_COUNTER(&htim6, 0);
     while ((__HAL_TIM_GET_COUNTER(&htim6)) < time);
 }
 
-// Set pin as output
 void Set_Pin_Output(GPIO_TypeDef *GPIOx, uint16_t GPIO_Pin)
 {
     GPIO_InitTypeDef GPIO_InitStruct = {0};
@@ -776,7 +937,6 @@ void Set_Pin_Output(GPIO_TypeDef *GPIOx, uint16_t GPIO_Pin)
     HAL_GPIO_Init(GPIOx, &GPIO_InitStruct);
 }
 
-// Set pin as input
 void Set_Pin_Input(GPIO_TypeDef *GPIOx, uint16_t GPIO_Pin)
 {
     GPIO_InitTypeDef GPIO_InitStruct = {0};
@@ -786,57 +946,48 @@ void Set_Pin_Input(GPIO_TypeDef *GPIOx, uint16_t GPIO_Pin)
     HAL_GPIO_Init(GPIOx, &GPIO_InitStruct);
 }
 
-// DHT22 Start function
 void DHT22_Start(void)
 {
-    Set_Pin_Output(DHT22_PORT, DHT22_PIN); // set the pin as output
-    HAL_GPIO_WritePin(DHT22_PORT, DHT22_PIN, GPIO_PIN_RESET); // pull the pin low
-    HAL_Delay(1200); // wait for > 1ms
-
-    HAL_GPIO_WritePin(DHT22_PORT, DHT22_PIN, GPIO_PIN_SET); // pull the pin high
-    delay(20); // wait for 30us
-    Set_Pin_Input(DHT22_PORT, DHT22_PIN); // set as input
+    Set_Pin_Output(DHT22_PORT, DHT22_PIN);
+    HAL_GPIO_WritePin(DHT22_PORT, DHT22_PIN, GPIO_PIN_RESET);
+    HAL_Delay(1200);
+    HAL_GPIO_WritePin(DHT22_PORT, DHT22_PIN, GPIO_PIN_SET);
+    delay(20);
+    Set_Pin_Input(DHT22_PORT, DHT22_PIN);
 }
 
-// DHT22 Check Response function
 uint8_t DHT22_Check_Response(void)
 {
-    Set_Pin_Input(DHT22_PORT, DHT22_PIN); // set as input
+    Set_Pin_Input(DHT22_PORT, DHT22_PIN);
     uint8_t Response = 0;
-    delay(40); // wait for 40us
-    if (!(HAL_GPIO_ReadPin(DHT22_PORT, DHT22_PIN))) // if the pin is low
+    delay(40);
+    if (!(HAL_GPIO_ReadPin(DHT22_PORT, DHT22_PIN)))
     {
-        delay(80); // wait for 80us
-
-        if ((HAL_GPIO_ReadPin(DHT22_PORT, DHT22_PIN))) Response = 1; // if the pin is high, response is ok
+        delay(80);
+        if ((HAL_GPIO_ReadPin(DHT22_PORT, DHT22_PIN))) Response = 1;
         else Response = -1;
     }
-
-    while ((HAL_GPIO_ReadPin(DHT22_PORT, DHT22_PIN))); // wait for the pin to go low
+    while ((HAL_GPIO_ReadPin(DHT22_PORT, DHT22_PIN)));
     return Response;
 }
 
-// DHT22 Read function
 uint8_t DHT22_Read(void)
 {
     uint8_t i, j;
     for (j = 0; j < 8; j++)
     {
-        while (!(HAL_GPIO_ReadPin(DHT22_PORT, DHT22_PIN))); // wait for the pin to go high
-        delay(40); // wait for 40 us
-
-        if (!(HAL_GPIO_ReadPin(DHT22_PORT, DHT22_PIN))) // if the pin is low
+        while (!(HAL_GPIO_ReadPin(DHT22_PORT, DHT22_PIN)));
+        delay(40);
+        if (!(HAL_GPIO_ReadPin(DHT22_PORT, DHT22_PIN)))
         {
-            i &= ~(1 << (7 - j)); // write 0
+            i &= ~(1 << (7 - j));
         }
-        else i |= (1 << (7 - j)); // if the pin is high, write 1
-        while ((HAL_GPIO_ReadPin(DHT22_PORT, DHT22_PIN))); // wait for the pin to go low
+        else i |= (1 << (7 - j));
+        while ((HAL_GPIO_ReadPin(DHT22_PORT, DHT22_PIN)));
     }
-
     return i;
 }
 
-// LCD Display functions (assumed to be defined elsewhere, included for completeness)
 void Display_Temp(float Temp)
 {
     char str[20] = {0};
@@ -855,15 +1006,14 @@ void Display_Rh(float Rh)
     lcd_send_data('%');
 }
 
-// Main function example usage
 int main(void)
 {
     HAL_Init();
     SystemClock_Config();
     MX_GPIO_Init();
-    MX_TIM6_Init(); // For delay
-    MX_I2C1_Init(); // If needed for LCD or other
-    lcd_init(); // Assume LCD init
+    MX_TIM6_Init();
+    MX_I2C1_Init();
+    lcd_init();
 
     uint8_t Rh_byte1, Rh_byte2, Temp_byte1, Temp_byte2;
     uint16_t sum, RH, TEMP;
@@ -881,18 +1031,15 @@ int main(void)
         Temp_byte2 = DHT22_Read();
         sum = DHT22_Read();
 
-        if (sum == (Rh_byte1 + Rh_byte2 + Temp_byte1 + Temp_byte2))    // if the check sum is correct
+        if (sum == (Rh_byte1 + Rh_byte2 + Temp_byte1 + Temp_byte2))
         {
             TEMP = ((Temp_byte1 << 8) | Temp_byte2);
             RH = ((Rh_byte1 << 8) | Rh_byte2);
-
             Temperature = (float) TEMP / 10.0;
             Humidity = (float) RH / 10.0;
-
             Display_Temp(Temperature);
             Display_Rh(Humidity);
         }
-
         HAL_Delay(1000);
     }
 }
@@ -902,28 +1049,16 @@ int main(void)
     "bme680 stm32": {
         "language": "C (STM32 HAL)",
         "code": """
-/* USER CODE BEGIN Includes */
-
 #include <bme680/bme68x_necessary_functions.h>
-
-/* USER CODE END Includes */
-
-/* USER CODE BEGIN 2 */
 
 struct bme68x_data data;
 bme68x_start(&data, &hi2c1);
 
-/* USER CODE END 2 */
-
-/* In the main loop or appropriate section: */
-
 if (bme68x_single_measure(&data) == 0) {
-    // Measurement is successful, so continue with IAQ
-    data.iaq_score = bme68x_iaq(); // Calculate IAQ
+    data.iaq_score = bme68x_iaq();
     HAL_Delay(2000);
 }
 
-/* Data is available in the bme68x_data structure: */
 data.temperature
 data.pressure
 data.humidity
@@ -933,6 +1068,122 @@ data.iaq_score
         "description": "Example for reading data from BME680 on STM32 using HAL and BME68x library."
     }
 }
+
+# ===================== Connection Details =====================
+CONNECTION_DETAILS = {
+    "stm32f407vg avec bme680": {
+        "board": "stm32f407vg",
+        "sensor": "bme680",
+        "interface": "I2C",
+        "connection": {
+            "description": "Connect BME680 to STM32F407VG using I2C interface.",
+            "pins": {
+                "BME680_SDA": "STM32_PB9 (I2C1_SDA)",
+                "BME680_SCL": "STM32_PB8 (I2C1_SCL)",
+                "BME680_VCC": "3.3V",
+                "BME680_GND": "GND"
+            },
+            "notes": [
+                "Enable I2C1 in STM32CubeMX and configure PB8/PB9 as I2C pins.",
+                "Use 4.7kΩ pull-up resistors on SDA and SCL lines if not present on BME680 module.",
+                "Ensure BME680 library (e.g., BME68x) is included in the project."
+            ],
+            "code_example": CODE_EXAMPLES["bme680 stm32"]
+        }
+    },
+    "esp32 avec bme680": {
+        "board": "esp32",
+        "sensor": "bme680",
+        "interface": "I2C",
+        "connection": {
+            "description": "Connect BME680 to ESP32 using I2C interface.",
+            "pins": {
+                "BME680_SDA": "ESP32_GPIO21 (SDA)",
+                "BME680_SCL": "ESP32_GPIO22 (SCL)",
+                "BME680_VCC": "3.3V",
+                "BME680_GND": "GND"
+            },
+            "notes": [
+                "Default I2C pins on ESP32 are GPIO21 (SDA) and GPIO22 (SCL).",
+                "Use Adafruit BME680 library for Arduino framework.",
+                "Ensure pull-up resistors (4.7kΩ) on SDA/SCL if not included on BME680 module."
+            ],
+        }
+
+               
+        }
+    }
+
+
+# ===================== Fonctions supplémentaires =====================
+def generate_board_comparison():
+    """Generate a comparative table for microcontrollers and single-board computers."""
+    comparison = {
+        "boards": [],
+        "fields": [
+            "type", "cpu", "ram", "flash", "power_supply", "power_consumption", "gpio", "protocols"
+        ]
+    }
+    for key, board in CARTE_INFO.items():
+        board_data = {
+            "name": key,
+            "type": board.get("type", ""),
+            "cpu": board.get("cpu", ""),
+            "ram": board.get("ram", ""),
+            "flash": board.get("flash", ""),
+            "power_supply": board.get("power_supply", ""),
+            "power_consumption": board.get("power_consumption", ""),
+            "gpio": board.get("gpio", ""),
+            "protocols": ", ".join(board.get("protocols_detail", {}).keys())
+        }
+        comparison["boards"].append(board_data)
+    return comparison
+
+def generate_protocol_comparison():
+    """Generate a comparative table for communication protocols."""
+    protocols = ["lora", "lorawan", "sigfox", "nb-iot", "spi", "i2c", "can", "WiFi", "Bluetooth BLE", "UART"]
+    comparison = {
+        "protocols": [],
+        "fields": [
+            "type", "description", "usage", "range", "data_rate", "power_efficiency"
+        ]
+    }
+    for protocol in protocols:
+        protocol_data = RESEAUX_IOT.get(protocol, CARTE_INFO["esp32"]["protocols_detail"].get(protocol, {}))
+        if not protocol_data:
+            continue
+        proto_info = {
+            "name": protocol,
+            "type": protocol_data.get("type", "Communication Protocol"),
+            "description": protocol_data.get("description", ""),
+            "usage": protocol_data.get("usage", ""),
+            "range": protocol_data.get("range", "N/A"),
+            "data_rate": protocol_data.get("data_rate", "N/A"),
+            "power_efficiency": protocol_data.get("power_efficiency", "N/A")
+        }
+        # Add specific details for known protocols
+        if protocol == "lora":
+            proto_info.update({"range": "2-15 km", "data_rate": "0.3-50 kbps", "power_efficiency": "High"})
+        elif protocol == "lorawan":
+            proto_info.update({"range": "2-15 km", "data_rate": "0.3-50 kbps", "power_efficiency": "High"})
+        elif protocol == "sigfox":
+            proto_info.update({"range": "10-50 km", "data_rate": "100 bps", "power_efficiency": "Very High"})
+        elif protocol == "nb-iot":
+            proto_info.update({"range": "1-10 km", "data_rate": "20-250 kbps", "power_efficiency": "High"})
+        elif protocol == "spi":
+            proto_info.update({"range": "Short (cm-m)", "data_rate": "Up to 10 Mbps", "power_efficiency": "Moderate"})
+        elif protocol == "i2c":
+            proto_info.update({"range": "Short (cm-m)", "data_rate": "100-400 kbps", "power_efficiency": "Moderate"})
+        elif protocol == "can":
+            proto_info.update({"range": "Up to 40m", "data_rate": "Up to 1 Mbps", "power_efficiency": "Moderate"})
+        elif protocol == "WiFi":
+            proto_info.update({"range": "50-100m", "data_rate": "Up to 300 Mbps", "power_efficiency": "Low"})
+        elif protocol == "Bluetooth BLE":
+            proto_info.update({"range": "10-100m", "data_rate": "1-2 Mbps", "power_efficiency": "High"})
+        elif protocol == "UART":
+            proto_info.update({"range": "Short (m)", "data_rate": "Up to 115.2 kbps", "power_efficiency": "Moderate"})
+        comparison["protocols"].append(proto_info)
+    return comparison
 
 # ===================== Vues =====================
 def bot_view(request):
@@ -967,15 +1218,31 @@ def chat_view(request):
     if code_key:
         return JsonResponse({"code_example": CODE_EXAMPLES[code_key]}, safe=True)
 
-    # 4️⃣ Direct lookup (microcontrollers)
+    # 4️⃣ Handle comparative table requests
+    if "compare boards" in question or "board comparison" in question:
+        return JsonResponse(generate_board_comparison(), safe=True)
+
+    if "compare protocols" in question or "protocol comparison" in question:
+        return JsonResponse(generate_protocol_comparison(), safe=True)
+
+    # 5️⃣ Handle connection details
+    connection_key = None
+    for key in CONNECTION_DETAILS.keys():
+        if all(word in question for word in key.split("_")):
+            connection_key = key
+            break
+    if connection_key:
+        return JsonResponse({"connection_details": CONNECTION_DETAILS[connection_key]}, safe=True)
+
+    # 6️⃣ Direct lookup (microcontrollers and modules)
     if question in CARTE_INFO:
         return JsonResponse(CARTE_INFO[question], safe=True)
 
-    # 5️⃣ Direct lookup (sensors)
+    # 7️⃣ Direct lookup (sensors)
     if question in CAPTEUR_INFO:
         return JsonResponse(CAPTEUR_INFO[question], safe=True)
 
-    # 6️⃣ Direct lookup (environments, IoT networks/gateways, or cloud platforms)
+    # 8️⃣ Direct lookup (environments, IoT networks/gateways, or cloud platforms)
     for key, val in ENVIRONNEMENTS.items():
         if question == key.lower():
             return JsonResponse({key: val}, safe=True)
@@ -986,7 +1253,7 @@ def chat_view(request):
         if question == key.lower():
             return JsonResponse({key: val}, safe=True)
 
-    # 7️⃣ Search by language, IDE, or protocol
+    # 9️⃣ Search by language, IDE, or protocol
     results = {}
     for key, carte in CARTE_INFO.items():
         if isinstance(carte, dict):
@@ -996,7 +1263,7 @@ def chat_view(request):
             if question in langages or question in ides or question in protocols:
                 results[key] = carte
 
-    # 8️⃣ Search for gateway-specific queries (e.g., MQTT, WiFi, Bluetooth)
+    # 10️⃣ Search for gateway-specific queries (e.g., MQTT, WiFi, Bluetooth)
     for key, gateway in RESEAUX_IOT.items():
         if isinstance(gateway, dict) and "specifications" in gateway:
             protocols = [p.lower() for p in gateway.get("specifications", {}).get("protocols", [])]
@@ -1004,7 +1271,7 @@ def chat_view(request):
             if question in protocols or question in connectivity:
                 results[key] = gateway
 
-    # 9️⃣ Search for cloud platforms (e.g., if question contains cloud service names or 'cloud')
+    # 11️⃣ Search for cloud platforms
     for key, cloud in CLOUD_PLATFORMS.items():
         if question in key.lower() or key.lower() in question:
             results[key] = cloud
@@ -1012,7 +1279,7 @@ def chat_view(request):
     if results:
         return JsonResponse(results, safe=True)
 
-    # 🔟 Handle specific embedded systems queries
+    # 12️⃣ Handle specific embedded systems queries
     if "gateway" in question:
         gateway_results = {k: v for k, v in RESEAUX_IOT.items() if "gateway" in v.get("type", "").lower()}
         if gateway_results:
@@ -1021,5 +1288,5 @@ def chat_view(request):
     if "cloud" in question or "iot platform" in question:
         return JsonResponse(CLOUD_PLATFORMS, safe=True)
 
-    # 1️⃣1️⃣ Error if no match found
-    return JsonResponse({"error": "Microcontroller, sensor, environment, gateway, cloud platform, or code example not found"}, status=404)
+    # 13️⃣ Error if no match found
+    return JsonResponse({"error": "Microcontroller, sensor, environment, gateway, cloud platform, code example, or connection not found"}, status=404)
