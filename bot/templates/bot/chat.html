@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Chatbot Cartes - Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Roboto', sans-serif; }
+        body { display: flex; flex-direction: column; height: 100vh; background: #f4f7fa; color: #333; }
+        header { background: #a11097ff; color: #fff; padding: 20px; text-align: center; font-size: 1.5rem; font-weight: 500; }
+        #profile { text-align: center; margin-top: 15px; }
+        #profile img { width: 150px; height: 150px; border-radius: 50%; border: 3px solid #a11097ff; object-fit: cover; }
+        #greeting { background: #e7cde8ff; color: #333; padding: 10px 15px; text-align: center; font-size: 1.2rem; margin-top: 10px; }
+        #chat-container { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 10px; }
+        .message { max-width: 70%; padding: 10px 15px; border-radius: 15px; line-height: 1.4; word-wrap: break-word; }
+        .user { background: #9940cdff; color: #fff; align-self: flex-end; border-bottom-right-radius: 0; }
+        .bot { background: #e0e0e0; color: #000; align-self: flex-start; border-bottom-left-radius: 0; }
+        footer { display: flex; flex-direction: column; padding: 15px; background: #fff; border-top: 1px solid #ddd; }
+        input { flex: 1; padding: 10px 15px; border-radius: 25px; border: 1px solid #ccc; outline: none; font-size: 1rem; }
+        button { margin-top: 10px; padding: 10px 20px; background: #bc1d95ff; color: #fff; border: none; border-radius: 25px; cursor: pointer; font-weight: 500; transition: 0.2s; }
+        button:hover { background: #a86496ff; }
+        img.chat-img { max-width: 200px; border-radius: 10px; margin-top: 10px; display: block; }
+        .powered { margin-top: 10px; font-size: 1.2rem; color: #a11097ff; text-align: center; cursor: pointer; transition: 0.3s; }
+        .powered:hover { transform: scale(1.1); color: #bc1d95ff; }
+        @media(max-width:600px){ .message { max-width: 90%; } }
+    </style>
+</head>
+<body>
+    <header>Chatbot Cartes & Capteurs</header>
+
+    <div id="profile">
+        <img src="/static/images/photo de profile.jpg" alt="Ranim Oueslati">
+    </div>
+
+    <div id="greeting"></div>
+
+    <div id="chat-container"></div>
+
+    <footer>
+        <input id="question" type="text" placeholder="Tapez le nom d'une carte, capteur ou environnement...">
+        <button onclick="ask()">Envoyer</button>
+        <div class="powered" id="powered">Powered by Ranim Oueslati</div>
+    </footer>
+
+    <script>
+        const chatContainer = document.getElementById('chat-container');
+
+        function addMessage(text, sender, isHTML = false) {
+            const msgDiv = document.createElement('div');
+            msgDiv.classList.add('message', sender);
+            if(isHTML){
+                msgDiv.innerHTML = text;
+            } else {
+                msgDiv.innerText = text;
+            }
+            chatContainer.appendChild(msgDiv);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        function formatData(data) {
+            let text = "";
+            for(const key in data){
+                const value = data[key];
+
+                if(key === "image" && value){
+                    text += `<img src="${value}" alt="${key}" class="chat-img"><br>`;
+                } else if(key === "protocoles_detail" && typeof value === 'object'){
+                    text += `<b>${key}</b>:<br>`;
+                    for(const proto in value){
+                        const p = value[proto];
+                        text += `<b>${proto}</b>: ${p.description}<br><i>Usage:</i> ${p.usage}<br>`;
+                        if(p.references && p.references.length > 0){
+                            text += `<i>Références:</i> ${p.references.join(', ')}<br>`;
+                        }
+                        text += "<br>";
+                    }
+                } else if(Array.isArray(value)){
+                    text += `<b>${key}</b>: ${value.join(', ')}<br>`;
+                } else if(typeof value === 'object'){
+                    text += `<b>${key}</b>:<br>`;
+                    for(const subKey in value){
+                        const subVal = value[subKey];
+                        if(subKey === "image" && subVal){
+                            text += `<img src="${subVal}" alt="${subKey}" class="chat-img"><br>`;
+                        } else if(Array.isArray(subVal)){
+                            text += `&nbsp;&nbsp;<b>${subKey}</b>: ${subVal.join(', ')}<br>`;
+                        } else if(typeof subVal === 'object'){
+                            text += `&nbsp;&nbsp;<b>${subKey}</b>: ${JSON.stringify(subVal)}<br>`;
+                        } else {
+                            text += `&nbsp;&nbsp;<b>${subKey}</b>: ${subVal}<br>`;
+                        }
+                    }
+                } else {
+                    text += `<b>${key}</b>: ${value}<br>`;
+                }
+            }
+            return text;
+        }
+
+        function ask() {
+            const questionInput = document.getElementById('question');
+            const question = questionInput.value.trim();
+            if(!question) return;
+            addMessage(question, 'user');
+            questionInput.value = '';
+
+            fetch(`/bot/chat/?question=${encodeURIComponent(question)}`)
+                .then(res => res.json())
+                .then(data => {
+                    if(data.error){
+                        addMessage(data.error, 'bot');
+                    } else {
+                        const text = formatData(data);
+                        addMessage(text, 'bot', true);
+                    }
+                })
+                .catch(err => addMessage("Erreur de connexion : " + err, 'bot'));
+        }
+
+        document.getElementById('question').addEventListener('keydown', (e) => {
+            if(e.key === 'Enter') ask();
+        });
+
+        // Couleur aléatoire du "Powered"
+        const powered = document.getElementById('powered');
+        setInterval(() => {
+            const colors = ['#a11097ff', '#bc1d95ff', '#c350d8ff', '#9e2fc7ff'];
+            powered.style.color = colors[Math.floor(Math.random() * colors.length)];
+        }, 2000);
+
+        // Lecture vocale automatique
+        window.onload = () => {
+            const msg = new SpeechSynthesisUtterance("Bonne journée Ranim !");
+            msg.lang = 'fr-FR';
+            msg.rate = 1;
+            msg.pitch = 1;
+            speechSynthesis.speak(msg);
+        };
+    </script>
+</body>
+</html>
