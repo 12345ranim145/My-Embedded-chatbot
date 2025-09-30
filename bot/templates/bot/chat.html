@@ -33,17 +33,18 @@
             padding: 10px 20px;
             border-radius: 10px;
             text-align: center;
-            transition: transform 0.3s ease;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
         #dashboard .stat-card:hover {
             transform: translateY(-5px);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
         }
         #dashboard .stat-card h3 {
-            font-size: 1.2rem;
+            font-size: 1.4rem;
             margin-bottom: 5px;
         }
         #dashboard .stat-card p {
-            font-size: 1.5rem;
+            font-size: 1.8rem;
             font-weight: 500;
         }
 
@@ -132,11 +133,17 @@
             transform-origin: bottom right; 
         }
         .bot { 
-            background: #e0e0e0; 
+            background: #d8b2e1ff; /* Light purple instead of grey */
             color: #000; 
             align-self: flex-start; 
             border-bottom-left-radius: 0; 
             transform-origin: bottom left; 
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: all 0.5s cubic-bezier(0.68,-0.55,0.27,1.55), box-shadow 0.3s ease;
+        }
+        .bot:hover {
+            box-shadow: 0 4px 10px rgba(161, 16, 151, 0.3);
+            transform: translateY(-2px);
         }
         footer { 
             display: flex; 
