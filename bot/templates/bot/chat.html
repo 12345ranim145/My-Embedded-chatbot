@@ -2,12 +2,12 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Chatbot Cartes - Dashboard</title>
+    <title>Embedded Chat Bot</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Roboto', sans-serif; }
         body { display: flex; flex-direction: column; height: 100vh; background: #f4f7fa; color: #333; overflow: hidden; }
-        header { background: #a11097ff; color: #fff; padding: 20px; text-align: center; font-size: 1.5rem; font-weight: 500; position: relative; z-index: 2; }
+        header { background: #a11097ff; color: #fff; padding: 20px; text-align: center; font-size: 2.5rem; font-weight: 500; position: relative; z-index: 2; }
         #profile { text-align: center; margin-top: 15px; z-index: 2; position: relative; }
         #profile img { 
             width: 150px; 
@@ -111,10 +111,19 @@
             50% { transform: scale(1.2); opacity: 1; }
             100% { transform: scale(0.8); opacity: 0.4; }
         }
+
+        /* Timestamp style */
+        .timestamp {
+            font-size: 0.8rem;
+            color: #777;
+            margin-top: 5px;
+            text-align: right;
+            display: block;
+        }
     </style>
 </head>
 <body>
-    <header>Chatbot Cartes & Capteurs</header>
+    <header id="header-title">Embedded Chat Bot</header>
 
     <div id="profile">
         <img src="/static/images/photo de profile.jpg" alt="Ranim Oueslati">
@@ -192,11 +201,21 @@
         function addMessage(text, sender, isHTML = false) {
             const msgDiv = document.createElement('div');
             msgDiv.classList.add('message', sender);
+
+            const contentDiv = document.createElement('div');
             if(isHTML){
-                msgDiv.innerHTML = text;
+                contentDiv.innerHTML = text;
             } else {
-                msgDiv.innerText = text;
+                contentDiv.innerText = text;
             }
+            msgDiv.appendChild(contentDiv);
+
+            const timestamp = new Date().toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+            const timeSpan = document.createElement('span');
+            timeSpan.classList.add('timestamp');
+            timeSpan.innerText = timestamp;
+            msgDiv.appendChild(timeSpan);
+
             chatContainer.appendChild(msgDiv);
             setTimeout(() => msgDiv.classList.add('show'), 50);
             chatContainer.scrollTo({ top: chatContainer.scrollHeight, behavior: 'smooth' });
@@ -293,6 +312,19 @@
             requestAnimationFrame(animatePowered);
         }
         animatePowered();
+
+        // Title animation
+        const headerTitle = document.getElementById('header-title');
+        let titleHue = 0;
+        function animateTitle() {
+            titleHue = (titleHue + 1) % 360;
+            headerTitle.style.background = `linear-gradient(45deg, hsl(${titleHue}, 70%, 50%), hsl(${(titleHue + 60) % 360}, 70%, 50%))`;
+            headerTitle.style.webkitBackgroundClip = 'text';
+            headerTitle.style.backgroundClip = 'text';
+            headerTitle.style.color = 'transparent';
+            requestAnimationFrame(animateTitle);
+        }
+        animateTitle();
 
         // Speech synthesis
         window.onload = () => {
