@@ -398,7 +398,7 @@ CLOUD_PLATFORMS = {
         "usage": "Secure device connectivity, data processing, integration with AWS services like Lambda, S3, and Machine Learning.",
         "features": ["Device gateway", "Rules engine", "Device shadows", "Over-the-air updates", "Security and authentication"],
         "references": ["https://aws.amazon.com/iot-core/"],
-        "image": "/static/images/aws_iot.jpg"
+        
     },
     "azure iot hub": {
         "type": "Managed IoT Cloud Service",
@@ -406,7 +406,7 @@ CLOUD_PLATFORMS = {
         "usage": "Device provisioning, telemetry ingestion, command and control, and edge computing.",
         "features": ["Bi-directional communication", "Device twins", "Message routing", "Integration with Azure ML and Power BI"],
         "references": ["https://azure.microsoft.com/en-us/products/iot-hub/"],
-        "image": "/static/images/azure_iot.jpg"
+        
     },
     "google cloud iot": {
         "type": "Managed IoT Cloud Service",
@@ -414,8 +414,7 @@ CLOUD_PLATFORMS = {
         "usage": "Large-scale device management, real-time data processing, and AI/ML integration.",
         "features": ["Device registry", "Telemetry events", "State synchronization", "Integration with Pub/Sub and BigQuery"],
         "references": ["https://cloud.google.com/iot-core"],
-        "image": "/static/images/google_iot.jpg"
-    }
+   }
 }
 
 # ===================== Vues =====================
