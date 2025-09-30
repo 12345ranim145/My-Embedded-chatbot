@@ -35,6 +35,11 @@ CARTE_INFO = {
             "toolchain": "ESP-IDF (Espressif IoT Development Framework), FreeRTOS support",
             "debugging": "JTAG debugging, UART logging",
             "power_optimization": "Deep sleep, ULP coprocessor for low-power tasks"
+        },
+        "additional_electronics": {
+            "pinout": "GPIO0-39 with multiplexed functions; avoid GPIO12 during boot.",
+            "voltage_regulator": "Built-in 3.3V regulator, max input 5V via USB.",
+            "adc_resolution": "12-bit SAR ADC, non-linear above 2.4V without calibration."
         }
     },
 
@@ -62,6 +67,11 @@ CARTE_INFO = {
             "toolchain": "ESP-IDF, Arduino framework",
             "debugging": "UART-based debugging",
             "camera": "OV2640 (2MP), supports MJPEG streaming"
+        },
+        "additional_electronics": {
+            "pinout": "Limited GPIOs; GPIO0 for boot mode, GPIO4 for SD card.",
+            "voltage_regulator": "5V to 3.3V step-down, careful with current draw for camera.",
+            "camera_interface": "Parallel 8-bit interface with DVP protocol."
         }
     },
 
@@ -94,6 +104,11 @@ CARTE_INFO = {
             "toolchain": "STM32CubeIDE, ARM GCC",
             "debugging": "SWD/JTAG, ST-Link",
             "power_optimization": "Low-power modes (sleep, stop, standby)"
+        },
+        "additional_electronics": {
+            "pinout": "Ports A-P with alternate functions; VDD/VSS for power domains.",
+            "voltage_regulator": "Internal LDO for core, external for peripherals if needed.",
+            "adc_resolution": "12-bit, up to 2.4 MSPS, with DMA support."
         }
     },
 
@@ -121,11 +136,16 @@ CARTE_INFO = {
         },
         "languages": ["C", "C++", "Arduino IDE"],
         "ide": ["Arduino IDE", "VS Code + PlatformIO"],
-        "image": "/static/images/arduino_uno.jpg",
+        "image": "/static/images/arduino uno.jpg",
         "firmware_development": {
             "toolchain": "AVR-GCC, Arduino framework",
             "debugging": "Serial monitor, limited debugging support",
             "power_optimization": "Sleep modes via AVR libraries"
+        },
+        "additional_electronics": {
+            "pinout": "Digital 0-13, Analog A0-A5; PWM on 3,5,6,9,10,11.",
+            "voltage_regulator": "On-board 5V and 3.3V regulators.",
+            "adc_resolution": "10-bit, reference voltage 5V or external."
         }
     },
 
@@ -153,6 +173,11 @@ CARTE_INFO = {
             "toolchain": "AVR-GCC, Arduino framework",
             "debugging": "Serial monitor, limited debugging support",
             "power_optimization": "Sleep modes via AVR libraries"
+        },
+        "additional_electronics": {
+            "pinout": "Digital 0-53, Analog A0-A15; Multiple UARTs (0-3).",
+            "voltage_regulator": "On-board 5V and 3.3V regulators.",
+            "adc_resolution": "10-bit, with AREF pin for custom reference."
         }
     }
 }
@@ -166,7 +191,13 @@ CAPTEUR_INFO = {
         "interfaces": ["I2C", "SPI"],
         "power_consumption": "0.15 mA (normal mode), 0.1 µA (sleep mode)",
         "usage": "Weather stations, home automation, air quality monitoring",
+        "signal_type": "Digital",
         "references": ["https://www.bosch-sensortec.com/products/environmental-sensors/gas-sensors/bme680/"],
+        "tutorials": [
+            "BME680 with Arduino: https://randomnerdtutorials.com/bme680-sensor-arduino/",
+            "BME680 with ESP32: https://randomnerdtutorials.com/esp32-bme680-sensor-arduino-ide/",
+            "BME680 with STM32: https://controllerstech.com/bme680-with-stm32/"
+        ],
         "image": "/static/images/bme680.jpg"
     },
     "dht22": {
@@ -179,7 +210,13 @@ CAPTEUR_INFO = {
         "interface": "1-Wire (proprietary protocol)",
         "power_consumption": "0.5 mA (measuring), 0.1 mA (idle)",
         "usage": "Low-cost weather stations, home automation, IoT",
+        "signal_type": "Digital",
         "references": ["https://www.adafruit.com/product/385"],
+        "tutorials": [
+            "DHT22 with Arduino: https://www.arduino.cc/en/Tutorial/LibraryExamples/DHTSensorLibrary",
+            "DHT22 with ESP32: https://randomnerdtutorials.com/esp32-dht11-dht22-temperature-humidity-sensor-arduino-ide/",
+            "DHT22 with STM32: https://controllerstech.com/dht22-with-stm32/"
+        ],
         "image": "/static/images/dht22.jpg"
     },
     "ds18b20": {
@@ -190,7 +227,13 @@ CAPTEUR_INFO = {
         "interface": "1-Wire",
         "power_consumption": "1 mA (active), 0.75 µA (sleep)",
         "usage": "Digital thermometers, temperature control, embedded projects",
+        "signal_type": "Digital",
         "references": ["https://www.maximintegrated.com/en/products/sensors/DS18B20.html"],
+        "tutorials": [
+            "DS18B20 with Arduino: https://randomnerdtutorials.com/guide-for-ds18b20-temperature-sensor-with-arduino/",
+            "DS18B20 with ESP32: https://randomnerdtutorials.com/esp32-ds18b20-temperature-sensor-arduino-ide/",
+            "DS18B20 with STM32: https://controllerstech.com/ds18b20-with-stm32/"
+        ],
         "image": "/static/images/ds18b20.jpg"
     },
     "mpu6050": {
@@ -202,7 +245,13 @@ CAPTEUR_INFO = {
         "interfaces": ["I2C"],
         "power_consumption": "3.9 mA (active), 10 µA (sleep)",
         "usage": "Motion detection, robotics, drones, gesture recognition in IoT",
+        "signal_type": "Digital",
         "references": ["https://invensense.tdk.com/products/motion-tracking/6-axis/mpu-6050/"],
+        "tutorials": [
+            "MPU6050 with Arduino: https://randomnerdtutorials.com/arduino-mpu-6050-gyroscope-accelerometer-temperature/",
+            "MPU6050 with ESP32: https://randomnerdtutorials.com/esp32-mpu-6050-accelerometer-gyroscope-arduino/",
+            "MPU6050 with STM32: https://controllerstech.com/mpu6050-gyro-accelerometer-with-stm32/"
+        ],
         "image": "/static/images/mpu6050.jpg"
     },
     "hc-sr04": {
@@ -213,7 +262,13 @@ CAPTEUR_INFO = {
         "interfaces": ["Digital (trigger/echo pins)"],
         "power_consumption": "15 mA (active)",
         "usage": "Distance measurement, obstacle avoidance in robotics, level sensing in IoT",
+        "signal_type": "Digital",
         "references": ["https://www.sparkfun.com/products/15569"],
+        "tutorials": [
+            "HC-SR04 with Arduino: https://www.arduino.cc/en/Tutorial/LibraryExamples/UltrasonicSensor",
+            "HC-SR04 with ESP32: https://randomnerdtutorials.com/esp32-hc-sr04-ultrasonic-arduino/",
+            "HC-SR04 with STM32: https://controllerstech.com/hc-sr04-ultrasonic-with-stm32/"
+        ],
         "image": "/static/images/hc-sr04.jpg"
     },
     "pir": {
@@ -224,7 +279,13 @@ CAPTEUR_INFO = {
         "interfaces": ["Digital output"],
         "power_consumption": "65 µA (idle)",
         "usage": "Motion detection for security, automation, energy management in IoT",
+        "signal_type": "Digital",
         "references": ["https://www.adafruit.com/product/189"],
+        "tutorials": [
+            "PIR with Arduino: https://www.arduino.cc/en/Tutorial/LibraryExamples/PIRSensor",
+            "PIR with ESP32: https://randomnerdtutorials.com/esp32-pir-motion-sensor-interrupts-timers/",
+            "PIR with STM32: https://controllerstech.com/pir-sensor-with-stm32/"
+        ],
         "image": "/static/images/pir.jpg"
     },
     "soil moisture": {
@@ -234,7 +295,13 @@ CAPTEUR_INFO = {
         "interfaces": ["Analog/Digital"],
         "power_consumption": "5 mA (active)",
         "usage": "Smart agriculture, plant monitoring, irrigation systems in IoT",
+        "signal_type": "Analog/Digital",
         "references": ["https://www.sparkfun.com/products/13322"],
+        "tutorials": [
+            "Soil Moisture with Arduino: https://www.arduino.cc/en/Tutorial/LibraryExamples/SoilMoistureSensor",
+            "Soil Moisture with ESP32: https://randomnerdtutorials.com/esp32-soil-moisture-sensor/",
+            "Soil Moisture with STM32: https://controllerstech.com/soil-moisture-sensor-with-stm32/"
+        ],
         "image": "/static/images/soil_moisture.jpg"
     },
     "ldr": {
@@ -245,7 +312,13 @@ CAPTEUR_INFO = {
         "interfaces": ["Analog"],
         "power_consumption": "Low (passive component)" ,
         "usage": "Light detection, automatic lighting, environmental monitoring in IoT",
+        "signal_type": "Analog",
         "references": ["https://www.adafruit.com/product/161"],
+        "tutorials": [
+            "LDR with Arduino: https://www.arduino.cc/en/Tutorial/BuiltInExamples/AnalogReadSerial",
+            "LDR with ESP32: https://randomnerdtutorials.com/esp32-ldr-photoresistor/",
+            "LDR with STM32: https://controllerstech.com/ldr-with-stm32-adc/"
+        ],
         "image": "/static/images/ldr.jpg"
     }
 }
@@ -398,7 +471,7 @@ CLOUD_PLATFORMS = {
         "usage": "Secure device connectivity, data processing, integration with AWS services like Lambda, S3, and Machine Learning.",
         "features": ["Device gateway", "Rules engine", "Device shadows", "Over-the-air updates", "Security and authentication"],
         "references": ["https://aws.amazon.com/iot-core/"],
-        
+        "image": "/static/images/aws_iot.jpg"
     },
     "azure iot hub": {
         "type": "Managed IoT Cloud Service",
@@ -406,7 +479,7 @@ CLOUD_PLATFORMS = {
         "usage": "Device provisioning, telemetry ingestion, command and control, and edge computing.",
         "features": ["Bi-directional communication", "Device twins", "Message routing", "Integration with Azure ML and Power BI"],
         "references": ["https://azure.microsoft.com/en-us/products/iot-hub/"],
-        
+        "image": "/static/images/azure_iot.jpg"
     },
     "google cloud iot": {
         "type": "Managed IoT Cloud Service",
@@ -414,7 +487,109 @@ CLOUD_PLATFORMS = {
         "usage": "Large-scale device management, real-time data processing, and AI/ML integration.",
         "features": ["Device registry", "Telemetry events", "State synchronization", "Integration with Pub/Sub and BigQuery"],
         "references": ["https://cloud.google.com/iot-core"],
-   }
+        "image": "/static/images/google_iot.jpg"
+    }
+}
+
+# ===================== Exemples de Code =====================
+CODE_EXAMPLES = {
+    "led stm32": {
+        "language": "C (STM32 HAL)",
+        "code": """
+#include "stm32f4xx_hal.h"
+
+void SystemClock_Config(void);
+static void MX_GPIO_Init(void);
+
+int main(void) {
+  HAL_Init();
+  SystemClock_Config();
+  MX_GPIO_Init();
+
+  while (1) {
+    HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_5);  // Assuming LED on PA5
+    HAL_Delay(1000);
+  }
+}
+
+static void MX_GPIO_Init(void) {
+  GPIO_InitTypeDef GPIO_InitStruct = {0};
+  __HAL_RCC_GPIOA_CLK_ENABLE();
+  GPIO_InitStruct.Pin = GPIO_PIN_5;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+}
+""",
+        "description": "Blinks an LED on STM32F407VG using HAL library. Assumes LED connected to PA5."
+    },
+    "led esp32": {
+        "language": "C++ (Arduino IDE)",
+        "code": """
+#define LED_PIN 2  // Built-in LED on GPIO2
+
+void setup() {
+  pinMode(LED_PIN, OUTPUT);
+}
+
+void loop() {
+  digitalWrite(LED_PIN, HIGH);
+  delay(1000);
+  digitalWrite(LED_PIN, LOW);
+  delay(1000);
+}
+""",
+        "description": "Blinks the built-in LED on ESP32 using Arduino framework."
+    },
+    "led arduino": {
+        "language": "C++ (Arduino IDE)",
+        "code": """
+#define LED_PIN 13  // Built-in LED on pin 13
+
+void setup() {
+  pinMode(LED_PIN, OUTPUT);
+}
+
+void loop() {
+  digitalWrite(LED_PIN, HIGH);
+  delay(1000);
+  digitalWrite(LED_PIN, LOW);
+  delay(1000);
+}
+""",
+        "description": "Blinks the built-in LED on Arduino Uno/Mega."
+    },
+    # Ajouter plus d'exemples si nécessaire, par ex. pour capteurs
+    "dht22 arduino": {
+        "language": "C++ (Arduino IDE)",
+        "code": """
+#include <DHT.h>
+
+#define DHT_PIN 2
+#define DHT_TYPE DHT22
+
+DHT dht(DHT_PIN, DHT_TYPE);
+
+void setup() {
+  Serial.begin(9600);
+  dht.begin();
+}
+
+void loop() {
+  float h = dht.readHumidity();
+  float t = dht.readTemperature();
+  Serial.print("Humidity: ");
+  Serial.print(h);
+  Serial.print(" %\\tTemperature: ");
+  Serial.print(t);
+  Serial.println(" *C");
+  delay(2000);
+}
+""",
+        "description": "Reads temperature and humidity from DHT22 on Arduino."
+    },
+    # ... Ajouter pour d'autres capteurs et boards de manière similaire
 }
 
 # ===================== Vues =====================
@@ -440,15 +615,25 @@ def chat_view(request):
         }
         return JsonResponse(response, safe=True)
 
-    # 3️⃣ Direct lookup (microcontrollers)
+    # 3️⃣ Handle code examples
+    code_key = None
+    if "code" in question:
+        for key in CODE_EXAMPLES.keys():
+            if all(word in question for word in key.split()):
+                code_key = key
+                break
+        if code_key:
+            return JsonResponse({"code_example": CODE_EXAMPLES[code_key]}, safe=True)
+
+    # 4️⃣ Direct lookup (microcontrollers)
     if question in CARTE_INFO:
         return JsonResponse(CARTE_INFO[question], safe=True)
 
-    # 4️⃣ Direct lookup (sensors)
+    # 5️⃣ Direct lookup (sensors)
     if question in CAPTEUR_INFO:
         return JsonResponse(CAPTEUR_INFO[question], safe=True)
 
-    # 5️⃣ Direct lookup (environments, IoT networks/gateways, or cloud platforms)
+    # 6️⃣ Direct lookup (environments, IoT networks/gateways, or cloud platforms)
     for key, val in ENVIRONNEMENTS.items():
         if question == key.lower():
             return JsonResponse({key: val}, safe=True)
@@ -459,7 +644,7 @@ def chat_view(request):
         if question == key.lower():
             return JsonResponse({key: val}, safe=True)
 
-    # 6️⃣ Search by language, IDE, or protocol
+    # 7️⃣ Search by language, IDE, or protocol
     results = {}
     for key, carte in CARTE_INFO.items():
         if isinstance(carte, dict):
@@ -469,7 +654,7 @@ def chat_view(request):
             if question in langages or question in ides or question in protocols:
                 results[key] = carte
 
-    # 7️⃣ Search for gateway-specific queries (e.g., MQTT, WiFi, Bluetooth)
+    # 8️⃣ Search for gateway-specific queries (e.g., MQTT, WiFi, Bluetooth)
     for key, gateway in RESEAUX_IOT.items():
         if isinstance(gateway, dict) and "specifications" in gateway:
             protocols = [p.lower() for p in gateway.get("specifications", {}).get("protocols", [])]
@@ -477,7 +662,7 @@ def chat_view(request):
             if question in protocols or question in connectivity:
                 results[key] = gateway
 
-    # 8️⃣ Search for cloud platforms (e.g., if question contains cloud service names or 'cloud')
+    # 9️⃣ Search for cloud platforms (e.g., if question contains cloud service names or 'cloud')
     for key, cloud in CLOUD_PLATFORMS.items():
         if question in key.lower() or key.lower() in question:
             results[key] = cloud
@@ -485,7 +670,7 @@ def chat_view(request):
     if results:
         return JsonResponse(results, safe=True)
 
-    # 9️⃣ Handle specific embedded systems queries
+    # 🔟 Handle specific embedded systems queries
     if "gateway" in question:
         gateway_results = {k: v for k, v in RESEAUX_IOT.items() if "gateway" in v.get("type", "").lower()}
         if gateway_results:
@@ -494,5 +679,5 @@ def chat_view(request):
     if "cloud" in question or "iot platform" in question:
         return JsonResponse(CLOUD_PLATFORMS, safe=True)
 
-    # 10️⃣ Error if no match found
-    return JsonResponse({"error": "Microcontroller, sensor, environment, gateway, or cloud platform not found"}, status=404)
+    # 1️⃣1️⃣ Error if no match found
+    return JsonResponse({"error": "Microcontroller, sensor, environment, gateway, cloud platform, or code example not found"}, status=404)
