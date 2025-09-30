@@ -6,23 +6,113 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Roboto', sans-serif; }
-        body { display: flex; flex-direction: column; height: 100vh; background: #f4f7fa; color: #333; }
-        header { background: #a11097ff; color: #fff; padding: 20px; text-align: center; font-size: 1.5rem; font-weight: 500; }
-        #profile { text-align: center; margin-top: 15px; }
-        #profile img { width: 150px; height: 150px; border-radius: 50%; border: 3px solid #a11097ff; object-fit: cover; }
-        #greeting { background: #e7cde8ff; color: #333; padding: 10px 15px; text-align: center; font-size: 1.2rem; margin-top: 10px; }
-        #chat-container { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 10px; }
-        .message { max-width: 70%; padding: 10px 15px; border-radius: 15px; line-height: 1.4; word-wrap: break-word; }
-        .user { background: #9940cdff; color: #fff; align-self: flex-end; border-bottom-right-radius: 0; }
-        .bot { background: #e0e0e0; color: #000; align-self: flex-start; border-bottom-left-radius: 0; }
-        footer { display: flex; flex-direction: column; padding: 15px; background: #fff; border-top: 1px solid #ddd; }
-        input { flex: 1; padding: 10px 15px; border-radius: 25px; border: 1px solid #ccc; outline: none; font-size: 1rem; }
+        body { display: flex; flex-direction: column; height: 100vh; background: #f4f7fa; color: #333; overflow: hidden; }
+        header { background: #a11097ff; color: #fff; padding: 20px; text-align: center; font-size: 1.5rem; font-weight: 500; position: relative; z-index: 2; }
+        #profile { text-align: center; margin-top: 15px; z-index: 2; position: relative; }
+        #profile img { 
+            width: 150px; 
+            height: 150px; 
+            border-radius: 50%; 
+            border: 3px solid #a11097ff; 
+            object-fit: cover; 
+            transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+            transform: scale(0.8);
+            opacity: 0;
+        }
+        #profile img.loaded { transform: scale(1); opacity: 1; }
+        #profile img:hover { transform: scale(1.1); box-shadow: 0 0 20px rgba(161,16,151,0.5); }
+        #greeting { 
+            background: #e7cde8ff; 
+            color: #333; 
+            padding: 10px 15px; 
+            text-align: center; 
+            font-size: 1.2rem; 
+            margin: 10px 20px; 
+            border-radius:10px; 
+            z-index: 2; 
+            position: relative; 
+            transform: translateY(20px);
+            opacity: 0;
+            transition: transform 0.5s ease-out, opacity 0.5s ease-out;
+        }
+        #greeting.show { transform: translateY(0); opacity: 1; }
+        #chat-container { 
+            flex: 1; 
+            overflow-y: auto; 
+            padding: 20px; 
+            display: flex; 
+            flex-direction: column; 
+            gap: 10px; 
+            z-index: 2; 
+            position: relative; 
+            perspective: 1000px;
+        }
+        .message { 
+            max-width: 70%; 
+            padding: 10px 15px; 
+            border-radius: 15px; 
+            line-height: 1.4; 
+            word-wrap: break-word; 
+            opacity: 0; 
+            transform: translateY(20px) rotate(-2deg); 
+            transition: all 0.5s cubic-bezier(0.68,-0.55,0.27,1.55), box-shadow 0.3s ease, transform 0.3s ease; 
+            position: relative;
+        }
+        .message.show { opacity: 1; transform: translateY(0) rotate(0deg); }
+        .message:hover { transform: scale(1.05); box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
+        .user { background: #9940cdff; color: #fff; align-self: flex-end; border-bottom-right-radius: 0; transform-origin: bottom right; }
+        .bot { background: #e0e0e0; color: #000; align-self: flex-start; border-bottom-left-radius: 0; transform-origin: bottom left; }
+        footer { display: flex; flex-direction: column; padding: 15px; background: #fff; border-top: 1px solid #ddd; z-index: 2; position: relative; }
+        input { flex: 1; padding: 10px 15px; border-radius: 25px; border: 1px solid #ccc; outline: none; font-size: 1rem; transition: all 0.3s ease; }
+        input:focus { border-color: #a11097ff; box-shadow: 0 0 10px rgba(161,16,151,0.4); }
         button { margin-top: 10px; padding: 10px 20px; background: #bc1d95ff; color: #fff; border: none; border-radius: 25px; cursor: pointer; font-weight: 500; transition: 0.2s; }
-        button:hover { background: #a86496ff; }
+        button:hover { background: #a86496ff; transform: scale(1.05); }
         img.chat-img { max-width: 200px; border-radius: 10px; margin-top: 10px; display: block; }
-        .powered { margin-top: 10px; font-size: 1.2rem; color: #a11097ff; text-align: center; cursor: pointer; transition: 0.3s; }
-        .powered:hover { transform: scale(1.1); color: #bc1d95ff; }
+        .powered { 
+            margin-top: 10px; 
+            font-size: 1.2rem; 
+            text-align: center; 
+            cursor: pointer; 
+            transition: all 0.5s ease; 
+            background: linear-gradient(45deg, #a11097ff, #bc1d95ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .powered:hover { transform: rotate(15deg) scale(1.2); text-shadow: 0 0 15px #bc1d95ff; }
         @media(max-width:600px){ .message { max-width: 90%; } }
+
+        /* Particle effects */
+        .particle { 
+            position: absolute; 
+            border-radius: 50%; 
+            background: #a11097ff; 
+            opacity: 0.4; 
+            pointer-events: none; 
+            z-index: 1;
+        }
+
+        /* Advanced typing indicator */
+        .typing-container { 
+            display: flex; 
+            align-items: center; 
+            gap: 5px; 
+            padding: 10px; 
+        }
+        .typing-dot { 
+            width: 8px; 
+            height: 8px; 
+            background: linear-gradient(45deg, #a11097ff, #bc1d95ff); 
+            border-radius: 50%; 
+            animation: pulse 1.2s ease-in-out infinite; 
+        }
+        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes pulse {
+            0% { transform: scale(0.8); opacity: 0.4; }
+            50% { transform: scale(1.2); opacity: 1; }
+            100% { transform: scale(0.8); opacity: 0.4; }
+        }
     </style>
 </head>
 <body>
@@ -43,6 +133,62 @@
     </footer>
 
     <script>
+        // Particle System
+        class ParticleSystem {
+            constructor() {
+                this.particles = [];
+                this.canvas = document.createElement('canvas');
+                this.canvas.style.position = 'absolute';
+                this.canvas.style.top = '0';
+                this.canvas.style.left = '0';
+                this.canvas.style.zIndex = '1';
+                this.canvas.style.pointerEvents = 'none';
+                document.body.appendChild(this.canvas);
+                this.ctx = this.canvas.getContext('2d');
+                this.resize();
+                window.addEventListener('resize', () => this.resize());
+                this.animate();
+            }
+
+            resize() {
+                this.canvas.width = window.innerWidth;
+                this.canvas.height = window.innerHeight;
+            }
+
+            addParticle() {
+                const particle = {
+                    x: Math.random() * window.innerWidth,
+                    y: window.innerHeight,
+                    size: Math.random() * 10 + 5,
+                    speedX: (Math.random() - 0.5) * 2,
+                    speedY: -(Math.random() * 3 + 2),
+                    opacity: Math.random() * 0.3 + 0.2
+                };
+                this.particles.push(particle);
+            }
+
+            animate() {
+                this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+                if (this.particles.length < 30 && Math.random() < 0.1) this.addParticle();
+
+                this.particles = this.particles.filter(p => p.y > -p.size);
+                this.particles.forEach(p => {
+                    p.x += p.speedX;
+                    p.y += p.speedY;
+                    p.opacity -= 0.002;
+                    this.ctx.beginPath();
+                    this.ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                    this.ctx.fillStyle = `rgba(161, 16, 151, ${p.opacity})`;
+                    this.ctx.fill();
+                });
+
+                requestAnimationFrame(() => this.animate());
+            }
+        }
+
+        // Initialize particle system
+        new ParticleSystem();
+
         const chatContainer = document.getElementById('chat-container');
 
         function addMessage(text, sender, isHTML = false) {
@@ -54,14 +200,14 @@
                 msgDiv.innerText = text;
             }
             chatContainer.appendChild(msgDiv);
-            chatContainer.scrollTop = chatContainer.scrollHeight;
+            setTimeout(() => msgDiv.classList.add('show'), 50);
+            chatContainer.scrollTo({ top: chatContainer.scrollHeight, behavior: 'smooth' });
         }
 
         function formatData(data) {
             let text = "";
             for(const key in data){
                 const value = data[key];
-
                 if(key === "image" && value){
                     text += `<img src="${value}" alt="${key}" class="chat-img"><br>`;
                 } else if(key === "protocoles_detail" && typeof value === 'object'){
@@ -104,9 +250,16 @@
             addMessage(question, 'user');
             questionInput.value = '';
 
+            const typingDiv = document.createElement('div');
+            typingDiv.className = 'message bot typing-container';
+            typingDiv.innerHTML = '<div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>';
+            chatContainer.appendChild(typingDiv);
+            chatContainer.scrollTo({ top: chatContainer.scrollHeight, behavior: 'smooth' });
+            
             fetch(`/bot/chat/?question=${encodeURIComponent(question)}`)
                 .then(res => res.json())
                 .then(data => {
+                    chatContainer.removeChild(typingDiv);
                     if(data.error){
                         addMessage(data.error, 'bot');
                     } else {
@@ -114,23 +267,52 @@
                         addMessage(text, 'bot', true);
                     }
                 })
-                .catch(err => addMessage("Erreur de connexion : " + err, 'bot'));
+                .catch(err => {
+                    chatContainer.removeChild(typingDiv);
+                    addMessage("Erreur de connexion : " + err, 'bot');
+                });
         }
 
         document.getElementById('question').addEventListener('keydown', (e) => {
             if(e.key === 'Enter') ask();
         });
 
-        // Couleur aléatoire du "Powered"
-        const powered = document.getElementById('powered');
-        setInterval(() => {
-            const colors = ['#a11097ff', '#bc1d95ff', '#c350d8ff', '#9e2fc7ff'];
-            powered.style.color = colors[Math.floor(Math.random() * colors.length)];
-        }, 2000);
+        // Parallax effect for messages
+        chatContainer.addEventListener('scroll', () => {
+            const messages = document.querySelectorAll('.message');
+            const containerRect = chatContainer.getBoundingClientRect();
+            messages.forEach(msg => {
+                const msgRect = msg.getBoundingClientRect();
+                const offset = (msgRect.top - containerRect.top) / containerRect.height;
+                msg.style.transform = `translateY(${offset * 20}px) rotate(${offset * 2}deg)`;
+                if (msg.classList.contains('show')) {
+                    msg.style.transform += ' scale(1)';
+                }
+            });
+        });
 
-        // Lecture vocale automatique
+        // Profile image animation on load
+        window.addEventListener('load', () => {
+            const profileImg = document.querySelector('#profile img');
+            profileImg.classList.add('loaded');
+            document.getElementById('greeting').classList.add('show');
+        });
+
+        // Enhanced powered-by animation
+        const powered = document.getElementById('powered');
+        let hue = 0;
+        function animatePowered() {
+            hue = (hue + 1) % 360;
+            powered.style.background = `linear-gradient(45deg, hsl(${hue}, 70%, 50%), hsl(${(hue + 60) % 360}, 70%, 50%))`;
+            powered.style.webkitBackgroundClip = 'text';
+            powered.style.backgroundClip = 'text';
+            requestAnimationFrame(animatePowered);
+        }
+        animatePowered();
+
+        // Speech synthesis
         window.onload = () => {
-            const msg = new SpeechSynthesisUtterance("Bonne journée Ranim !");
+            const msg = new SpeechSynthesisUtterance("Hello Ranim, comment je peux t'aider ?");
             msg.lang = 'fr-FR';
             msg.rate = 1;
             msg.pitch = 1;
