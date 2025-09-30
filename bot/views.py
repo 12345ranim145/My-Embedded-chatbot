@@ -62,7 +62,7 @@ CARTE_INFO = {
         },
         "languages": ["C", "C++", "Python (MicroPython)", "Arduino IDE"],
         "ide": ["VS Code", "Arduino IDE", "PlatformIO", "Espressif IDF"],
-        "image": "/static/images/esp32_cam.jpg",
+        "image": "/static/images/esp32 cam.jpg",
         "firmware_development": {
             "toolchain": "ESP-IDF, Arduino framework",
             "debugging": "UART-based debugging",
@@ -136,7 +136,7 @@ CARTE_INFO = {
         },
         "languages": ["C", "C++", "Arduino IDE"],
         "ide": ["Arduino IDE", "VS Code + PlatformIO"],
-        "image": "/static/images/arduino uno.jpg",
+        "image": "/static/images/arduino_uno.jpg",
         "firmware_development": {
             "toolchain": "AVR-GCC, Arduino framework",
             "debugging": "Serial monitor, limited debugging support",
@@ -196,7 +196,7 @@ CAPTEUR_INFO = {
         "tutorials": [
             "BME680 with Arduino: https://randomnerdtutorials.com/bme680-sensor-arduino/",
             "BME680 with ESP32: https://randomnerdtutorials.com/esp32-bme680-sensor-arduino-ide/",
-            "BME680 with STM32: https://controllerstech.com/bme680-with-stm32/"
+            "BME680 with STM32: https://github.com/Squieler/BME68x-STM32-HAL"
         ],
         "image": "/static/images/bme680.jpg"
     },
@@ -215,7 +215,7 @@ CAPTEUR_INFO = {
         "tutorials": [
             "DHT22 with Arduino: https://www.arduino.cc/en/Tutorial/LibraryExamples/DHTSensorLibrary",
             "DHT22 with ESP32: https://randomnerdtutorials.com/esp32-dht11-dht22-temperature-humidity-sensor-arduino-ide/",
-            "DHT22 with STM32: https://controllerstech.com/dht22-with-stm32/"
+            "DHT22 with STM32: https://controllerstech.com/temperature-measurement-using-dht22-in-stm32/"
         ],
         "image": "/static/images/dht22.jpg"
     },
@@ -320,6 +320,88 @@ CAPTEUR_INFO = {
             "LDR with STM32: https://controllerstech.com/ldr-with-stm32-adc/"
         ],
         "image": "/static/images/ldr.jpg"
+    },
+    
+    "raspberry pi 4": {
+        "type": "Single-Board Computer",
+        "power_supply": "5V DC via USB-C connector (minimum 3A)",
+        "power_consumption": "Idle: ~3W, Load: up to 7W",
+        "gpio_logic_voltage": "3.3V",
+        "gpio_max_current": "16 mA per pin (total max 50 mA)",
+        "cpu": "Broadcom BCM2711, Quad core Cortex-A72 (ARM v8) 64-bit SoC @ 1.8GHz",
+        "ram": "1GB, 2GB, 4GB or 8GB LPDDR4-3200 SDRAM",
+        "flash": "Micro-SD card slot",
+        "gpio": "40 pin GPIO header, I2C, SPI, UART",
+        "usage": "General-purpose computing, IoT, robotics, media centers, embedded projects",
+        "protocols_detail": {
+            "WiFi": {
+                "description": "2.4 GHz and 5.0 GHz IEEE 802.11ac wireless.",
+                "usage": "Wireless networking.",
+                "references": ["https://www.raspberrypi.com/products/raspberry-pi-4-model-b/specifications/"]
+            },
+            "Bluetooth": {
+                "description": "Bluetooth 5.0, BLE.",
+                "usage": "Short-range wireless communication.",
+                "references": ["https://www.raspberrypi.com/products/raspberry-pi-4-model-b/specifications/"]
+            },
+            "Ethernet": {
+                "description": "Gigabit Ethernet.",
+                "usage": "Wired networking.",
+                "references": ["https://www.raspberrypi.com/products/raspberry-pi-4-model-b/specifications/"]
+            },
+        },
+        "languages": ["Python", "C", "C++", "Java", "Scratch"],
+        "ide": ["VS Code", "Thonny", "Geany"],
+        "image": "/static/images/raspberry_pi_4.jpg",
+        "firmware_development": {
+            "toolchain": "Raspberry Pi OS (Linux-based), supports various distros",
+            "debugging": "GDB, UART",
+            "power_optimization": "Power management via config"
+        },
+        "additional_electronics": {
+            "pinout": "40-pin header compatible with previous models",
+            "voltage_regulator": "On-board",
+            "adc_resolution": "No built-in ADC"
+        },
+        "image": "/static/images/raspberry pi 4.jpg"
+    },
+    # ===================== Jetson Nano =====================
+    "jetson nano": {
+        "type": "AI Single-Board Computer",
+        "power_supply": "5V DC via Micro-USB or barrel jack (minimum 2A, recommended 4A)",
+        "power_consumption": "5W - 10W",
+        "gpio_logic_voltage": "3.3V",
+        "gpio_max_current": "Up to 16 mA per pin",
+        "cpu": "Quad-core ARM Cortex-A57 MPCore processor @ 1.43GHz",
+        "ram": "4GB 64-bit LPDDR4",
+        "flash": "16GB eMMC 5.1 or Micro-SD card",
+        "gpio": "40 pin GPIO header, 3x UART, 2x SPI, 2x I2S, 4x I2C, GPIOs",
+        "usage": "AI, machine learning, computer vision, robotics, embedded AI projects",
+        "protocols_detail": {
+            "Ethernet": {
+                "description": "1x GbE.",
+                "usage": "Wired networking.",
+                "references": ["https://developer.nvidia.com/embedded/jetson-nano"]
+            },
+            "USB": {
+                "description": "1x USB 3.0, 3x USB 2.0.",
+                "usage": "Peripheral connectivity.",
+                "references": ["https://developer.nvidia.com/embedded/jetson-nano"]
+            },
+        },
+        "languages": ["Python", "C", "C++"],
+        "ide": ["VS Code", "JetPack SDK tools"],
+        "image": "/static/images/jetson_nano.jpg",
+        "firmware_development": {
+            "toolchain": "JetPack SDK, Ubuntu-based",
+            "debugging": "CUDA, TensorRT",
+            "power_optimization": "Power modes 5W/10W"
+        },
+        "additional_electronics": {
+            "pinout": "260-pin SO-DIMM connector for module",
+            "voltage_regulator": "On-board",
+            "adc_resolution": "No built-in ADC"
+        }
     }
 }
 
@@ -471,7 +553,7 @@ CLOUD_PLATFORMS = {
         "usage": "Secure device connectivity, data processing, integration with AWS services like Lambda, S3, and Machine Learning.",
         "features": ["Device gateway", "Rules engine", "Device shadows", "Over-the-air updates", "Security and authentication"],
         "references": ["https://aws.amazon.com/iot-core/"],
-        "image": "/static/images/aws_iot.jpg"
+        "image": "/static/images/aws_iot_core.jpg"
     },
     "azure iot hub": {
         "type": "Managed IoT Cloud Service",
@@ -479,7 +561,7 @@ CLOUD_PLATFORMS = {
         "usage": "Device provisioning, telemetry ingestion, command and control, and edge computing.",
         "features": ["Bi-directional communication", "Device twins", "Message routing", "Integration with Azure ML and Power BI"],
         "references": ["https://azure.microsoft.com/en-us/products/iot-hub/"],
-        "image": "/static/images/azure_iot.jpg"
+        "image": "/static/images/azure_iot_hub.jpg"
     },
     "google cloud iot": {
         "type": "Managed IoT Cloud Service",
@@ -487,7 +569,7 @@ CLOUD_PLATFORMS = {
         "usage": "Large-scale device management, real-time data processing, and AI/ML integration.",
         "features": ["Device registry", "Telemetry events", "State synchronization", "Integration with Pub/Sub and BigQuery"],
         "references": ["https://cloud.google.com/iot-core"],
-        "image": "/static/images/google_iot.jpg"
+        "image": "/static/images/google_cloud_iot.jpg"
     }
 }
 
@@ -560,7 +642,6 @@ void loop() {
 """,
         "description": "Blinks the built-in LED on Arduino Uno/Mega."
     },
-    # Ajouter plus d'exemples si nécessaire, par ex. pour capteurs
     "dht22 arduino": {
         "language": "C++ (Arduino IDE)",
         "code": """
@@ -589,7 +670,268 @@ void loop() {
 """,
         "description": "Reads temperature and humidity from DHT22 on Arduino."
     },
-    # ... Ajouter pour d'autres capteurs et boards de manière similaire
+    "dht22 esp32": {
+        "language": "C++ (Arduino IDE)",
+        "code": """
+// Example testing sketch for various DHT humidity/temperature sensors written by ladyada
+// REQUIRES the following Arduino libraries:
+// - DHT Sensor Library: https://github.com/adafruit/DHT-sensor-library
+// - Adafruit Unified Sensor Lib: https://github.com/adafruit/Adafruit_Sensor
+
+#include "DHT.h"
+
+#define DHTPIN 4     // Digital pin connected to the DHT sensor
+// Feather HUZZAH ESP8266 note: use pins 3, 4, 5, 12, 13 or 14 --
+// Pin 15 can work but DHT must be disconnected during program upload.
+
+// Uncomment whatever type you're using!
+//#define DHTTYPE DHT11   // DHT 11
+#define DHTTYPE DHT22   // DHT 22  (AM2302), AM2321
+//#define DHTTYPE DHT21   // DHT 21 (AM2301)
+
+// Connect pin 1 (on the left) of the sensor to +5V
+// NOTE: If using a board with 3.3V logic like an Arduino Due connect pin 1
+// to 3.3V instead of 5V!
+// Connect pin 2 of the sensor to whatever your DHTPIN is
+// Connect pin 4 (on the right) of the sensor to GROUND
+// Connect a 10K resistor from pin 2 (data) to pin 1 (power) of the sensor
+
+// Initialize DHT sensor.
+// Note that older versions of this library took an optional third parameter to
+// tweak the timings for faster processors.  This parameter is no longer needed
+// as the current DHT reading algorithm adjusts itself to work on faster procs.
+DHT dht(DHTPIN, DHTTYPE);
+
+void setup() {
+  Serial.begin(9600);
+  Serial.println(F("DHTxx test!"));
+
+  dht.begin();
+}
+
+void loop() {
+  // Wait a few seconds between measurements.
+  delay(2000);
+
+  // Reading temperature or humidity takes about 250 milliseconds!
+  // Sensor readings may also be up to 2 seconds 'old' (its a very slow sensor)
+  float h = dht.readHumidity();
+  // Read temperature as Celsius (the default)
+  float t = dht.readTemperature();
+  // Read temperature as Fahrenheit (isFahrenheit = true)
+  float f = dht.readTemperature(true);
+
+  // Check if any reads failed and exit early (to try again).
+  if (isnan(h) || isnan(t) || isnan(f)) {
+    Serial.println(F("Failed to read from DHT sensor!"));
+    return;
+  }
+
+  // Compute heat index in Fahrenheit (the default)
+  float hif = dht.computeHeatIndex(f, h);
+  // Compute heat index in Celsius (isFahreheit = false)
+  float hic = dht.computeHeatIndex(t, h, false);
+
+  Serial.print(F("Humidity: "));
+  Serial.print(h);
+  Serial.print(F("%  Temperature: "));
+  Serial.print(t);
+  Serial.print(F("°C "));
+  Serial.print(f);
+  Serial.print(F("°F  Heat index: "));
+  Serial.print(hic);
+  Serial.print(F("°C "));
+  Serial.print(hif);
+  Serial.println(F("°F"));
+}
+""",
+        "description": "Reads temperature and humidity from DHT22 on ESP32 using Arduino framework."
+    },
+    "dht22 stm32": {
+        "language": "C (STM32 HAL)",
+        "code": """
+#include "main.h"
+#include "stdio.h"
+
+// Assuming these are defined in main.h or elsewhere
+#define DHT22_PORT GPIOA
+#define DHT22_PIN GPIO_PIN_1
+
+// Delay function for microseconds using TIM6
+void delay(uint16_t time)
+{
+    /* change your code here for the delay in microseconds */
+    __HAL_TIM_SET_COUNTER(&htim6, 0);
+    while ((__HAL_TIM_GET_COUNTER(&htim6)) < time);
+}
+
+// Set pin as output
+void Set_Pin_Output(GPIO_TypeDef *GPIOx, uint16_t GPIO_Pin)
+{
+    GPIO_InitTypeDef GPIO_InitStruct = {0};
+    GPIO_InitStruct.Pin = GPIO_Pin;
+    GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+    GPIO_InitStruct.Pull = GPIO_NOPULL;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+    HAL_GPIO_Init(GPIOx, &GPIO_InitStruct);
+}
+
+// Set pin as input
+void Set_Pin_Input(GPIO_TypeDef *GPIOx, uint16_t GPIO_Pin)
+{
+    GPIO_InitTypeDef GPIO_InitStruct = {0};
+    GPIO_InitStruct.Pin = GPIO_Pin;
+    GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+    GPIO_InitStruct.Pull = GPIO_NOPULL;
+    HAL_GPIO_Init(GPIOx, &GPIO_InitStruct);
+}
+
+// DHT22 Start function
+void DHT22_Start(void)
+{
+    Set_Pin_Output(DHT22_PORT, DHT22_PIN); // set the pin as output
+    HAL_GPIO_WritePin(DHT22_PORT, DHT22_PIN, GPIO_PIN_RESET); // pull the pin low
+    HAL_Delay(1200); // wait for > 1ms
+
+    HAL_GPIO_WritePin(DHT22_PORT, DHT22_PIN, GPIO_PIN_SET); // pull the pin high
+    delay(20); // wait for 30us
+    Set_Pin_Input(DHT22_PORT, DHT22_PIN); // set as input
+}
+
+// DHT22 Check Response function
+uint8_t DHT22_Check_Response(void)
+{
+    Set_Pin_Input(DHT22_PORT, DHT22_PIN); // set as input
+    uint8_t Response = 0;
+    delay(40); // wait for 40us
+    if (!(HAL_GPIO_ReadPin(DHT22_PORT, DHT22_PIN))) // if the pin is low
+    {
+        delay(80); // wait for 80us
+
+        if ((HAL_GPIO_ReadPin(DHT22_PORT, DHT22_PIN))) Response = 1; // if the pin is high, response is ok
+        else Response = -1;
+    }
+
+    while ((HAL_GPIO_ReadPin(DHT22_PORT, DHT22_PIN))); // wait for the pin to go low
+    return Response;
+}
+
+// DHT22 Read function
+uint8_t DHT22_Read(void)
+{
+    uint8_t i, j;
+    for (j = 0; j < 8; j++)
+    {
+        while (!(HAL_GPIO_ReadPin(DHT22_PORT, DHT22_PIN))); // wait for the pin to go high
+        delay(40); // wait for 40 us
+
+        if (!(HAL_GPIO_ReadPin(DHT22_PORT, DHT22_PIN))) // if the pin is low
+        {
+            i &= ~(1 << (7 - j)); // write 0
+        }
+        else i |= (1 << (7 - j)); // if the pin is high, write 1
+        while ((HAL_GPIO_ReadPin(DHT22_PORT, DHT22_PIN))); // wait for the pin to go low
+    }
+
+    return i;
+}
+
+// LCD Display functions (assumed to be defined elsewhere, included for completeness)
+void Display_Temp(float Temp)
+{
+    char str[20] = {0};
+    lcd_put_cur(0, 0);
+    sprintf(str, "TEMP:- %.2f ", Temp);
+    lcd_send_string(str);
+    lcd_send_data('C');
+}
+
+void Display_Rh(float Rh)
+{
+    char str[20] = {0};
+    lcd_put_cur(1, 0);
+    sprintf(str, "RH:- %.2f ", Rh);
+    lcd_send_string(str);
+    lcd_send_data('%');
+}
+
+// Main function example usage
+int main(void)
+{
+    HAL_Init();
+    SystemClock_Config();
+    MX_GPIO_Init();
+    MX_TIM6_Init(); // For delay
+    MX_I2C1_Init(); // If needed for LCD or other
+    lcd_init(); // Assume LCD init
+
+    uint8_t Rh_byte1, Rh_byte2, Temp_byte1, Temp_byte2;
+    uint16_t sum, RH, TEMP;
+    float Temperature = 0;
+    float Humidity = 0;
+    uint8_t Presence = 0;
+
+    while (1)
+    {
+        DHT22_Start();
+        Presence = DHT22_Check_Response();
+        Rh_byte1 = DHT22_Read();
+        Rh_byte2 = DHT22_Read();
+        Temp_byte1 = DHT22_Read();
+        Temp_byte2 = DHT22_Read();
+        sum = DHT22_Read();
+
+        if (sum == (Rh_byte1 + Rh_byte2 + Temp_byte1 + Temp_byte2))    // if the check sum is correct
+        {
+            TEMP = ((Temp_byte1 << 8) | Temp_byte2);
+            RH = ((Rh_byte1 << 8) | Rh_byte2);
+
+            Temperature = (float) TEMP / 10.0;
+            Humidity = (float) RH / 10.0;
+
+            Display_Temp(Temperature);
+            Display_Rh(Humidity);
+        }
+
+        HAL_Delay(1000);
+    }
+}
+""",
+        "description": "Reads temperature and humidity from DHT22 on STM32 using HAL library. Assumes TIM6 for microsecond delay and LCD for display."
+    },
+    "bme680 stm32": {
+        "language": "C (STM32 HAL)",
+        "code": """
+/* USER CODE BEGIN Includes */
+
+#include <bme680/bme68x_necessary_functions.h>
+
+/* USER CODE END Includes */
+
+/* USER CODE BEGIN 2 */
+
+struct bme68x_data data;
+bme68x_start(&data, &hi2c1);
+
+/* USER CODE END 2 */
+
+/* In the main loop or appropriate section: */
+
+if (bme68x_single_measure(&data) == 0) {
+    // Measurement is successful, so continue with IAQ
+    data.iaq_score = bme68x_iaq(); // Calculate IAQ
+    HAL_Delay(2000);
+}
+
+/* Data is available in the bme68x_data structure: */
+data.temperature
+data.pressure
+data.humidity
+data.gas_resistance
+data.iaq_score
+""",
+        "description": "Example for reading data from BME680 on STM32 using HAL and BME68x library."
+    }
 }
 
 # ===================== Vues =====================
@@ -617,13 +959,13 @@ def chat_view(request):
 
     # 3️⃣ Handle code examples
     code_key = None
-    if "code" in question:
-        for key in CODE_EXAMPLES.keys():
-            if all(word in question for word in key.split()):
-                code_key = key
-                break
-        if code_key:
-            return JsonResponse({"code_example": CODE_EXAMPLES[code_key]}, safe=True)
+    clean_question = question.replace("code", "").strip().lower()
+    for key in CODE_EXAMPLES.keys():
+        if all(word in clean_question for word in key.split()):
+            code_key = key
+            break
+    if code_key:
+        return JsonResponse({"code_example": CODE_EXAMPLES[code_key]}, safe=True)
 
     # 4️⃣ Direct lookup (microcontrollers)
     if question in CARTE_INFO:
