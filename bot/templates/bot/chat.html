@@ -29,6 +29,10 @@
             --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
             --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
             --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --mauve-dark: #4c1d95;
+            --mauve-medium: #6d28d9;
+            --mauve-light: #a78bfa;
+            --mauve-accent: #7c3aed;
         }
 
         body {
@@ -39,14 +43,23 @@
             overflow: hidden;
         }
 
-        /* Sidebar */
+        /* Sidebar with Mauve Gradient Dynamic */
         #sidebar {
             width: 280px;
-            background: var(--bg-sidebar);
+            background: linear-gradient(135deg, var(--mauve-dark) 0%, var(--mauve-light) 100%);
+            background-size: 200% 200%;
+            animation: gradientMauve 10s ease infinite;
             border-right: 1px solid var(--border-light);
             display: flex;
             flex-direction: column;
             transition: all 0.3s ease;
+            box-shadow: var(--shadow-md);
+        }
+
+        @keyframes gradientMauve {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
         #sidebar.collapsed {
@@ -56,25 +69,26 @@
 
         .sidebar-header {
             padding: 20px;
-            border-bottom: 1px solid var(--border-light);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(0, 0, 0, 0.1);
         }
 
         .sidebar-header h1 {
             font-size: 1rem;
             font-weight: 600;
-            color: var(--text-primary);
+            color: #ffffff;
             margin-bottom: 4px;
         }
 
         .sidebar-header p {
             font-size: 0.75rem;
-            color: var(--text-secondary);
+            color: rgba(255, 255, 255, 0.8);
         }
 
         .profile-section {
             padding: 20px;
             text-align: center;
-            border-bottom: 1px solid var(--border-light);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .profile-section img {
@@ -83,24 +97,25 @@
             border-radius: 50%;
             object-fit: cover;
             margin-bottom: 12px;
-            border: 2px solid var(--border-light);
-            transition: transform 0.3s ease;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
         .profile-section img:hover {
-            transform: scale(1.05);
+            transform: scale(1.05) rotate(5deg);
+            box-shadow: 0 0 15px var(--mauve-accent);
         }
 
         .profile-section h2 {
             font-size: 0.95rem;
             font-weight: 600;
-            color: var(--text-primary);
+            color: #ffffff;
             margin-bottom: 4px;
         }
 
         .profile-section p {
             font-size: 0.8rem;
-            color: var(--text-secondary);
+            color: rgba(255, 255, 255, 0.7);
         }
 
         .stats-section {
@@ -112,7 +127,7 @@
         .stats-section h3 {
             font-size: 0.75rem;
             font-weight: 600;
-            color: var(--text-tertiary);
+            color: rgba(255, 255, 255, 0.6);
             text-transform: uppercase;
             letter-spacing: 0.05em;
             margin-bottom: 16px;
@@ -120,44 +135,61 @@
 
         .stat-item {
             padding: 12px 16px;
-            background: var(--bg-secondary);
+            background: rgba(255, 255, 255, 0.1);
             border-radius: 8px;
             margin-bottom: 12px;
-            border: 1px solid var(--border-light);
+            border: 1px solid rgba(255, 255, 255, 0.2);
             transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            backdrop-filter: blur(5px);
         }
 
         .stat-item:hover {
-            background: var(--accent-light);
-            border-color: var(--accent);
+            background: rgba(255, 255, 255, 0.2);
+            border-color: var(--mauve-accent);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(124, 58, 237, 0.3);
+        }
+
+        .stat-icon {
+            font-size: 1.2rem;
+            opacity: 0.8;
+            transition: opacity 0.3s;
+        }
+
+        .stat-item:hover .stat-icon {
+            opacity: 1;
         }
 
         .stat-label {
             font-size: 0.75rem;
-            color: var(--text-secondary);
+            color: rgba(255, 255, 255, 0.7);
             margin-bottom: 4px;
         }
 
         .stat-value {
             font-size: 1.5rem;
             font-weight: 700;
-            color: var(--text-primary);
+            color: #ffffff;
         }
 
         .sidebar-footer {
             padding: 16px 20px;
-            border-top: 1px solid var(--border-light);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
             text-align: center;
+            background: rgba(0, 0, 0, 0.1);
         }
 
         .powered-text {
             font-size: 0.75rem;
-            color: var(--text-tertiary);
+            color: rgba(255, 255, 255, 0.6);
             transition: color 0.2s ease;
         }
 
         .powered-text:hover {
-            color: var(--accent);
+            color: #ffffff;
         }
 
         /* Main Content */
@@ -594,16 +626,60 @@
         <div class="stats-section">
             <h3>Statistiques</h3>
             <div class="stat-item">
-                <div class="stat-label">Messages envoyés</div>
-                <div class="stat-value" id="messages-sent">0</div>
+                <span class="stat-icon">✉️</span>
+                <div>
+                    <div class="stat-label">Messages envoyés</div>
+                    <div class="stat-value" id="messages-sent">0</div>
+                </div>
             </div>
             <div class="stat-item">
-                <div class="stat-label">Réponses reçues</div>
-                <div class="stat-value" id="responses-received">0</div>
+                <span class="stat-icon">📥</span>
+                <div>
+                    <div class="stat-label">Réponses reçues</div>
+                    <div class="stat-value" id="responses-received">0</div>
+                </div>
             </div>
             <div class="stat-item">
-                <div class="stat-label">Temps actif</div>
-                <div class="stat-value" id="active-time">0 min</div>
+                <span class="stat-icon">⏱️</span>
+                <div>
+                    <div class="stat-label">Temps actif</div>
+                    <div class="stat-value" id="active-time">0 min</div>
+                </div>
+            </div>
+            <div class="stat-item">
+                <span class="stat-icon">🕒</span>
+                <div>
+                    <div class="stat-label">Heure actuelle</div>
+                    <div class="stat-value" id="current-time">00:00:00</div>
+                </div>
+            </div>
+            <div class="stat-item">
+                <span class="stat-icon">📅</span>
+                <div>
+                    <div class="stat-label">Date actuelle</div>
+                    <div class="stat-value" id="current-date">01/01/2000</div>
+                </div>
+            </div>
+            <div class="stat-item">
+                <span class="stat-icon">🌍</span>
+                <div>
+                    <div class="stat-label">Localisation</div>
+                    <div class="stat-value" id="current-location">Chargement...</div>
+                </div>
+            </div>
+            <div class="stat-item">
+                <span class="stat-icon">🌡️</span>
+                <div>
+                    <div class="stat-label">Température</div>
+                    <div class="stat-value" id="current-temp">Chargement...</div>
+                </div>
+            </div>
+            <div class="stat-item">
+                <span class="stat-icon">💧</span>
+                <div>
+                    <div class="stat-label">Humidité</div>
+                    <div class="stat-value" id="current-humidity">Chargement...</div>
+                </div>
             </div>
         </div>
 
@@ -658,6 +734,72 @@
             document.getElementById('responses-received').textContent = responsesReceived;
             const activeMinutes = Math.floor((Date.now() - startTime) / 60000);
             document.getElementById('active-time').textContent = `${activeMinutes} min`;
+
+            // Update time
+            const now = new Date();
+            document.getElementById('current-time').textContent = now.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+
+            // Update date
+            document.getElementById('current-date').textContent = now.toLocaleDateString('fr-FR', { year: 'numeric', month: 'long', day: 'numeric' });
+        }
+
+        async function getWeather() {
+            const apiKey = '298275e7dff8355e1766861d56b47768'; // Votre clé API
+            const fallbackCity = 'Tunis'; // Ville par défaut si la géolocalisation échoue
+
+            // Fonction pour récupérer la météo par ville
+            async function fetchWeatherByCity(city) {
+                const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric&lang=fr`;
+                try {
+                    const response = await fetch(url);
+                    if (!response.ok) {
+                        throw new Error(`Erreur API: ${response.status} - ${response.statusText}`);
+                    }
+                    const data = await response.json();
+                    document.getElementById('current-location').textContent = data.name; // Afficher la localisation (ville)
+                    document.getElementById('current-temp').textContent = `${data.main.temp.toFixed(1)} °C`;
+                    document.getElementById('current-humidity').textContent = `${data.main.humidity} %`;
+                } catch (error) {
+                    console.error('Erreur lors de la récupération de la météo par ville:', error);
+                    document.getElementById('current-location').textContent = 'Erreur';
+                    document.getElementById('current-temp').textContent = 'Erreur';
+                    document.getElementById('current-humidity').textContent = 'Erreur';
+                }
+            }
+
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    async (position) => {
+                        const lat = position.coords.latitude;
+                        const lon = position.coords.longitude;
+                        const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric&lang=fr`;
+                        try {
+                            const response = await fetch(url);
+                            if (!response.ok) {
+                                throw new Error(`Erreur API: ${response.status} - ${response.statusText}`);
+                            }
+                            const data = await response.json();
+                            document.getElementById('current-location').textContent = data.name; // Afficher la localisation (ville)
+                            document.getElementById('current-temp').textContent = `${data.main.temp.toFixed(1)} °C`;
+                            document.getElementById('current-humidity').textContent = `${data.main.humidity} %`;
+                        } catch (error) {
+                            console.error('Erreur lors de la récupération de la météo par géolocalisation:', error);
+                            // Repli sur la ville par défaut
+                            fetchWeatherByCity(fallbackCity);
+                        }
+                    },
+                    () => {
+                        console.warn('Géolocalisation refusée ou échouée, passage à la ville par défaut');
+                        // Repli sur la ville par défaut
+                        fetchWeatherByCity(fallbackCity);
+                    },
+                    { timeout: 10000, maximumAge: 60000 } // Options: timeout de 10s, cache de 1min
+                );
+            } else {
+                console.warn('Géolocalisation non supportée, passage à la ville par défaut');
+                // Repli sur la ville par défaut
+                fetchWeatherByCity(fallbackCity);
+            }
         }
 
         function createSparkles(element) {
@@ -832,6 +974,14 @@
             }
         });
 
+        // Effet JS avancé pour dashboard: Particules sur hover des stats
+        const statItems = document.querySelectorAll('.stat-item');
+        statItems.forEach(item => {
+            item.addEventListener('mouseenter', () => {
+                createSparkles(item);
+            });
+        });
+
         document.getElementById('question').addEventListener('keydown', (e) => {
             if (e.key === 'Enter') {
                 e.preventDefault();
@@ -856,9 +1006,10 @@
             speechSynthesis.speak(msg);
             
             updateDashboard();
+            getWeather();  // Fetch weather on load
         });
 
-        setInterval(updateDashboard, 60000);
+        setInterval(updateDashboard, 1000);  // Update every second for time
     </script>
 </body>
 </html>

@@ -241,7 +241,7 @@ CARTE_INFO = {
         },
         "languages": ["C", "C++", "Arduino IDE"],
         "ide": ["Arduino IDE", "VS Code + PlatformIO"],
-        "image": "/static/images/arduino_uno.jpg",
+        "image": "/static/images/arduino uno.jpg",
         "firmware_development": {
             "toolchain": "AVR-GCC, Arduino framework",
             "debugging": "Serial monitor, limited debugging support",
@@ -342,7 +342,7 @@ CARTE_INFO = {
         },
         "languages": ["Python", "C", "C++", "Java", "Scratch"],
         "ide": ["VS Code", "Thonny", "Geany"],
-        "image": "/static/images/raspberry_pi_4.jpg",
+        "image": "/static/images/raspberry pi 4.jpg",
         "firmware_development": {
             "toolchain": "Raspberry Pi OS (Linux-based), supports various distros",
             "debugging": "GDB, UART",
@@ -624,7 +624,7 @@ ENVIRONNEMENTS = {
 }
 
 # ===================== Réseaux IoT et Gateways =====================
-RESEAUX_IOT = {
+RESEAUX_IOT ={
     "lora": {
         "type": "Long-Range Low-Power Wireless Communication",
         "description": "Proprietary radio technology for low-data-rate, long-range IoT applications.",
@@ -675,13 +675,24 @@ RESEAUX_IOT = {
         "references": ["https://www.nxp.com/docs/en/user-guide/UM10204.pdf"],
         
     },
-    "can": {
-        "type": "Communication Protocol",
-        "description": "Controller Area Network, a robust, real-time communication protocol for reliable data exchange.",
-        "usage": "Automotive systems, industrial automation, inter-device communication (e.g., STM32 networks).",
-        "characteristics": ["Differential signaling", "Multi-master", "Error detection", "Up to 1 Mbps"],
-        "references": ["https://www.ti.com/lit/an/sloa101b/sloa101b.pdf"],
-    },
+   "CAN": {
+                "description": "Controller Area Network 2.0A/B for robust, real-time communication, support dual CAN.",
+                "usage": "Automotive, industrial control, inter-device communication, error handling (TEC/REC counters).",
+                "references": ["https://www.st.com/resource/en/application_note/an2606.pdf", "STM32 RM0090 Reference Manual Section 30"],
+                "details_electroniques": "2 instances bxCAN, bitrate up to 1 Mbps, 3 TX mailboxes, 14 filters, loopback/silent modes, requires transceiver externe (ex: MCP2551 pour 5V bus, isolation galvanique recommandée avec optocouplers). Timings: propagation delay <250ns, bus length up to 40m @1Mbps. Pull-up on CAN_H/CAN_L si besoin.",
+                "registres": {
+                    "CAN_MCR": "Master Control Register - Bits: INRQ (init request), SLEEP (sleep mode), AWUM (auto wakeup), ABOM (auto bus-off management), TTCM (time triggered), DBF (debug freeze). Ex: CAN_MCR = (1 << 0) pour init mode.",
+                    "CAN_MSR": "Master Status Register - Bits: INAK (init ack), SLAK (sleep ack), ERR1 (error interrupt), WKUI (wakeup), SLAKI (sleep interrupt).",
+                    "CAN_TSR": "Transmit Status Register - Bits pour chaque mailbox: RQCP (request completed), TXOK (transmission OK), ALST (arbitration lost), TERR (transmission error).",
+                    "CAN_RF0R/CAN_RF1R": "Receive FIFO Registers - FMP (messages pending), FULL, FOVR (overrun).",
+                    "CAN_IER": "Interrupt Enable Register - TMEIE (TX mailbox empty), FMPIE (FIFO message pending), ERRIE (error).",
+                    "CAN_ESR": "Error Status Register - EWGF (warning), EPVF (passive), BOFF (bus-off), LEC (last error code: stuff/bit/dom/ack/CRC).",
+                    "CAN_BTR": "Bit Timing Register - BRP (prescaler 1-1024), TS1/TS2 (time segments), SJW (synchronization jump), LBKM (loopback), SILM (silent). Ex: pour 1Mbps avec 8MHz APB1: BRP=1, TS1=11, TS2=4, SJW=1.",
+                    "CAN_TI0R/CAN_TDT0R/CAN_TDL0R/CAN_TDH0R": "TX Mailbox Registers - ID, RTR, IDE, DLC, data bytes.",
+                    "CAN_FA1R/CAN_FMR": "Filter Registers - 14 banks, mask/identifier modes, scale 16/32 bits.",
+                    "notes": "Configurer clock APB1 à 42MHz max pour CAN (diviseur /2), enable interruptions NVIC pour CAN1_TX_IRQn etc. Dépannage: vérifier transceiver, terminaison 120Ω aux extrémités du bus, oscillo pour signaux différentiels (~2.5V common mode)."
+             }
+           },     
     "dragino lg308": {
         "type": "LoRaWAN Gateway",
         "description": "8-channel indoor LoRaWAN gateway with WiFi and Ethernet connectivity.",
@@ -1135,7 +1146,7 @@ def generate_board_comparison():
             "gpio": board.get("gpio", ""),
             "protocols": ", ".join(board.get("protocols_detail", {}).keys())
         }
-        comparison["boards"].append(board_data)
+    ["boards"].append(board_data)
     return comparison
 
 def generate_protocol_comparison():
