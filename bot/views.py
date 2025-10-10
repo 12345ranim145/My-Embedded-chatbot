@@ -594,7 +594,7 @@ ENVIRONNEMENTS = {
     "C": {
         "description": "Low-level language for system and embedded programming.",
         "usage": "Firmware, microcontrollers, performance optimization.",
-        "image": "/static/images/c.jpg"
+        
     },
     "C++": {
         "description": "Object-oriented extension of C for complex applications.",
@@ -604,7 +604,7 @@ ENVIRONNEMENTS = {
     "Java": {
         "description": "Platform-independent object-oriented language.",
         "usage": "Web applications, Android, backend development.",
-        "image": "/static/images/java.jpg"
+        "image": "/static/images/java.png"
     },
     "HTML": {
         "description": "Markup language for web page structure.",
@@ -614,7 +614,7 @@ ENVIRONNEMENTS = {
     "CSS": {
         "description": "Styling language for web design.",
         "usage": "Responsive design, front-end animations.",
-        "image": "/static/images/css.jpg"
+        
     },
     "Django": {
         "description": "Python framework for rapid and secure web development.",
@@ -665,7 +665,7 @@ RESEAUX_IOT = {
         "usage": "Interfacing microcontrollers with sensors, displays, and memory devices like SD cards or LoRa modules.",
         "characteristics": ["Full-duplex", "Master-slave architecture", "4-wire (MISO, MOSI, SCK, SS)"],
         "references": ["https://www.analog.com/en/technical-articles/spi-interface.html"],
-        "image": "/static/images/spi.jpg"
+        
     },
     "i2c": {
         "type": "Communication Protocol",
@@ -726,7 +726,6 @@ CLOUD_PLATFORMS = {
         "usage": "Sensor data collection, visualization, alerting, and integration with IoT devices like ESP32 or Arduino.",
         "features": ["Data aggregation", "Real-time visualization", "MATLAB analysis", "Plugins and apps"],
         "references": ["https://thingspeak.mathworks.com/"],
-        "image": "/static/images/thingspeak.jpg"
     },
     " things network": {
         "type": "LoRaWAN Public Network",
@@ -758,7 +757,7 @@ CLOUD_PLATFORMS = {
         "usage": "Device provisioning, telemetry ingestion, command and control, and edge computing.",
         "features": ["Bi-directional communication", "Device twins", "Message routing", "Integration with Azure ML and Power BI"],
         "references": ["https://azure.microsoft.com/en-us/products/iot-hub/"],
-        "image": "/static/images/azure_iot_hub.jpg"
+        
     },
     "google cloud iot": {
         "type": "Managed IoT Cloud Service",
