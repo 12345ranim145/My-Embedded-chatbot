@@ -6,6 +6,7 @@
     <title>Assistant Systèmes Embarqués</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        /* Your existing CSS remains unchanged */
         * {
             box-sizing: border-box;
             margin: 0;
@@ -33,6 +34,7 @@
             --mauve-medium: #6d28d9;
             --mauve-light: #a78bfa;
             --mauve-accent: #7c3aed;
+            --mic-active: #ef4444;
         }
 
         body {
@@ -43,7 +45,6 @@
             overflow: hidden;
         }
 
-        /* Sidebar with Mauve Gradient Dynamic */
         #sidebar {
             width: 280px;
             background: linear-gradient(135deg, var(--mauve-dark) 0%, var(--mauve-light) 100%);
@@ -184,15 +185,25 @@
 
         .powered-text {
             font-size: 0.75rem;
-            color: rgba(255, 255, 255, 0.6);
-            transition: color 0.2s ease;
+            color: rgba(255, 255, 255, 0.8);
+            font-weight: 500;
+            position: relative;
+            display: inline-block;
+            animation: neonBlink 1.5s ease-in-out infinite;
+            text-shadow: 0 0 5px var(--mauve-accent), 0 0 10px var(--mauve-accent), 0 0 15px var(--mauve-accent);
         }
 
-        .powered-text:hover {
-            color: #ffffff;
+        @keyframes neonBlink {
+            0%, 100% {
+                opacity: 1;
+                text-shadow: 0 0 5px var(--mauve-accent), 0 0 10px var(--mauve-accent), 0 0 15px var(--mauve-accent);
+            }
+            50% {
+                opacity: 0.6;
+                text-shadow: 0 0 2px var(--mauve-accent), 0 0 5px var(--mauve-accent);
+            }
         }
 
-        /* Main Content */
         #main-content {
             flex: 1;
             display: flex;
@@ -201,7 +212,6 @@
             position: relative;
         }
 
-        /* Header */
         .main-header {
             padding: 16px 24px;
             background: var(--bg-primary);
@@ -234,7 +244,6 @@
             color: var(--text-primary);
         }
 
-        /* Chat Container */
         #chat-container {
             flex: 1;
             overflow-y: auto;
@@ -261,7 +270,6 @@
             background: var(--text-tertiary);
         }
 
-        /* Welcome Message */
         .welcome-message {
             max-width: 600px;
             margin: 40px auto;
@@ -287,7 +295,6 @@
             line-height: 1.6;
         }
 
-        /* Messages */
         .message {
             max-width: 70%;
             display: flex;
@@ -380,7 +387,6 @@
             border: 1px solid var(--border-light);
         }
 
-        /* Typing Indicator */
         .typing-indicator {
             display: flex;
             gap: 4px;
@@ -403,7 +409,6 @@
             30% { transform: translateY(-8px); opacity: 1; }
         }
 
-        /* Input Area */
         .input-area {
             padding: 20px 24px;
             background: var(--bg-primary);
@@ -431,12 +436,7 @@
             left: -2px;
             right: -2px;
             bottom: -2px;
-            background: linear-gradient(45deg, 
-                #2563eb, 
-                #3b82f6, 
-                #60a5fa, 
-                #93c5fd,
-                #2563eb);
+            background: linear-gradient(45deg, #2563eb, #3b82f6, #60a5fa, #93c5fd, #2563eb);
             background-size: 300% 300%;
             border-radius: 10px;
             opacity: 0;
@@ -471,29 +471,21 @@
         #question:focus {
             border-color: var(--accent);
             background: var(--bg-primary);
-            box-shadow: 0 0 0 3px var(--accent-light),
-                        0 0 20px rgba(37, 99, 235, 0.3),
-                        0 0 40px rgba(37, 99, 235, 0.1);
+            box-shadow: 0 0 0 3px var(--accent-light), 0 0 20px rgba(37, 99, 235, 0.3), 0 0 40px rgba(37, 99, 235, 0.1);
             transform: translateY(-1px);
             animation: inputPulse 2s ease-in-out infinite;
         }
 
         @keyframes inputPulse {
-            0%, 100% {
-                box-shadow: 0 0 0 3px var(--accent-light),
-                            0 0 15px rgba(37, 99, 235, 0.3);
-            }
-            50% {
-                box-shadow: 0 0 0 3px var(--accent-light),
-                            0 0 30px rgba(37, 99, 235, 0.5);
-            }
+            0%, 100% { box-shadow: 0 0 0 3px var(--accent-light), 0 0 15px rgba(37, 99, 235, 0.3); }
+            50% { box-shadow: 0 0 0 3px var(--accent-light), 0 0 30px rgba(37, 99, 235, 0.5); }
         }
 
         #question::placeholder {
             color: var(--text-tertiary);
         }
 
-        #send-btn {
+        #send-btn, #mic-btn {
             padding: 12px 24px;
             background: var(--accent);
             color: white;
@@ -508,7 +500,17 @@
             overflow: hidden;
         }
 
-        #send-btn::before {
+        #mic-btn.active {
+            background: var(--mic-active);
+            animation: micPulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes micPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        #send-btn::before, #mic-btn::before {
             content: '';
             position: absolute;
             top: 50%;
@@ -521,22 +523,25 @@
             transition: width 0.6s, height 0.6s;
         }
 
-        #send-btn:hover::before {
+        #send-btn:hover::before, #mic-btn:hover::before {
             width: 300px;
             height: 300px;
         }
 
-        #send-btn:hover {
+        #send-btn:hover, #mic-btn:hover {
             background: var(--accent-hover);
             transform: translateY(-2px);
             box-shadow: 0 8px 20px rgba(37, 99, 235, 0.4);
         }
 
-        #send-btn:active {
+        #mic-btn.active:hover {
+            background: var(--mic-active);
+        }
+
+        #send-btn:active, #mic-btn:active {
             transform: translateY(0);
         }
 
-        /* Particle effect */
         .particle {
             position: fixed;
             width: 6px;
@@ -548,17 +553,10 @@
         }
 
         @keyframes particleFloat {
-            0% {
-                transform: translateY(0) scale(1);
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(-120px) scale(0);
-                opacity: 0;
-            }
+            0% { transform: translateY(0) scale(1); opacity: 1; }
+            100% { transform: translateY(-120px) scale(0); opacity: 0; }
         }
 
-        /* Purple sparkle effect */
         .sparkle {
             position: absolute;
             width: 4px;
@@ -570,17 +568,10 @@
         }
 
         @keyframes sparkleFloat {
-            0% {
-                transform: translate(0, 0) scale(1);
-                opacity: 1;
-            }
-            100% {
-                transform: translate(var(--tx), var(--ty)) scale(0);
-                opacity: 0;
-            }
+            0% { transform: translate(0, 0) scale(1); opacity: 1; }
+            100% { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; }
         }
 
-        /* Responsive */
         @media (max-width: 768px) {
             #sidebar {
                 position: absolute;
@@ -603,26 +594,23 @@
                 flex-direction: column;
             }
 
-            #send-btn {
+            #send-btn, #mic-btn {
                 width: 100%;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Sidebar -->
     <div id="sidebar">
         <div class="sidebar-header">
             <h1>🤖 Assistant IA</h1>
             <p>Systèmes Embarqués</p>
         </div>
-
         <div class="profile-section">
             <img src="/static/images/photo.jpg" alt="Profile" id="profile-img">
             <h2>Ranim Oueslati</h2>
             <p>Ingénieur Embarqué</p>
         </div>
-
         <div class="stats-section">
             <h3>Statistiques</h3>
             <div class="stat-item">
@@ -682,38 +670,34 @@
                 </div>
             </div>
         </div>
-
         <div class="sidebar-footer">
             <div class="powered-text">⚡ Powered by Ranim Oueslati</div>
         </div>
     </div>
 
-    <!-- Main Content -->
     <div id="main-content">
         <div class="main-header">
             <button class="toggle-sidebar" onclick="toggleSidebar()">☰ Menu</button>
             <div class="header-title">Assistant Systèmes Embarqués</div>
             <div style="width: 80px;"></div>
         </div>
-
         <div id="chat-container">
             <div class="welcome-message">
                 <h2>👋 Bonjour Ranim !</h2>
-                <p>Je suis votre assistant spécialisé en systèmes embarqués. Posez-moi vos questions sur les cartes, capteurs, protocoles et environnements de développement.</p>
+                <p>Je suis votre assistant spécialisé en systèmes embarqués. Posez-moi vos questions sur les cartes, capteurs, protocoles et environnements de développement, ou utilisez la recherche vocale en cliquant sur le microphone. Parlez clairement pour de meilleurs résultats.</p>
             </div>
         </div>
-
         <div class="input-area">
             <div class="input-container">
                 <div class="input-wrapper">
-                    <input 
-                        type="text" 
-                        id="question" 
-                        placeholder="Posez votre question sur les systèmes embarqués..."
-                        autocomplete="off"
-                    >
+                    <input type="text" id="question" placeholder="Posez votre question ou cliquez sur le micro..." autocomplete="off">
                 </div>
-                <button id="send-btn" onclick="ask()"><span style="position: relative; z-index: 1;">Envoyer</span></button>
+                <button id="mic-btn" onclick="toggleVoiceRecognition()">
+                    <span style="position: relative; z-index: 1;">🎙️</span>
+                </button>
+                <button id="send-btn" onclick="ask()">
+                    <span style="position: relative; z-index: 1;">Envoyer</span>
+                </button>
             </div>
         </div>
     </div>
@@ -725,6 +709,120 @@
         let startTime = Date.now();
         let isFirstMessage = true;
 
+        // Speech Recognition Setup
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        let recognition = null;
+        let isRecognizing = false;
+
+        if (SpeechRecognition) {
+            recognition = new SpeechRecognition();
+            recognition.lang = 'fr-FR';
+            recognition.interimResults = true; // Enable interim results for partial transcription
+            recognition.maxAlternatives = 3; // Get multiple transcription options
+            recognition.continuous = false;
+
+            recognition.onstart = () => {
+                isRecognizing = true;
+                const micBtn = document.getElementById('mic-btn');
+                micBtn.classList.add('active');
+                micBtn.title = 'En écoute... Cliquez pour arrêter';
+                addMessage('🎙️ Écoute en cours... Parlez clairement.', 'bot');
+                // Auto-stop after 10 seconds to prevent hanging
+                setTimeout(() => {
+                    if (isRecognizing) {
+                        stopVoiceRecognition();
+                        addMessage('Aucun son détecté. Veuillez réessayer en parlant plus fort.', 'bot');
+                    }
+                }, 10000);
+            };
+
+            recognition.onresult = (event) => {
+                const results = event.results[0];
+                let transcript = results[0].transcript;
+                // Choose the best transcription (highest confidence)
+                for (let i = 0; i < results.length; i++) {
+                    if (results[i].confidence > results[0].confidence) {
+                        transcript = results[i].transcript;
+                    }
+                }
+                // Normalize the transcript
+                transcript = normalizeQuery(transcript);
+                const questionInput = document.getElementById('question');
+                questionInput.value = transcript;
+                stopVoiceRecognition();
+                addMessage(`Transcription : ${transcript}. Confirmez avec "Envoyer" ou modifiez le texte.`, 'bot');
+                // Optionally auto-send: ask();
+            };
+
+            recognition.onerror = (event) => {
+                stopVoiceRecognition();
+                let errorMsg = '';
+                switch (event.error) {
+                    case 'no-speech':
+                        errorMsg = 'Aucun son détecté. Parlez plus fort ou vérifiez votre microphone.';
+                        break;
+                    case 'audio-capture':
+                        errorMsg = 'Erreur de capture audio. Vérifiez votre microphone.';
+                        break;
+                    case 'not-allowed':
+                        errorMsg = 'Permission microphone refusée. Activez-la dans les paramètres.';
+                        break;
+                    default:
+                        errorMsg = `Erreur de reconnaissance vocale : ${event.error}`;
+                }
+                addMessage(errorMsg + ' Réessayez en cliquant sur le micro.', 'bot');
+            };
+
+            recognition.onend = () => {
+                stopVoiceRecognition();
+            };
+        }
+
+        function toggleVoiceRecognition() {
+            if (!SpeechRecognition) {
+                addMessage('La reconnaissance vocale n\'est pas supportée par votre navigateur. Essayez Chrome ou Edge.', 'bot');
+                return;
+            }
+            if (isRecognizing) {
+                stopVoiceRecognition();
+            } else {
+                recognition.start();
+            }
+        }
+
+        function stopVoiceRecognition() {
+            if (recognition && isRecognizing) {
+                recognition.stop();
+                isRecognizing = false;
+                const micBtn = document.getElementById('mic-btn');
+                micBtn.classList.remove('active');
+                micBtn.title = 'Activer la recherche vocale';
+            }
+        }
+
+        // Normalize query to handle common issues
+        function normalizeQuery(query) {
+            query = query.trim().toLowerCase();
+            // Common corrections for embedded systems terms
+            const corrections = {
+                'alduino ono': 'arduino uno',
+                'alduino': 'arduino',
+                'scm 32': 'stm32',
+                'stmf': 'stm32f',
+                'i2c': 'i2c', // Ensure consistency
+                'stm 32': 'stm32',
+                'stm': 'stm32'
+            };
+            for (const [wrong, correct] of Object.entries(corrections)) {
+                if (query.includes(wrong)) {
+                    query = query.replace(wrong, correct);
+                }
+            }
+            // Remove punctuation and extra spaces
+            query = query.replace(/[.,]/g, '').replace(/\s+/g, ' ');
+            return query;
+        }
+
         function toggleSidebar() {
             document.getElementById('sidebar').classList.toggle('collapsed');
         }
@@ -734,39 +832,30 @@
             document.getElementById('responses-received').textContent = responsesReceived;
             const activeMinutes = Math.floor((Date.now() - startTime) / 60000);
             document.getElementById('active-time').textContent = `${activeMinutes} min`;
-
-            // Update time
             const now = new Date();
             document.getElementById('current-time').textContent = now.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-
-            // Update date
             document.getElementById('current-date').textContent = now.toLocaleDateString('fr-FR', { year: 'numeric', month: 'long', day: 'numeric' });
         }
 
         async function getWeather() {
-            const apiKey = '298275e7dff8355e1766861d56b47768'; // Votre clé API
-            const fallbackCity = 'Tunis'; // Ville par défaut si la géolocalisation échoue
-
-            // Fonction pour récupérer la météo par ville
+            const apiKey = '298275e7dff8355e1766861d56b47768';
+            const fallbackCity = 'Tunis';
             async function fetchWeatherByCity(city) {
                 const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric&lang=fr`;
                 try {
                     const response = await fetch(url);
-                    if (!response.ok) {
-                        throw new Error(`Erreur API: ${response.status} - ${response.statusText}`);
-                    }
+                    if (!response.ok) throw new Error(`Erreur API: ${response.status}`);
                     const data = await response.json();
-                    document.getElementById('current-location').textContent = data.name; // Afficher la localisation (ville)
+                    document.getElementById('current-location').textContent = data.name;
                     document.getElementById('current-temp').textContent = `${data.main.temp.toFixed(1)} °C`;
                     document.getElementById('current-humidity').textContent = `${data.main.humidity} %`;
                 } catch (error) {
-                    console.error('Erreur lors de la récupération de la météo par ville:', error);
+                    console.error('Erreur météo:', error);
                     document.getElementById('current-location').textContent = 'Erreur';
                     document.getElementById('current-temp').textContent = 'Erreur';
                     document.getElementById('current-humidity').textContent = 'Erreur';
                 }
             }
-
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(
                     async (position) => {
@@ -775,29 +864,24 @@
                         const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric&lang=fr`;
                         try {
                             const response = await fetch(url);
-                            if (!response.ok) {
-                                throw new Error(`Erreur API: ${response.status} - ${response.statusText}`);
-                            }
+                            if (!response.ok) throw new Error(`Erreur API: ${response.status}`);
                             const data = await response.json();
-                            document.getElementById('current-location').textContent = data.name; // Afficher la localisation (ville)
+                            document.getElementById('current-location').textContent = data.name;
                             document.getElementById('current-temp').textContent = `${data.main.temp.toFixed(1)} °C`;
                             document.getElementById('current-humidity').textContent = `${data.main.humidity} %`;
                         } catch (error) {
-                            console.error('Erreur lors de la récupération de la météo par géolocalisation:', error);
-                            // Repli sur la ville par défaut
+                            console.error('Erreur géolocalisation:', error);
                             fetchWeatherByCity(fallbackCity);
                         }
                     },
                     () => {
-                        console.warn('Géolocalisation refusée ou échouée, passage à la ville par défaut');
-                        // Repli sur la ville par défaut
+                        console.warn('Géolocalisation refusée');
                         fetchWeatherByCity(fallbackCity);
                     },
-                    { timeout: 10000, maximumAge: 60000 } // Options: timeout de 10s, cache de 1min
+                    { timeout: 10000, maximumAge: 60000 }
                 );
             } else {
-                console.warn('Géolocalisation non supportée, passage à la ville par défaut');
-                // Repli sur la ville par défaut
+                console.warn('Géolocalisation non supportée');
                 fetchWeatherByCity(fallbackCity);
             }
         }
@@ -806,7 +890,6 @@
             const rect = element.getBoundingClientRect();
             const centerX = rect.left + rect.width / 2;
             const centerY = rect.top + rect.height / 2;
-            
             for (let i = 0; i < 12; i++) {
                 const sparkle = document.createElement('div');
                 sparkle.className = 'sparkle';
@@ -818,7 +901,6 @@
                 sparkle.style.setProperty('--ty', Math.sin(angle) * distance + 'px');
                 sparkle.style.background = `hsl(${280 + Math.random() * 40}, 80%, ${60 + Math.random() * 20}%)`;
                 document.body.appendChild(sparkle);
-                
                 setTimeout(() => sparkle.remove(), 1500);
             }
         }
@@ -829,36 +911,23 @@
                 if (welcome) welcome.remove();
                 isFirstMessage = false;
             }
-
             const msgDiv = document.createElement('div');
             msgDiv.className = `message ${sender}`;
-
             const contentDiv = document.createElement('div');
             contentDiv.className = 'message-content';
-            
             if (isHTML) {
                 contentDiv.innerHTML = text;
             } else {
                 contentDiv.textContent = text;
             }
-            
             msgDiv.appendChild(contentDiv);
-
-            const timestamp = new Date().toLocaleTimeString('fr-FR', { 
-                hour: '2-digit', 
-                minute: '2-digit' 
-            });
+            const timestamp = new Date().toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
             const timeSpan = document.createElement('div');
             timeSpan.className = 'message-timestamp';
             timeSpan.textContent = timestamp;
             msgDiv.appendChild(timeSpan);
-
             chatContainer.appendChild(msgDiv);
-            chatContainer.scrollTo({ 
-                top: chatContainer.scrollHeight, 
-                behavior: 'smooth' 
-            });
-
+            chatContainer.scrollTo({ top: chatContainer.scrollHeight, behavior: 'smooth' });
             if (sender === 'user') {
                 messagesSent++;
                 setTimeout(() => createSparkles(contentDiv), 100);
@@ -913,37 +982,29 @@
             const typingDiv = document.createElement('div');
             typingDiv.className = 'message bot';
             typingDiv.id = 'typing-indicator';
-            
             const indicator = document.createElement('div');
             indicator.className = 'message-content typing-indicator';
             indicator.innerHTML = '<div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>';
-            
             typingDiv.appendChild(indicator);
             chatContainer.appendChild(typingDiv);
-            chatContainer.scrollTo({ 
-                top: chatContainer.scrollHeight, 
-                behavior: 'smooth' 
-            });
-            
+            chatContainer.scrollTo({ top: chatContainer.scrollHeight, behavior: 'smooth' });
             return typingDiv;
         }
 
         function ask() {
             const questionInput = document.getElementById('question');
-            const question = questionInput.value.trim();
+            let question = questionInput.value.trim();
             if (!question) return;
-            
+            question = normalizeQuery(question); // Normalize before sending
             addMessage(question, 'user');
             questionInput.value = '';
-
             const typingIndicator = showTypingIndicator();
-            
             fetch(`/bot/chat/?question=${encodeURIComponent(question)}`)
                 .then(res => res.json())
                 .then(data => {
                     typingIndicator.remove();
                     if (data.error) {
-                        addMessage(data.error, 'bot');
+                        addMessage(data.error + ' Essayez de reformuler ou vérifiez l\'orthographe.', 'bot');
                     } else {
                         const text = formatData(data);
                         addMessage(text, 'bot', true);
@@ -955,11 +1016,9 @@
                 });
         }
 
-        // Particle effect on input focus
         document.getElementById('question').addEventListener('focus', function(e) {
             const input = e.target;
             const rect = input.getBoundingClientRect();
-            
             for (let i = 0; i < 10; i++) {
                 setTimeout(() => {
                     const particle = document.createElement('div');
@@ -968,26 +1027,18 @@
                     particle.style.top = rect.top + rect.height / 2 + 'px';
                     particle.style.background = `hsl(${217 + Math.random() * 30}, 91%, ${50 + Math.random() * 20}%)`;
                     document.body.appendChild(particle);
-                    
                     setTimeout(() => particle.remove(), 2000);
                 }, i * 80);
             }
         });
 
-        // Effet JS avancé pour dashboard: Particules sur hover des stats
         const statItems = document.querySelectorAll('.stat-item');
         statItems.forEach(item => {
-            item.addEventListener('mouseenter', () => {
-                createSparkles(item);
-            });
+            item.addEventListener('mouseenter', () => createSparkles(item));
         });
 
-        document.getElementById('question').addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') {
-                e.preventDefault();
-                ask();
-            }
-        });
+        const poweredText = document.querySelector('.powered-text');
+        poweredText.addEventListener('mouseenter', () => createSparkles(poweredText));
 
         window.addEventListener('load', () => {
             const profileImg = document.getElementById('profile-img');
@@ -998,18 +1049,17 @@
                 profileImg.style.opacity = '1';
                 profileImg.style.transform = 'scale(1)';
             }, 100);
-
-            const msg = new SpeechSynthesisUtterance("Bonjour Ranim, comment puis-je vous aider ?");
+            const msg = new SpeechSynthesisUtterance("Bonjour Ranim, comment puis-je vous aider ? Parlez clairement pour la recherche vocale.");
             msg.lang = 'fr-FR';
             msg.rate = 1;
             msg.pitch = 1;
             speechSynthesis.speak(msg);
-            
             updateDashboard();
-            getWeather();  // Fetch weather on load
+            getWeather();
+            document.getElementById('mic-btn').title = 'Activer la recherche vocale';
         });
 
-        setInterval(updateDashboard, 1000);  // Update every second for time
+        setInterval(updateDashboard, 1000);
     </script>
 </body>
 </html>
