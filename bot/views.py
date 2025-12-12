@@ -767,7 +767,672 @@ CLOUD_PLATFORMS = {
 # (Je ne les réécris pas pour économiser de l'espace, mais ils doivent être inclus tels quels)
 
 CODE_EXAMPLES = {
-    # Inclure TOUS les exemples de code du document original
+    "led stm32": {
+        "language": "C (STM32 HAL)",
+        "code": """
+#include "stm32f4xx_hal.h"
+void SystemClock_Config(void);
+static void MX_GPIO_Init(void);
+int main(void) {
+  HAL_Init();
+  SystemClock_Config();
+  MX_GPIO_Init();
+  while (1) {
+    HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_5);
+    HAL_Delay(1000);
+  }
+}
+static void MX_GPIO_Init(void) {
+  GPIO_InitTypeDef GPIO_InitStruct = {0};
+  __HAL_RCC_GPIOA_CLK_ENABLE();
+  GPIO_InitStruct.Pin = GPIO_PIN_5;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+}
+""",
+        "description": "Blinks an LED on STM32F407VG using HAL library. Assumes LED connected to PA5."
+    },
+    "led esp32": {
+        "language": "C++ (Arduino IDE)",
+        "code": """
+#define LED_PIN 2
+void setup() {
+  pinMode(LED_PIN, OUTPUT);
+}
+void loop() {
+  digitalWrite(LED_PIN, HIGH);
+  delay(1000);
+  digitalWrite(LED_PIN, LOW);
+  delay(1000);
+}
+""",
+        "description": "Blinks the built-in LED on ESP32 using Arduino framework."
+    },
+    "led arduino": {
+        "language": "C++ (Arduino IDE)",
+        "code": """
+#define LED_PIN 13
+void setup() {
+  pinMode(LED_PIN, OUTPUT);
+}
+void loop() {
+  digitalWrite(LED_PIN, HIGH);
+  delay(1000);
+  digitalWrite(LED_PIN, LOW);
+  delay(1000);
+}
+""",
+        "description": "Blinks the built-in LED on Arduino Uno/Mega."
+    },
+    "dht22 arduino": {
+        "language": "C++ (Arduino IDE)",
+        "code": """
+#include <DHT.h>
+#define DHT_PIN 2
+#define DHT_TYPE DHT22
+DHT dht(DHT_PIN, DHT_TYPE);
+void setup() {
+  Serial.begin(9600);
+  dht.begin();
+}
+void loop() {
+  float h = dht.readHumidity();
+  float t = dht.readTemperature();
+  Serial.print("Humidity: ");
+  Serial.print(h);
+  Serial.print(" %\\tTemperature: ");
+  Serial.print(t);
+  Serial.println(" *C");
+  delay(2000);
+}
+""",
+        "description": "Reads temperature and humidity from DHT22 on Arduino."
+    },
+    "dht22 esp32": {
+        "language": "C++ (Arduino IDE)",
+        "code": """
+#include "DHT.h"
+#define DHTPIN 4
+#define DHTTYPE DHT22
+DHT dht(DHTPIN, DHTTYPE);
+void setup() {
+  Serial.begin(9600);
+  Serial.println(F("DHTxx test!"));
+  dht.begin();
+}
+void loop() {
+  delay(2000);
+  float h = dht.readHumidity();
+  float t = dht.readTemperature();
+  float f = dht.readTemperature(true);
+  if (isnan(h) || isnan(t) || isnan(f)) {
+    Serial.println(F("Failed to read from DHT sensor!"));
+    return;
+  }
+  float hif = dht.computeHeatIndex(f, h);
+  float hic = dht.computeHeatIndex(t, h, false);
+  Serial.print(F("Humidity: "));
+  Serial.print(h);
+  Serial.print(F("% Temperature: "));
+  Serial.print(t);
+  Serial.print(F("°C "));
+  Serial.print(f);
+  Serial.print(F("°F Heat index: "));
+  Serial.print(hic);
+  Serial.print(F("°C "));
+  Serial.print(hif);
+  Serial.println(F("°F"));
+}
+""",
+        "description": "Reads temperature and humidity from DHT22 on ESP32 using Arduino framework."
+    },
+    "dht22 stm32": {
+        "language": "C (STM32 HAL)",
+        "code": """
+#include "main.h"
+#include "stdio.h"
+#define DHT22_PORT GPIOA
+#define DHT22_PIN GPIO_PIN_1
+void delay(uint16_t time)
+{
+    __HAL_TIM_SET_COUNTER(&htim6, 0);
+    while ((__HAL_TIM_GET_COUNTER(&htim6)) < time);
+}
+void Set_Pin_Output(GPIO_TypeDef *GPIOx, uint16_t GPIO_Pin)
+{
+    GPIO_InitTypeDef GPIO_InitStruct = {0};
+    GPIO_InitStruct.Pin = GPIO_Pin;
+    GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+    GPIO_InitStruct.Pull = GPIO_NOPULL;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+    HAL_GPIO_Init(GPIOx, &GPIO_InitStruct);
+}
+void Set_Pin_Input(GPIO_TypeDef *GPIOx, uint16_t GPIO_Pin)
+{
+    GPIO_InitTypeDef GPIO_InitStruct = {0};
+    GPIO_InitStruct.Pin = GPIO_Pin;
+    GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+    GPIO_InitStruct.Pull = GPIO_NOPULL;
+    HAL_GPIO_Init(GPIOx, &GPIO_InitStruct);
+}
+void DHT22_Start(void)
+{
+    Set_Pin_Output(DHT22_PORT, DHT22_PIN);
+    HAL_GPIO_WritePin(DHT22_PORT, DHT22_PIN, GPIO_PIN_RESET);
+    HAL_Delay(1200);
+    HAL_GPIO_WritePin(DHT22_PORT, DHT22_PIN, GPIO_PIN_SET);
+    delay(20);
+    Set_Pin_Input(DHT22_PORT, DHT22_PIN);
+}
+uint8_t DHT22_Check_Response(void)
+{
+    Set_Pin_Input(DHT22_PORT, DHT22_PIN);
+    uint8_t Response = 0;
+    delay(40);
+    if (!(HAL_GPIO_ReadPin(DHT22_PORT, DHT22_PIN)))
+    {
+        delay(80);
+        if ((HAL_GPIO_ReadPin(DHT22_PORT, DHT22_PIN))) Response = 1;
+        else Response = -1;
+    }
+    while ((HAL_GPIO_ReadPin(DHT22_PORT, DHT22_PIN)));
+    return Response;
+}
+uint8_t DHT22_Read(void)
+{
+    uint8_t i = 0, j;
+    for (j = 0; j < 8; j++)
+    {
+        while (!(HAL_GPIO_ReadPin(DHT22_PORT, DHT22_PIN)));
+        delay(40);
+        if (!(HAL_GPIO_ReadPin(DHT22_PORT, DHT22_PIN)))
+        {
+            i &= ~(1 << (7 - j));
+        }
+        else i |= (1 << (7 - j));
+        while ((HAL_GPIO_ReadPin(DHT22_PORT, DHT22_PIN)));
+    }
+    return i;
+}
+void Display_Temp(float Temp)
+{
+    char str[20] = {0};
+    lcd_put_cur(0, 0);
+    sprintf(str, "TEMP:- %.2f ", Temp);
+    lcd_send_string(str);
+    lcd_send_data('C');
+}
+void Display_Rh(float Rh)
+{
+    char str[20] = {0};
+    lcd_put_cur(1, 0);
+    sprintf(str, "RH:- %.2f ", Rh);
+    lcd_send_string(str);
+    lcd_send_data('%');
+}
+int main(void)
+{
+    HAL_Init();
+    SystemClock_Config();
+    MX_GPIO_Init();
+    MX_TIM6_Init();
+    MX_I2C1_Init();
+    lcd_init();
+    uint8_t Rh_byte1, Rh_byte2, Temp_byte1, Temp_byte2;
+    uint16_t sum, RH, TEMP;
+    float Temperature = 0;
+    float Humidity = 0;
+    uint8_t Presence = 0;
+    while (1)
+    {
+        DHT22_Start();
+        Presence = DHT22_Check_Response();
+        Rh_byte1 = DHT22_Read();
+        Rh_byte2 = DHT22_Read();
+        Temp_byte1 = DHT22_Read();
+        Temp_byte2 = DHT22_Read();
+        sum = DHT22_Read();
+        if (sum == (Rh_byte1 + Rh_byte2 + Temp_byte1 + Temp_byte2))
+        {
+            TEMP = ((Temp_byte1 << 8) | Temp_byte2);
+            RH = ((Rh_byte1 << 8) | Rh_byte2);
+            Temperature = (float) TEMP / 10.0;
+            Humidity = (float) RH / 10.0;
+            Display_Temp(Temperature);
+            Display_Rh(Humidity);
+        }
+        HAL_Delay(1000);
+    }
+}
+""",
+        "description": "Reads temperature and humidity from DHT22 on STM32 using HAL library. Assumes TIM6 for microsecond delay and LCD for display."
+    },
+    "bme680 stm32": {
+        "language": "C (STM32 HAL)",
+        "code": """
+#include <bme680/bme68x_necessary_functions.h>
+struct bme68x_data data;
+bme68x_start(&data, &hi2c1);
+if (bme68x_single_measure(&data) == 0) {
+    data.iaq_score = bme68x_iaq();
+    HAL_Delay(2000);
+}
+data.temperature
+data.pressure
+data.humidity
+data.gas_resistance
+data.iaq_score
+""",
+        "description": "Example for reading data from BME680 on STM32 using HAL and BME68x library."
+    },
+    "button led stm32": {
+        "language": "C (STM32 HAL)",
+        "code": """
+#include "stm32f4xx_hal.h"
+void SystemClock_Config(void);
+static void MX_GPIO_Init(void);
+int main(void) {
+    HAL_Init();
+    SystemClock_Config();
+    MX_GPIO_Init();
+    while (1) {
+        if (HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_13) == GPIO_PIN_RESET) {
+            HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, GPIO_PIN_SET);
+        } else {
+            HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, GPIO_PIN_RESET);
+        }
+        HAL_Delay(10);
+    }
+}
+void SystemClock_Config(void) {
+    RCC_OscInitTypeDef RCC_OscInitStruct = {0};
+    RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
+    __HAL_RCC_PWR_CLK_ENABLE();
+    __HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE1);
+    RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
+    RCC_OscInitStruct.HSEState = RCC_HSE_ON;
+    RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
+    RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
+    RCC_OscInitStruct.PLL.PLLM = 8;
+    RCC_OscInitStruct.PLL.PLLN = 336;
+    RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV2;
+    RCC_OscInitStruct.PLL.PLLQ = 7;
+    HAL_RCC_OscConfig(&RCC_OscInitStruct);
+    RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
+                                |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
+    RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
+    RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
+    RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV4;
+    RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV2;
+    HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_5);
+}
+static void MX_GPIO_Init(void) {
+    GPIO_InitTypeDef GPIO_InitStruct = {0};
+    __HAL_RCC_GPIOA_CLK_ENABLE();
+    __HAL_RCC_GPIOC_CLK_ENABLE();
+    HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, GPIO_PIN_RESET);
+    GPIO_InitStruct.Pin = GPIO_PIN_5;
+    GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+    GPIO_InitStruct.Pull = GPIO_NOPULL;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+    HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+    GPIO_InitStruct.Pin = GPIO_PIN_13;
+    GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+    GPIO_InitStruct.Pull = GPIO_PULLUP;
+    HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+}
+void SysTick_Handler(void) {
+    HAL_IncTick();
+}
+""",
+        "description": "Button controlled LED on STM32F407VG. Button on PC13, LED on PA5 with debouncing."
+    },
+    "adc stm32": {
+        "language": "C (STM32 HAL)",
+        "code": """
+#include "stm32f4xx_hal.h"
+#include <stdio.h>
+ADC_HandleTypeDef hadc1;
+UART_HandleTypeDef huart2;
+void SystemClock_Config(void);
+static void MX_GPIO_Init(void);
+static void MX_ADC1_Init(void);
+static void MX_USART2_UART_Init(void);
+int main(void) {
+    HAL_Init();
+    SystemClock_Config();
+    MX_GPIO_Init();
+    MX_ADC1_Init();
+    MX_USART2_UART_Init();
+    char msg[50];
+    uint32_t adc_value;
+    float voltage;
+    while (1) {
+        HAL_ADC_Start(&hadc1);
+        if (HAL_ADC_PollForConversion(&hadc1, 100) == HAL_OK) {
+            adc_value = HAL_ADC_GetValue(&hadc1);
+            voltage = (adc_value * 3.3) / 4095.0;
+            sprintf(msg, "ADC: %lu, Voltage: %.2fV\\r\\n", adc_value, voltage);
+            HAL_UART_Transmit(&huart2, (uint8_t*)msg, strlen(msg), HAL_MAX_DELAY);
+        }
+        HAL_ADC_Stop(&hadc1);
+        HAL_Delay(1000);
+    }
+}
+void SystemClock_Config(void) {
+    RCC_OscInitTypeDef RCC_OscInitStruct = {0};
+    RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
+    __HAL_RCC_PWR_CLK_ENABLE();
+    __HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE1);
+    RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
+    RCC_OscInitStruct.HSEState = RCC_HSE_ON;
+    RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
+    RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
+    RCC_OscInitStruct.PLL.PLLM = 8;
+    RCC_OscInitStruct.PLL.PLLN = 336;
+    RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV2;
+    RCC_OscInitStruct.PLL.PLLQ = 7;
+    HAL_RCC_OscConfig(&RCC_OscInitStruct);
+    RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
+                                |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
+    RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
+    RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
+    RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV4;
+    RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV2;
+    HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_5);
+}
+static void MX_ADC1_Init(void) {
+    ADC_ChannelConfTypeDef sConfig = {0};
+    hadc1.Instance = ADC1;
+    hadc1.Init.ClockPrescaler = ADC_CLOCK_SYNC_PCLK_DIV4;
+    hadc1.Init.Resolution = ADC_RESOLUTION_12B;
+    hadc1.Init.ScanConvMode = DISABLE;
+    hadc1.Init.ContinuousConvMode = DISABLE;
+    hadc1.Init.DiscontinuousConvMode = DISABLE;
+    hadc1.Init.ExternalTrigConvEdge = ADC_EXTERNALTRIGCONVEDGE_NONE;
+    hadc1.Init.ExternalTrigConv = ADC_SOFTWARE_START;
+    hadc1.Init.DataAlign = ADC_DATAALIGN_RIGHT;
+    hadc1.Init.NbrOfConversion = 1;
+    hadc1.Init.DMAContinuousRequests = DISABLE;
+    hadc1.Init.EOCSelection = ADC_EOC_SINGLE_CONV;
+    HAL_ADC_Init(&hadc1);
+    sConfig.Channel = ADC_CHANNEL_0;
+    sConfig.Rank = 1;
+    sConfig.SamplingTime = ADC_SAMPLETIME_84CYCLES;
+    HAL_ADC_ConfigChannel(&hadc1, &sConfig);
+}
+static void MX_USART2_UART_Init(void) {
+    huart2.Instance = USART2;
+    huart2.Init.BaudRate = 115200;
+    huart2.Init.WordLength = UART_WORDLENGTH_8B;
+    huart2.Init.StopBits = UART_STOPBITS_1;
+    huart2.Init.Parity = UART_PARITY_NONE;
+    huart2.Init.Mode = UART_MODE_TX_RX;
+    huart2.Init.HwFlowCtl = UART_HWCONTROL_NONE;
+    huart2.Init.OverSampling = UART_OVERSAMPLING_16;
+    HAL_UART_Init(&huart2);
+}
+static void MX_GPIO_Init(void) {
+    __HAL_RCC_GPIOA_CLK_ENABLE();
+}
+void HAL_ADC_MspInit(ADC_HandleTypeDef* hadc) {
+    GPIO_InitTypeDef GPIO_InitStruct = {0};
+    if(hadc->Instance==ADC1) {
+        __HAL_RCC_ADC1_CLK_ENABLE();
+        __HAL_RCC_GPIOA_CLK_ENABLE();
+        GPIO_InitStruct.Pin = GPIO_PIN_0;
+        GPIO_InitStruct.Mode = GPIO_MODE_ANALOG;
+        GPIO_InitStruct.Pull = GPIO_NOPULL;
+        HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+    }
+}
+void HAL_UART_MspInit(UART_HandleTypeDef* huart) {
+    GPIO_InitTypeDef GPIO_InitStruct = {0};
+    if(huart->Instance==USART2) {
+        __HAL_RCC_USART2_CLK_ENABLE();
+        __HAL_RCC_GPIOA_CLK_ENABLE();
+        GPIO_InitStruct.Pin = GPIO_PIN_2|GPIO_PIN_3;
+        GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+        GPIO_InitStruct.Pull = GPIO_NOPULL;
+        GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+        GPIO_InitStruct.Alternate = GPIO_AF7_USART2;
+        HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+    }
+}
+void SysTick_Handler(void) {
+    HAL_IncTick();
+}
+""",
+        "description": "Complete ADC example for STM32F407VG. Reads PA0 (ADC1_IN0), converts to voltage, sends via UART2."
+    },
+    "pwm stm32": {
+        "language": "C (STM32 HAL)",
+        "code": """
+#include "stm32f4xx_hal.h"
+TIM_HandleTypeDef htim3;
+void SystemClock_Config(void);
+static void MX_GPIO_Init(void);
+static void MX_TIM3_Init(void);
+int main(void) {
+    HAL_Init();
+    SystemClock_Config();
+    MX_GPIO_Init();
+    MX_TIM3_Init();
+    HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1);
+    uint16_t duty_cycle = 0;
+    uint8_t direction = 1;
+    while (1) {
+        __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_1, duty_cycle);
+        if (direction) {
+            duty_cycle += 10;
+            if (duty_cycle >= 1000) direction = 0;
+        } else {
+            duty_cycle -= 10;
+            if (duty_cycle == 0) direction = 1;
+        }
+        HAL_Delay(20);
+    }
+}
+void SystemClock_Config(void) {
+    RCC_OscInitTypeDef RCC_OscInitStruct = {0};
+    RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
+    __HAL_RCC_PWR_CLK_ENABLE();
+    __HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE1);
+    RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
+    RCC_OscInitStruct.HSEState = RCC_HSE_ON;
+    RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
+    RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
+    RCC_OscInitStruct.PLL.PLLM = 8;
+    RCC_OscInitStruct.PLL.PLLN = 336;
+    RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV2;
+    RCC_OscInitStruct.PLL.PLLQ = 7;
+    HAL_RCC_OscConfig(&RCC_OscInitStruct);
+    RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
+                                |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
+    RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
+    RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
+    RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV4;
+    RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV2;
+    HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_5);
+}
+static void MX_TIM3_Init(void) {
+    TIM_MasterConfigTypeDef sMasterConfig = {0};
+    TIM_OC_InitTypeDef sConfigOC = {0};
+    htim3.Instance = TIM3;
+    htim3.Init.Prescaler = 83;
+    htim3.Init.CounterMode = TIM_COUNTERMODE_UP;
+    htim3.Init.Period = 999;
+    htim3.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+    htim3.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_ENABLE;
+    HAL_TIM_PWM_Init(&htim3);
+    sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
+    sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
+    HAL_TIMEx_MasterConfigSynchronization(&htim3, &sMasterConfig);
+    sConfigOC.OCMode = TIM_OCMODE_PWM1;
+    sConfigOC.Pulse = 0;
+    sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
+    sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
+    HAL_TIM_PWM_ConfigChannel(&htim3, &sConfigOC, TIM_CHANNEL_1);
+}
+static void MX_GPIO_Init(void) {
+    __HAL_RCC_GPIOA_CLK_ENABLE();
+}
+void HAL_TIM_PWM_MspInit(TIM_HandleTypeDef* htim_pwm) {
+    GPIO_InitTypeDef GPIO_InitStruct = {0};
+    if(htim_pwm->Instance==TIM3) {
+        __HAL_RCC_TIM3_CLK_ENABLE();
+        __HAL_RCC_GPIOA_CLK_ENABLE();
+        GPIO_InitStruct.Pin = GPIO_PIN_6;
+        GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+        GPIO_InitStruct.Pull = GPIO_NOPULL;
+        GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+        GPIO_InitStruct.Alternate = GPIO_AF2_TIM3;
+        HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+    }
+}
+void SysTick_Handler(void) {
+    HAL_IncTick();
+}
+""",
+        "description": "Complete PWM example for STM32F407VG. TIM3 Channel 1 on PA6 with LED fading effect."
+    },
+    "hello world c": {
+        "language": "C",
+        "code": """
+#include <stdio.h>
+int main() {
+    printf("Hello, World!\\n");
+    return 0;
+}
+""",
+        "description": "Basic Hello World program in C"
+    },
+    "array sum c": {
+        "language": "C",
+        "code": """
+#include <stdio.h>
+int main() {
+    int numbers[] = {10, 20, 30, 40, 50};
+    int size = sizeof(numbers) / sizeof(numbers[0]);
+    int sum = 0;
+    printf("Array elements: ");
+    for (int i = 0; i < size; i++) {
+        printf("%d ", numbers[i]);
+        sum += numbers[i];
+    }
+    printf("\\nSum of all elements: %d\\n", sum);
+    printf("Average: %.2f\\n", (float)sum / size);
+    return 0;
+}
+""",
+        "description": "Calculate sum and average of array elements in C"
+    },
+    "factorial c": {
+        "language": "C",
+        "code": """
+#include <stdio.h>
+unsigned long long factorial_recursive(int n) {
+    if (n <= 1) return 1;
+    return n * factorial_recursive(n - 1);
+}
+unsigned long long factorial_iterative(int n) {
+    unsigned long long result = 1;
+    for (int i = 2; i <= n; i++) {
+        result *= i;
+    }
+    return result;
+}
+int main() {
+    int number = 10;
+    printf("Factorial of %d (recursive): %llu\\n", number, factorial_recursive(number));
+    printf("Factorial of %d (iterative): %llu\\n", number, factorial_iterative(number));
+    return 0;
+}
+""",
+        "description": "Calculate factorial using both recursive and iterative methods in C"
+    },
+    "struct example c": {
+        "language": "C",
+        "code": """
+#include <stdio.h>
+#include <string.h>
+typedef struct {
+    char name[50];
+    int age;
+    float gpa;
+} Student;
+void print_student(Student s) {
+    printf("Name: %s\\n", s.name);
+    printf("Age: %d\\n", s.age);
+    printf("GPA: %.2f\\n\\n", s.gpa);
+}
+int main() {
+    Student student1;
+    strcpy(student1.name, "Alice Johnson");
+    student1.age = 20;
+    student1.gpa = 3.8;
+    Student student2 = {"Bob Smith", 22, 3.5};
+    printf("Student 1:\\n");
+    print_student(student1);
+    printf("Student 2:\\n");
+    print_student(student2);
+    Student class[3] = {
+        {"Charlie Brown", 21, 3.6},
+        {"Diana Prince", 19, 3.9},
+        {"Eve Adams", 20, 3.7}
+    };
+    printf("Class roster:\\n");
+    for (int i = 0; i < 3; i++) {
+        printf("%d. %s (GPA: %.2f)\\n", i+1, class[i].name, class[i].gpa);
+    }
+    return 0;
+}
+""",
+        "description": "Working with structures, arrays of structures, and functions in C"
+    },
+    "hello world python": {
+        "language": "Python",
+        "code": """
+print("Hello, World!")
+name = "Claude"
+greeting = f"Hello, {name}!"
+print(greeting)
+print(\"\"\"
+Welcome to Python Programming!
+This is a multi-line string.
+Python is awesome!
+\"\"\")
+""",
+        "description": "Basic Hello World and string handling in Python"
+    },
+    "list operations python": {
+        "language": "Python",
+        "code": """
+numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+print(f"Original list: {numbers}")
+print(f"Sum: {sum(numbers)}")
+print(f"Average: {sum(numbers)/len(numbers)}")
+print(f"Max: {max(numbers)}, Min: {min(numbers)}")
+print(f"\\nFirst 3 elements: {numbers[:3]}")
+print(f"Last 3 elements: {numbers[-3:]}")
+print(f"Every 2nd element: {numbers[::2]}")
+squares = [x**2 for x in numbers]
+print(f"\\nSquares: {squares}")
+evens = [x for x in numbers if x % 2 == 0]
+print(f"Even numbers: {evens}")
+filtered = list(filter(lambda x: x > 5, numbers))
+doubled = list(map(lambda x: x * 2, numbers))
+print(f"\\nNumbers > 5: {filtered}")
+print(f"Doubled: {doubled}")
+mixed = [5, 2, 8, 1, 9, 3]
+print(f"\\nOriginal: {mixed}")
+print(f"Sorted (ascending): {sorted(mixed)}")
+print(f"Sorted (descending): {sorted(mixed, reverse=True)}")
+""",
+        "description": "Comprehensive list operations, comprehensions, and functional programming in Python"
+    }
 }
 
 # ===================== Fonction de recherche intelligente (CORRIGÉE) =====================
