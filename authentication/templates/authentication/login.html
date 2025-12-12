@@ -1,0 +1,22 @@
+<!-- templates/authentication/login.html -->
+{% extends "authentication/base.html" %}
+{% block title %}Login{% endblock %}
+
+{% block content %}
+<div class="glass-card">
+    <h2 class="text-center mb-4">Welcome Back</h2>
+    
+    <form method="post" action="{% url 'login' %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button class="btn btn-primary w-100 mt-3">Log In</button>
+    </form>
+
+    <p class="text-center mt-3">
+        <a href="{% url 'password_reset' %}" class="text-decoration-none">Forgot password?</a>
+    </p>
+    <p class="text-center">
+        No account? <a href="{% url 'register' %}" class="text-decoration-none">Create one</a>
+    </p>
+</div>
+{% endblock %}

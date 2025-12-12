@@ -3,10 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Assistant Systèmes Embarqués</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>EmbedAI Pro - Assistant Systèmes Embarqués</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        /* Your existing CSS remains unchanged */
         * {
             box-sizing: border-box;
             margin: 0;
@@ -15,52 +14,89 @@
         }
 
         :root {
-            --bg-primary: #ffffff;
-            --bg-secondary: #f7f7f8;
-            --bg-sidebar: #ffffff;
-            --border-light: #e5e7eb;
-            --text-primary: #1f2937;
-            --text-secondary: #6b7280;
-            --text-tertiary: #9ca3af;
-            --accent: #2563eb;
-            --accent-light: #dbeafe;
-            --accent-hover: #1d4ed8;
-            --message-user: linear-gradient(135deg, #e9d5ff 0%, #ddd6fe 50%, #c4b5fd 100%);
-            --message-bot: #ffffff;
-            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-            --mauve-dark: #4c1d95;
-            --mauve-medium: #6d28d9;
-            --mauve-light: #a78bfa;
-            --mauve-accent: #7c3aed;
-            --mic-active: #ef4444;
+            --bg-primary: #0a0e1a;
+            --bg-secondary: #111827;
+            --bg-tertiary: #1a202e;
+            --bg-card: #1e293b;
+            --border-subtle: rgba(148, 163, 184, 0.1);
+            --border-medium: rgba(148, 163, 184, 0.2);
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --text-tertiary: #64748b;
+            --accent-primary: #6366f1;
+            --accent-secondary: #8b5cf6;
+            --accent-tertiary: #ec4899;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --error: #ef4444;
+            --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-accent: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --gradient-tech: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --shadow-glow: 0 0 40px rgba(99, 102, 241, 0.3);
+            --shadow-card: 0 4px 20px rgba(0, 0, 0, 0.4);
+            --font-code: 'JetBrains Mono', monospace;
         }
 
         body {
             display: flex;
             height: 100vh;
-            background: var(--bg-secondary);
+            background: var(--bg-primary);
             color: var(--text-primary);
             overflow: hidden;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(99, 102, 241, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(139, 92, 246, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 20%, rgba(236, 72, 153, 0.05) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .grid-pattern {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                linear-gradient(rgba(148, 163, 184, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(148, 163, 184, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: 0;
         }
 
         #sidebar {
-            width: 280px;
-            background: linear-gradient(135deg, var(--mauve-dark) 0%, var(--mauve-light) 100%);
-            background-size: 200% 200%;
-            animation: gradientMauve 10s ease infinite;
-            border-right: 1px solid var(--border-light);
+            width: 320px;
+            background: var(--bg-secondary);
+            backdrop-filter: blur(20px);
+            border-right: 1px solid var(--border-subtle);
             display: flex;
             flex-direction: column;
-            transition: all 0.3s ease;
-            box-shadow: var(--shadow-md);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: var(--shadow-card);
+            position: relative;
+            z-index: 10;
         }
 
-        @keyframes gradientMauve {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+        #sidebar::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--accent-primary), transparent);
+            opacity: 0.5;
         }
 
         #sidebar.collapsed {
@@ -69,54 +105,148 @@
         }
 
         .sidebar-header {
-            padding: 20px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            background: rgba(0, 0, 0, 0.1);
+            padding: 24px;
+            border-bottom: 1px solid var(--border-subtle);
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
+            position: relative;
+            overflow: hidden;
         }
 
-        .sidebar-header h1 {
-            font-size: 1rem;
-            font-weight: 600;
-            color: #ffffff;
-            margin-bottom: 4px;
+        .sidebar-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(from 0deg, transparent, rgba(99, 102, 241, 0.1), transparent 30deg);
+            animation: rotate 8s linear infinite;
         }
 
-        .sidebar-header p {
+        @keyframes rotate {
+            100% { transform: rotate(360deg); }
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .logo-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--gradient-primary);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            box-shadow: 0 4px 20px rgba(99, 102, 241, 0.4);
+            animation: pulse 3s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); box-shadow: 0 4px 20px rgba(99, 102, 241, 0.4); }
+            50% { transform: scale(1.05); box-shadow: 0 4px 30px rgba(99, 102, 241, 0.6); }
+        }
+
+        .logo-text h1 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .logo-text p {
             font-size: 0.75rem;
-            color: rgba(255, 255, 255, 0.8);
+            color: var(--text-secondary);
+            font-family: var(--font-code);
+            margin-top: 2px;
         }
 
         .profile-section {
-            padding: 20px;
+            padding: 24px;
             text-align: center;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            border-bottom: 1px solid var(--border-subtle);
+            position: relative;
+        }
+
+        .profile-wrapper {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 16px;
+        }
+
+        .profile-ring {
+            position: absolute;
+            top: -6px;
+            left: -6px;
+            right: -6px;
+            bottom: -6px;
+            border-radius: 50%;
+            background: conic-gradient(from 0deg, var(--accent-primary), var(--accent-secondary), var(--accent-tertiary), var(--accent-primary));
+            animation: rotate 4s linear infinite;
+            opacity: 0.8;
         }
 
         .profile-section img {
-            width: 80px;
-            height: 80px;
+            width: 120px;
+            height: 120px;
             border-radius: 50%;
             object-fit: cover;
-            margin-bottom: 12px;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 4px solid var(--bg-secondary);
+            position: relative;
+            z-index: 1;
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
         }
 
         .profile-section img:hover {
-            transform: scale(1.05) rotate(5deg);
-            box-shadow: 0 0 15px var(--mauve-accent);
+            transform: scale(1.08) rotate(5deg);
         }
 
-        .profile-section h2 {
-            font-size: 0.95rem;
-            font-weight: 600;
-            color: #ffffff;
-            margin-bottom: 4px;
+        .profile-info h2 {
+            font-size: 1.125rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 6px;
         }
 
-        .profile-section p {
-            font-size: 0.8rem;
-            color: rgba(255, 255, 255, 0.7);
+        .profile-info p {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 20px;
+            font-size: 0.75rem;
+            color: var(--success);
+            margin-top: 12px;
+            font-weight: 500;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--success);
+            border-radius: 50%;
+            animation: blink 2s ease-in-out infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
         }
 
         .stats-section {
@@ -125,136 +255,247 @@
             overflow-y: auto;
         }
 
-        .stats-section h3 {
-            font-size: 0.75rem;
-            font-weight: 600;
-            color: rgba(255, 255, 255, 0.6);
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            margin-bottom: 16px;
+        .stats-section::-webkit-scrollbar {
+            width: 6px;
         }
 
-        .stat-item {
-            padding: 12px 16px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 8px;
-            margin-bottom: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            transition: all 0.2s ease;
+        .stats-section::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .stats-section::-webkit-scrollbar-thumb {
+            background: var(--border-medium);
+            border-radius: 3px;
+        }
+
+        .stats-section h3 {
+            font-size: 0.6875rem;
+            font-weight: 700;
+            color: var(--text-tertiary);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 16px;
+            padding-left: 12px;
+        }
+
+        .stat-grid {
+            display: grid;
+            gap: 12px;
+        }
+
+        .stat-card {
+            padding: 16px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--gradient-primary);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--accent-primary);
+            box-shadow: 0 8px 24px rgba(99, 102, 241, 0.2);
+            background: rgba(99, 102, 241, 0.05);
+        }
+
+        .stat-header {
             display: flex;
             align-items: center;
-            gap: 8px;
-            backdrop-filter: blur(5px);
-        }
-
-        .stat-item:hover {
-            background: rgba(255, 255, 255, 0.2);
-            border-color: var(--mauve-accent);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 10px rgba(124, 58, 237, 0.3);
+            gap: 10px;
+            margin-bottom: 12px;
         }
 
         .stat-icon {
-            font-size: 1.2rem;
-            opacity: 0.8;
-            transition: opacity 0.3s;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(99, 102, 241, 0.1);
+            border-radius: 8px;
+            font-size: 1.125rem;
+            transition: all 0.3s ease;
         }
 
-        .stat-item:hover .stat-icon {
-            opacity: 1;
+        .stat-card:hover .stat-icon {
+            background: rgba(99, 102, 241, 0.2);
+            transform: scale(1.1) rotate(5deg);
         }
 
         .stat-label {
             font-size: 0.75rem;
-            color: rgba(255, 255, 255, 0.7);
-            margin-bottom: 4px;
+            color: var(--text-secondary);
+            font-weight: 500;
         }
 
         .stat-value {
             font-size: 1.5rem;
             font-weight: 700;
-            color: #ffffff;
+            color: var(--text-primary);
+            font-family: var(--font-code);
         }
 
         .sidebar-footer {
-            padding: 16px 20px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            text-align: center;
-            background: rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            border-top: 1px solid var(--border-subtle);
+            background: rgba(99, 102, 241, 0.05);
         }
 
-        .powered-text {
-            font-size: 0.75rem;
-            color: rgba(255, 255, 255, 0.8);
-            font-weight: 500;
+        .powered-badge {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-medium);
+            border-radius: 10px;
+            font-size: 0.8125rem;
+            color: var(--text-secondary);
+            font-weight: 600;
             position: relative;
-            display: inline-block;
-            animation: neonBlink 1.5s ease-in-out infinite;
-            text-shadow: 0 0 5px var(--mauve-accent), 0 0 10px var(--mauve-accent), 0 0 15px var(--mauve-accent);
+            overflow: hidden;
         }
 
-        @keyframes neonBlink {
-            0%, 100% {
-                opacity: 1;
-                text-shadow: 0 0 5px var(--mauve-accent), 0 0 10px var(--mauve-accent), 0 0 15px var(--mauve-accent);
-            }
-            50% {
-                opacity: 0.6;
-                text-shadow: 0 0 2px var(--mauve-accent), 0 0 5px var(--mauve-accent);
-            }
+        .powered-badge::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(99, 102, 241, 0.1), transparent);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            100% { left: 100%; }
         }
 
         #main-content {
             flex: 1;
             display: flex;
             flex-direction: column;
-            background: var(--bg-primary);
             position: relative;
+            z-index: 1;
         }
 
         .main-header {
-            padding: 16px 24px;
-            background: var(--bg-primary);
-            border-bottom: 1px solid var(--border-light);
+            padding: 20px 32px;
+            background: rgba(17, 24, 39, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-subtle);
             display: flex;
             align-items: center;
             justify-content: space-between;
+            position: relative;
+        }
+
+        .main-header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--accent-primary), transparent);
+            opacity: 0.3;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
         }
 
         .toggle-sidebar {
-            padding: 8px 12px;
-            background: var(--bg-secondary);
-            border: 1px solid var(--border-light);
-            border-radius: 6px;
+            padding: 10px 16px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-medium);
+            border-radius: 8px;
             cursor: pointer;
             font-size: 0.875rem;
-            color: var(--text-secondary);
-            transition: all 0.2s ease;
+            color: var(--text-primary);
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         .toggle-sidebar:hover {
-            background: var(--accent-light);
-            color: var(--accent);
-            border-color: var(--accent);
+            background: var(--accent-primary);
+            border-color: var(--accent-primary);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
         }
 
         .header-title {
-            font-size: 1.125rem;
-            font-weight: 600;
+            font-size: 1.25rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--text-primary), var(--text-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .action-btn {
+            padding: 10px 16px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-medium);
+            border-radius: 8px;
+            cursor: pointer;
             color: var(--text-primary);
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .action-btn:hover {
+            background: rgba(99, 102, 241, 0.1);
+            border-color: var(--accent-primary);
+            transform: translateY(-2px);
         }
 
         #chat-container {
             flex: 1;
             overflow-y: auto;
-            padding: 24px;
+            padding: 32px;
             display: flex;
             flex-direction: column;
-            gap: 16px;
+            gap: 20px;
         }
 
         #chat-container::-webkit-scrollbar {
-            width: 6px;
+            width: 8px;
         }
 
         #chat-container::-webkit-scrollbar-track {
@@ -262,53 +503,128 @@
         }
 
         #chat-container::-webkit-scrollbar-thumb {
-            background: var(--border-light);
-            border-radius: 3px;
+            background: var(--border-medium);
+            border-radius: 4px;
         }
 
-        #chat-container::-webkit-scrollbar-thumb:hover {
-            background: var(--text-tertiary);
-        }
-
-        .welcome-message {
-            max-width: 600px;
-            margin: 40px auto;
+        .welcome-panel {
+            max-width: 800px;
+            margin: 60px auto;
             text-align: center;
-            opacity: 0;
-            animation: fadeIn 0.6s ease forwards;
+            animation: fadeInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        @keyframes fadeIn {
-            to { opacity: 1; }
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
-        .welcome-message h2 {
+        .welcome-icon {
+            font-size: 4rem;
+            margin-bottom: 24px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .welcome-panel h2 {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary), var(--accent-tertiary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .welcome-panel p {
+            font-size: 1.0625rem;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            margin-bottom: 32px;
+        }
+
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-top: 32px;
+        }
+
+        .quick-action-card {
+            padding: 20px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .quick-action-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--gradient-primary);
+            transform: scaleY(0);
+            transition: transform 0.3s ease;
+        }
+
+        .quick-action-card:hover::before {
+            transform: scaleY(1);
+        }
+
+        .quick-action-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--accent-primary);
+            box-shadow: 0 12px 32px rgba(99, 102, 241, 0.2);
+            background: rgba(99, 102, 241, 0.05);
+        }
+
+        .quick-action-icon {
             font-size: 1.5rem;
-            font-weight: 600;
-            color: var(--text-primary);
             margin-bottom: 12px;
         }
 
-        .welcome-message p {
-            font-size: 0.95rem;
+        .quick-action-title {
+            font-size: 0.9375rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 6px;
+        }
+
+        .quick-action-desc {
+            font-size: 0.8125rem;
             color: var(--text-secondary);
-            line-height: 1.6;
+            line-height: 1.5;
         }
 
         .message {
-            max-width: 70%;
+            max-width: 75%;
             display: flex;
             flex-direction: column;
             gap: 8px;
-            opacity: 0;
-            animation: slideIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-            position: relative;
+            animation: messageSlide 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
-        @keyframes slideIn {
+        @keyframes messageSlide {
             from {
                 opacity: 0;
-                transform: translateY(20px) scale(0.95);
+                transform: translateY(30px) scale(0.9);
             }
             to {
                 opacity: 1;
@@ -326,102 +642,136 @@
             align-items: flex-start;
         }
 
+        .message-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 0 4px;
+        }
+
+        .message-avatar {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.875rem;
+        }
+
+        .message.user .message-avatar {
+            background: var(--gradient-accent);
+            box-shadow: 0 2px 8px rgba(236, 72, 153, 0.3);
+        }
+
+        .message.bot .message-avatar {
+            background: var(--gradient-tech);
+            box-shadow: 0 2px 8px rgba(79, 172, 254, 0.3);
+        }
+
+        .message-author {
+            font-size: 0.8125rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
         .message-content {
-            padding: 12px 16px;
-            border-radius: 12px;
-            line-height: 1.6;
+            padding: 16px 20px;
+            border-radius: 16px;
+            line-height: 1.7;
             font-size: 0.9375rem;
             position: relative;
-            overflow: hidden;
+            backdrop-filter: blur(10px);
         }
 
         .message.user .message-content {
-            background: var(--message-user);
-            color: var(--text-primary);
-            border: 1px solid rgba(168, 85, 247, 0.2);
-            box-shadow: 0 4px 15px rgba(168, 85, 247, 0.15);
-            animation: purpleGlow 3s ease-in-out infinite;
-        }
-
-        @keyframes purpleGlow {
-            0%, 100% {
-                box-shadow: 0 4px 15px rgba(168, 85, 247, 0.15), 0 0 20px rgba(168, 85, 247, 0.1);
-            }
-            50% {
-                box-shadow: 0 4px 20px rgba(168, 85, 247, 0.25), 0 0 30px rgba(168, 85, 247, 0.2);
-            }
-        }
-
-        .message.user .message-content::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
-            animation: shimmer 3s infinite;
-        }
-
-        @keyframes shimmer {
-            0% { left: -100%; }
-            100% { left: 200%; }
+            background: linear-gradient(135deg, rgba(236, 72, 153, 0.15), rgba(139, 92, 246, 0.15));
+            border: 1px solid rgba(236, 72, 153, 0.3);
+            box-shadow: 0 4px 20px rgba(236, 72, 153, 0.2);
         }
 
         .message.bot .message-content {
-            background: var(--message-bot);
-            color: var(--text-primary);
-            border: 1px solid var(--border-light);
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            box-shadow: var(--shadow-card);
+        }
+
+        .message-content strong {
+            color: var(--accent-primary);
+            font-weight: 600;
+        }
+
+        .message-content code {
+            font-family: var(--font-code);
+            background: rgba(99, 102, 241, 0.1);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.875rem;
+            color: var(--accent-primary);
         }
 
         .message-timestamp {
             font-size: 0.75rem;
             color: var(--text-tertiary);
             padding: 0 4px;
+            font-family: var(--font-code);
         }
 
         .chat-img {
-            max-width: 300px;
-            border-radius: 8px;
-            margin-top: 8px;
-            border: 1px solid var(--border-light);
+            max-width: 100%;
+            border-radius: 12px;
+            margin-top: 12px;
+            border: 1px solid var(--border-subtle);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
         }
 
         .typing-indicator {
             display: flex;
-            gap: 4px;
-            padding: 12px 16px;
+            gap: 6px;
+            padding: 16px 20px;
         }
 
         .typing-dot {
-            width: 8px;
-            height: 8px;
-            background: var(--text-tertiary);
+            width: 10px;
+            height: 10px;
+            background: var(--accent-primary);
             border-radius: 50%;
-            animation: typing 1.4s ease-in-out infinite;
+            animation: typingBounce 1.4s ease-in-out infinite;
         }
 
         .typing-dot:nth-child(2) { animation-delay: 0.2s; }
         .typing-dot:nth-child(3) { animation-delay: 0.4s; }
 
-        @keyframes typing {
+        @keyframes typingBounce {
             0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
-            30% { transform: translateY(-8px); opacity: 1; }
+            30% { transform: translateY(-12px); opacity: 1; }
         }
 
         .input-area {
-            padding: 20px 24px;
-            background: var(--bg-primary);
-            border-top: 1px solid var(--border-light);
+            padding: 24px 32px;
+            background: rgba(17, 24, 39, 0.8);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid var(--border-subtle);
+            position: relative;
+        }
+
+        .input-area::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--accent-primary), transparent);
+            opacity: 0.3;
         }
 
         .input-container {
-            max-width: 800px;
+            max-width: 900px;
             margin: 0 auto;
             display: flex;
             gap: 12px;
-            align-items: center;
-            position: relative;
+            align-items: stretch;
         }
 
         .input-wrapper {
@@ -429,157 +779,103 @@
             position: relative;
         }
 
-        .input-wrapper::before {
-            content: '';
-            position: absolute;
-            top: -2px;
-            left: -2px;
-            right: -2px;
-            bottom: -2px;
-            background: linear-gradient(45deg, #2563eb, #3b82f6, #60a5fa, #93c5fd, #2563eb);
-            background-size: 300% 300%;
-            border-radius: 10px;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            z-index: -1;
-            animation: gradientShift 4s ease infinite;
-        }
-
-        @keyframes gradientShift {
-            0%, 100% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-        }
-
-        #question:focus ~ .input-glow::before,
-        .input-wrapper:has(#question:focus)::before {
-            opacity: 1;
-        }
-
         #question {
             width: 100%;
-            padding: 12px 16px;
-            border: 2px solid var(--border-light);
-            border-radius: 8px;
+            padding: 16px 20px;
+            background: var(--bg-card);
+            border: 2px solid var(--border-medium);
+            border-radius: 12px;
             font-size: 0.9375rem;
-            background: var(--bg-primary);
             color: var(--text-primary);
             outline: none;
-            transition: all 0.3s ease;
-            position: relative;
-        }
-
-        #question:focus {
-            border-color: var(--accent);
-            background: var(--bg-primary);
-            box-shadow: 0 0 0 3px var(--accent-light), 0 0 20px rgba(37, 99, 235, 0.3), 0 0 40px rgba(37, 99, 235, 0.1);
-            transform: translateY(-1px);
-            animation: inputPulse 2s ease-in-out infinite;
-        }
-
-        @keyframes inputPulse {
-            0%, 100% { box-shadow: 0 0 0 3px var(--accent-light), 0 0 15px rgba(37, 99, 235, 0.3); }
-            50% { box-shadow: 0 0 0 3px var(--accent-light), 0 0 30px rgba(37, 99, 235, 0.5); }
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-family: 'Inter', sans-serif;
         }
 
         #question::placeholder {
             color: var(--text-tertiary);
         }
 
-        #send-btn, #mic-btn {
-            padding: 12px 24px;
-            background: var(--accent);
+        #question:focus {
+            border-color: var(--accent-primary);
+            background: rgba(99, 102, 241, 0.05);
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1), 0 0 32px rgba(99, 102, 241, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .input-btn {
+            padding: 16px 28px;
+            background: var(--gradient-primary);
             color: white;
             border: none;
-            border-radius: 8px;
+            border-radius: 12px;
             font-size: 0.9375rem;
-            font-weight: 500;
+            font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s ease;
-            white-space: nowrap;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             overflow: hidden;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .input-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .input-btn:hover::before {
+            left: 100%;
+        }
+
+        .input-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(99, 102, 241, 0.4);
+        }
+
+        .input-btn:active {
+            transform: translateY(0);
         }
 
         #mic-btn.active {
-            background: var(--mic-active);
+            background: var(--gradient-accent);
             animation: micPulse 1.5s ease-in-out infinite;
         }
 
         @keyframes micPulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
+            0%, 100% { box-shadow: 0 4px 16px rgba(239, 68, 68, 0.3); }
+            50% { box-shadow: 0 4px 32px rgba(239, 68, 68, 0.6); }
         }
 
-        #send-btn::before, #mic-btn::before {
-            content: '';
+        .feature-badge {
             position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.3);
-            transform: translate(-50%, -50%);
-            transition: width 0.6s, height 0.6s;
+            top: -8px;
+            right: -8px;
+            background: var(--error);
+            color: white;
+            font-size: 0.625rem;
+            font-weight: 700;
+            padding: 4px 8px;
+            border-radius: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            box-shadow: 0 2px 8px rgba(239, 68, 68, 0.4);
         }
 
-        #send-btn:hover::before, #mic-btn:hover::before {
-            width: 300px;
-            height: 300px;
-        }
-
-        #send-btn:hover, #mic-btn:hover {
-            background: var(--accent-hover);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.4);
-        }
-
-        #mic-btn.active:hover {
-            background: var(--mic-active);
-        }
-
-        #send-btn:active, #mic-btn:active {
-            transform: translateY(0);
-        }
-
-        .particle {
-            position: fixed;
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 1000;
-            animation: particleFloat 2s ease-out forwards;
-        }
-
-        @keyframes particleFloat {
-            0% { transform: translateY(0) scale(1); opacity: 1; }
-            100% { transform: translateY(-120px) scale(0); opacity: 0; }
-        }
-
-        .sparkle {
-            position: absolute;
-            width: 4px;
-            height: 4px;
-            background: #a855f7;
-            border-radius: 50%;
-            pointer-events: none;
-            animation: sparkleFloat 1.5s ease-out forwards;
-        }
-
-        @keyframes sparkleFloat {
-            0% { transform: translate(0, 0) scale(1); opacity: 1; }
-            100% { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; }
-        }
-
-        @media (max-width: 768px) {
+        @media (max-width: 1024px) {
             #sidebar {
-                position: absolute;
+                position: fixed;
                 left: 0;
                 top: 0;
                 height: 100%;
-                z-index: 100;
-                box-shadow: var(--shadow-lg);
+                z-index: 1000;
             }
 
             #sidebar.collapsed {
@@ -587,116 +883,204 @@
             }
 
             .message {
-                max-width: 85%;
+                max-width: 90%;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .main-header {
+                padding: 16px 20px;
+            }
+
+            #chat-container {
+                padding: 20px 16px;
+            }
+
+            .input-area {
+                padding: 16px;
             }
 
             .input-container {
-                flex-direction: column;
+                flex-wrap: wrap;
             }
 
-            #send-btn, #mic-btn {
-                width: 100%;
+            .input-btn {
+                flex: 1;
+                justify-content: center;
+            }
+
+            .quick-actions {
+                grid-template-columns: 1fr;
             }
         }
     </style>
 </head>
 <body>
+    <div class="grid-pattern"></div>
+
     <div id="sidebar">
         <div class="sidebar-header">
-            <h1>🤖 Assistant IA</h1>
-            <p>Systèmes Embarqués</p>
+            <div class="logo-container">
+                <div class="logo-icon">🚀</div>
+                <div class="logo-text">
+                    <h1>EmbedAI Pro</h1>
+                    <p>v2.1.0 • Enterprise</p>
+                </div>
+            </div>
         </div>
+
         <div class="profile-section">
-            <img src="/static/images/photo.jpg" alt="Profile" id="profile-img">
-            <h2>Ranim Oueslati</h2>
-            <p>Ingénieur Embarqué</p>
+            <div class="profile-wrapper">
+                <div class="profile-ring"></div>
+                <img src="/static/images/photo.jpg" alt="Profile" id="profile-img">
+            </div>
+            <div class="profile-info">
+                <h2>Ranim Oueslati</h2>
+                <p>Ingénieur Systèmes Embarqués</p>
+                <div class="status-badge">
+                    <div class="status-dot"></div>
+                    <span>En ligne</span>
+                </div>
+            </div>
         </div>
+
         <div class="stats-section">
-            <h3>Statistiques</h3>
-            <div class="stat-item">
-                <span class="stat-icon">✉️</span>
-                <div>
-                    <div class="stat-label">Messages envoyés</div>
+            <h3>Tableau de bord</h3>
+            <div class="stat-grid">
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon">📊</div>
+                        <div class="stat-label">Messages envoyés</div>
+                    </div>
                     <div class="stat-value" id="messages-sent">0</div>
                 </div>
-            </div>
-            <div class="stat-item">
-                <span class="stat-icon">📥</span>
-                <div>
-                    <div class="stat-label">Réponses reçues</div>
+
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon">💬</div>
+                        <div class="stat-label">Réponses reçues</div>
+                    </div>
                     <div class="stat-value" id="responses-received">0</div>
                 </div>
-            </div>
-            <div class="stat-item">
-                <span class="stat-icon">⏱️</span>
-                <div>
-                    <div class="stat-label">Temps actif</div>
-                    <div class="stat-value" id="active-time">0 min</div>
+
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon">⏰</div>
+                        <div class="stat-label">Session active</div>
+                    </div>
+                    <div class="stat-value" id="active-time">0m</div>
                 </div>
-            </div>
-            <div class="stat-item">
-                <span class="stat-icon">🕒</span>
-                <div>
-                    <div class="stat-label">Heure actuelle</div>
-                    <div class="stat-value" id="current-time">00:00:00</div>
+
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon">🕐</div>
+                        <div class="stat-label">Heure locale</div>
+                    </div>
+                    <div class="stat-value" id="current-time">00:00</div>
                 </div>
-            </div>
-            <div class="stat-item">
-                <span class="stat-icon">📅</span>
-                <div>
-                    <div class="stat-label">Date actuelle</div>
-                    <div class="stat-value" id="current-date">01/01/2000</div>
+
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon">📅</div>
+                        <div class="stat-label">Date</div>
+                    </div>
+                    <div class="stat-value" id="current-date" style="font-size: 0.875rem;">-</div>
                 </div>
-            </div>
-            <div class="stat-item">
-                <span class="stat-icon">🌍</span>
-                <div>
-                    <div class="stat-label">Localisation</div>
-                    <div class="stat-value" id="current-location">Chargement...</div>
+
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon">📍</div>
+                        <div class="stat-label">Localisation</div>
+                    </div>
+                    <div class="stat-value" id="current-location" style="font-size: 1rem;">...</div>
                 </div>
-            </div>
-            <div class="stat-item">
-                <span class="stat-icon">🌡️</span>
-                <div>
-                    <div class="stat-label">Température</div>
-                    <div class="stat-value" id="current-temp">Chargement...</div>
+
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon">🌡️</div>
+                        <div class="stat-label">Température</div>
+                    </div>
+                    <div class="stat-value" id="current-temp">-°C</div>
                 </div>
-            </div>
-            <div class="stat-item">
-                <span class="stat-icon">💧</span>
-                <div>
-                    <div class="stat-label">Humidité</div>
-                    <div class="stat-value" id="current-humidity">Chargement...</div>
+
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon">💧</div>
+                        <div class="stat-label">Humidité</div>
+                    </div>
+                    <div class="stat-value" id="current-humidity">-%</div>
                 </div>
             </div>
         </div>
+
         <div class="sidebar-footer">
-            <div class="powered-text">⚡ Powered by Ranim Oueslati</div>
+            <div class="powered-badge">
+                <span>⚡</span>
+                <span>Powered by Ranim Oueslati</span>
+            </div>
         </div>
     </div>
 
     <div id="main-content">
         <div class="main-header">
-            <button class="toggle-sidebar" onclick="toggleSidebar()">☰ Menu</button>
-            <div class="header-title">Assistant Systèmes Embarqués</div>
-            <div style="width: 80px;"></div>
-        </div>
-        <div id="chat-container">
-            <div class="welcome-message">
-                <h2>👋 Bonjour Ranim !</h2>
-                <p>Je suis votre assistant spécialisé en systèmes embarqués. Posez-moi vos questions sur les cartes, capteurs, protocoles et environnements de développement, ou utilisez la recherche vocale en cliquant sur le microphone. Parlez clairement pour de meilleurs résultats.</p>
+            <div class="header-left">
+                <button class="toggle-sidebar" onclick="toggleSidebar()">
+                    <span>☰</span>
+                    <span>Menu</span>
+                </button>
+                <div class="header-title">Assistant Systèmes Embarqués</div>
+            </div>
+            <div class="header-actions">
+                <button class="action-btn" onclick="clearChat()">
+                    <span>🗑️</span>
+                    <span>Effacer</span>
+                </button>
             </div>
         </div>
+
+        <div id="chat-container">
+            <div class="welcome-panel">
+                <div class="welcome-icon">🤖</div>
+                <h2>Bienvenue, Ranim Oueslati</h2>
+                <p>Assistant IA avancé spécialisé en systèmes embarqués. Posez vos questions sur les microcontrôleurs, protocoles de communication, capteurs, architectures ARM/AVR, RTOS, ou utilisez la reconnaissance vocale pour une interaction fluide.</p>
+                
+                <div class="quick-actions">
+                    <div class="quick-action-card" onclick="insertQuestion('Explique-moi le protocole I2C')">
+                        <div class="quick-action-icon">🔌</div>
+                        <div class="quick-action-title">Protocoles</div>
+                        <div class="quick-action-desc">I2C, SPI, UART, CAN...</div>
+                    </div>
+                    <div class="quick-action-card" onclick="insertQuestion('Différence entre Arduino et STM32')">
+                        <div class="quick-action-icon">🎛️</div>
+                        <div class="quick-action-title">Microcontrôleurs</div>
+                        <div class="quick-action-desc">Arduino, STM32, ESP32...</div>
+                    </div>
+                    <div class="quick-action-card" onclick="insertQuestion('Capteurs de température I2C')">
+                        <div class="quick-action-icon">📡</div>
+                        <div class="quick-action-title">Capteurs</div>
+                        <div class="quick-action-desc">Température, pression...</div>
+                    </div>
+                    <div class="quick-action-card" onclick="insertQuestion('Comment utiliser FreeRTOS')">
+                        <div class="quick-action-icon">⚙️</div>
+                        <div class="quick-action-title">RTOS</div>
+                        <div class="quick-action-desc">FreeRTOS, Zephyr...</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="input-area">
             <div class="input-container">
                 <div class="input-wrapper">
-                    <input type="text" id="question" placeholder="Posez votre question ou cliquez sur le micro..." autocomplete="off">
+                    <input type="text" id="question" placeholder="Posez votre question technique..." autocomplete="off">
                 </div>
-                <button id="mic-btn" onclick="toggleVoiceRecognition()">
-                    <span style="position: relative; z-index: 1;">🎙️</span>
+                <button class="input-btn" id="mic-btn" onclick="toggleVoiceRecognition()">
+                    <span>🎙️</span>
+                    <span>Vocal</span>
                 </button>
-                <button id="send-btn" onclick="ask()">
-                    <span style="position: relative; z-index: 1;">Envoyer</span>
+                <button class="input-btn" id="send-btn" onclick="ask()">
+                    <span>Envoyer</span>
+                    <span>→</span>
                 </button>
             </div>
         </div>
@@ -709,7 +1093,7 @@
         let startTime = Date.now();
         let isFirstMessage = true;
 
-        // Speech Recognition Setup
+        // Speech Recognition
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
         let recognition = null;
         let isRecognizing = false;
@@ -717,60 +1101,29 @@
         if (SpeechRecognition) {
             recognition = new SpeechRecognition();
             recognition.lang = 'fr-FR';
-            recognition.interimResults = true; // Enable interim results for partial transcription
-            recognition.maxAlternatives = 3; // Get multiple transcription options
+            recognition.interimResults = true;
+            recognition.maxAlternatives = 3;
             recognition.continuous = false;
 
             recognition.onstart = () => {
                 isRecognizing = true;
-                const micBtn = document.getElementById('mic-btn');
-                micBtn.classList.add('active');
-                micBtn.title = 'En écoute... Cliquez pour arrêter';
+                document.getElementById('mic-btn').classList.add('active');
                 addMessage('🎙️ Écoute en cours... Parlez clairement.', 'bot');
-                // Auto-stop after 10 seconds to prevent hanging
-                setTimeout(() => {
-                    if (isRecognizing) {
-                        stopVoiceRecognition();
-                        addMessage('Aucun son détecté. Veuillez réessayer en parlant plus fort.', 'bot');
-                    }
-                }, 10000);
             };
 
             recognition.onresult = (event) => {
                 const results = event.results[0];
                 let transcript = results[0].transcript;
-                // Choose the best transcription (highest confidence)
-                for (let i = 0; i < results.length; i++) {
-                    if (results[i].confidence > results[0].confidence) {
-                        transcript = results[i].transcript;
-                    }
-                }
-                // Normalize the transcript
-                transcript = normalizeQuery(transcript);
-                const questionInput = document.getElementById('question');
-                questionInput.value = transcript;
+                document.getElementById('question').value = normalizeQuery(transcript);
                 stopVoiceRecognition();
-                addMessage(`Transcription : ${transcript}. Confirmez avec "Envoyer" ou modifiez le texte.`, 'bot');
-                // Optionally auto-send: ask();
             };
 
             recognition.onerror = (event) => {
                 stopVoiceRecognition();
-                let errorMsg = '';
-                switch (event.error) {
-                    case 'no-speech':
-                        errorMsg = 'Aucun son détecté. Parlez plus fort ou vérifiez votre microphone.';
-                        break;
-                    case 'audio-capture':
-                        errorMsg = 'Erreur de capture audio. Vérifiez votre microphone.';
-                        break;
-                    case 'not-allowed':
-                        errorMsg = 'Permission microphone refusée. Activez-la dans les paramètres.';
-                        break;
-                    default:
-                        errorMsg = `Erreur de reconnaissance vocale : ${event.error}`;
-                }
-                addMessage(errorMsg + ' Réessayez en cliquant sur le micro.', 'bot');
+                let errorMsg = 'Erreur de reconnaissance vocale';
+                if (event.error === 'no-speech') errorMsg = 'Aucun son détecté';
+                else if (event.error === 'not-allowed') errorMsg = 'Permission microphone refusée';
+                addMessage(errorMsg, 'bot');
             };
 
             recognition.onend = () => {
@@ -780,7 +1133,7 @@
 
         function toggleVoiceRecognition() {
             if (!SpeechRecognition) {
-                addMessage('La reconnaissance vocale n\'est pas supportée par votre navigateur. Essayez Chrome ou Edge.', 'bot');
+                addMessage('Reconnaissance vocale non supportée. Utilisez Chrome ou Edge.', 'bot');
                 return;
             }
             if (isRecognizing) {
@@ -794,32 +1147,25 @@
             if (recognition && isRecognizing) {
                 recognition.stop();
                 isRecognizing = false;
-                const micBtn = document.getElementById('mic-btn');
-                micBtn.classList.remove('active');
-                micBtn.title = 'Activer la recherche vocale';
+                document.getElementById('mic-btn').classList.remove('active');
             }
         }
 
-        // Normalize query to handle common issues
         function normalizeQuery(query) {
+            if (!query) return '';
             query = query.trim().toLowerCase();
-            // Common corrections for embedded systems terms
             const corrections = {
-                'alduino ono': 'arduino uno',
                 'alduino': 'arduino',
-                'scm 32': 'stm32',
-                'stmf': 'stm32f',
-                'i2c': 'i2c', // Ensure consistency
-                'stm 32': 'stm32',
-                'stm': 'stm32'
+                'raspber': 'raspberry pi',
+                'et me': 'stm32',
+                'i2c': 'i2c',
+                'spi': 'spi'
             };
             for (const [wrong, correct] of Object.entries(corrections)) {
                 if (query.includes(wrong)) {
                     query = query.replace(wrong, correct);
                 }
             }
-            // Remove punctuation and extra spaces
-            query = query.replace(/[.,]/g, '').replace(/\s+/g, ' ');
             return query;
         }
 
@@ -827,92 +1173,102 @@
             document.getElementById('sidebar').classList.toggle('collapsed');
         }
 
+        function clearChat() {
+            const messages = chatContainer.querySelectorAll('.message');
+            messages.forEach(msg => msg.remove());
+            isFirstMessage = true;
+            showWelcome();
+        }
+
+        function showWelcome() {
+            const welcomeHTML = `
+                <div class="welcome-panel">
+                    <div class="welcome-icon">🤖</div>
+                    <h2>Bienvenue, Ranim Oueslati</h2>
+                    <p>Assistant IA avancé spécialisé en systèmes embarqués.</p>
+                    <div class="quick-actions">
+                        <div class="quick-action-card" onclick="insertQuestion('Explique-moi le protocole I2C')">
+                            <div class="quick-action-icon">🔌</div>
+                            <div class="quick-action-title">Protocoles</div>
+                            <div class="quick-action-desc">I2C, SPI, UART, CAN...</div>
+                        </div>
+                        <div class="quick-action-card" onclick="insertQuestion('Différence entre Arduino et STM32')">
+                            <div class="quick-action-icon">🎛️</div>
+                            <div class="quick-action-title">Microcontrôleurs</div>
+                            <div class="quick-action-desc">Arduino, STM32, ESP32...</div>
+                        </div>
+                        <div class="quick-action-card" onclick="insertQuestion('Capteurs de température I2C')">
+                            <div class="quick-action-icon">📡</div>
+                            <div class="quick-action-title">Capteurs</div>
+                            <div class="quick-action-desc">Température, pression...</div>
+                        </div>
+                        <div class="quick-action-card" onclick="insertQuestion('Comment utiliser FreeRTOS')">
+                            <div class="quick-action-icon">⚙️</div>
+                            <div class="quick-action-title">RTOS</div>
+                            <div class="quick-action-desc">FreeRTOS, Zephyr...</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            chatContainer.innerHTML = welcomeHTML;
+        }
+
+        function insertQuestion(question) {
+            document.getElementById('question').value = question;
+            document.getElementById('question').focus();
+        }
+
         function updateDashboard() {
             document.getElementById('messages-sent').textContent = messagesSent;
             document.getElementById('responses-received').textContent = responsesReceived;
             const activeMinutes = Math.floor((Date.now() - startTime) / 60000);
-            document.getElementById('active-time').textContent = `${activeMinutes} min`;
+            document.getElementById('active-time').textContent = `${activeMinutes}m`;
             const now = new Date();
-            document.getElementById('current-time').textContent = now.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-            document.getElementById('current-date').textContent = now.toLocaleDateString('fr-FR', { year: 'numeric', month: 'long', day: 'numeric' });
+            document.getElementById('current-time').textContent = now.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+            document.getElementById('current-date').textContent = now.toLocaleDateString('fr-FR', { day: '2-digit', month: 'short' });
         }
 
         async function getWeather() {
             const apiKey = '298275e7dff8355e1766861d56b47768';
-            const fallbackCity = 'Tunis';
-            async function fetchWeatherByCity(city) {
-                const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric&lang=fr`;
-                try {
-                    const response = await fetch(url);
-                    if (!response.ok) throw new Error(`Erreur API: ${response.status}`);
-                    const data = await response.json();
-                    document.getElementById('current-location').textContent = data.name;
-                    document.getElementById('current-temp').textContent = `${data.main.temp.toFixed(1)} °C`;
-                    document.getElementById('current-humidity').textContent = `${data.main.humidity} %`;
-                } catch (error) {
-                    console.error('Erreur météo:', error);
-                    document.getElementById('current-location').textContent = 'Erreur';
-                    document.getElementById('current-temp').textContent = 'Erreur';
-                    document.getElementById('current-humidity').textContent = 'Erreur';
-                }
-            }
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(
-                    async (position) => {
-                        const lat = position.coords.latitude;
-                        const lon = position.coords.longitude;
-                        const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric&lang=fr`;
-                        try {
-                            const response = await fetch(url);
-                            if (!response.ok) throw new Error(`Erreur API: ${response.status}`);
-                            const data = await response.json();
-                            document.getElementById('current-location').textContent = data.name;
-                            document.getElementById('current-temp').textContent = `${data.main.temp.toFixed(1)} °C`;
-                            document.getElementById('current-humidity').textContent = `${data.main.humidity} %`;
-                        } catch (error) {
-                            console.error('Erreur géolocalisation:', error);
-                            fetchWeatherByCity(fallbackCity);
-                        }
-                    },
-                    () => {
-                        console.warn('Géolocalisation refusée');
-                        fetchWeatherByCity(fallbackCity);
-                    },
-                    { timeout: 10000, maximumAge: 60000 }
-                );
-            } else {
-                console.warn('Géolocalisation non supportée');
-                fetchWeatherByCity(fallbackCity);
-            }
-        }
-
-        function createSparkles(element) {
-            const rect = element.getBoundingClientRect();
-            const centerX = rect.left + rect.width / 2;
-            const centerY = rect.top + rect.height / 2;
-            for (let i = 0; i < 12; i++) {
-                const sparkle = document.createElement('div');
-                sparkle.className = 'sparkle';
-                const angle = (i / 12) * Math.PI * 2;
-                const distance = 50 + Math.random() * 30;
-                sparkle.style.left = centerX + 'px';
-                sparkle.style.top = centerY + 'px';
-                sparkle.style.setProperty('--tx', Math.cos(angle) * distance + 'px');
-                sparkle.style.setProperty('--ty', Math.sin(angle) * distance + 'px');
-                sparkle.style.background = `hsl(${280 + Math.random() * 40}, 80%, ${60 + Math.random() * 20}%)`;
-                document.body.appendChild(sparkle);
-                setTimeout(() => sparkle.remove(), 1500);
+            const city = 'Tunis';
+            const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric&lang=fr`;
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+                document.getElementById('current-location').textContent = data.name;
+                document.getElementById('current-temp').textContent = `${data.main.temp.toFixed(1)}°C`;
+                document.getElementById('current-humidity').textContent = `${data.main.humidity}%`;
+            } catch (error) {
+                document.getElementById('current-location').textContent = 'Tunis';
+                document.getElementById('current-temp').textContent = '-°C';
+                document.getElementById('current-humidity').textContent = '-%';
             }
         }
 
         function addMessage(text, sender, isHTML = false) {
             if (isFirstMessage && sender === 'user') {
-                const welcome = document.querySelector('.welcome-message');
+                const welcome = document.querySelector('.welcome-panel');
                 if (welcome) welcome.remove();
                 isFirstMessage = false;
             }
+
             const msgDiv = document.createElement('div');
             msgDiv.className = `message ${sender}`;
+
+            const headerDiv = document.createElement('div');
+            headerDiv.className = 'message-header';
+
+            const avatar = document.createElement('div');
+            avatar.className = 'message-avatar';
+            avatar.textContent = sender === 'user' ? '👤' : '🤖';
+
+            const author = document.createElement('div');
+            author.className = 'message-author';
+            author.textContent = sender === 'user' ? 'Vous' : 'EmbedAI Pro';
+
+            headerDiv.appendChild(avatar);
+            headerDiv.appendChild(author);
+
             const contentDiv = document.createElement('div');
             contentDiv.className = 'message-content';
             if (isHTML) {
@@ -920,20 +1276,20 @@
             } else {
                 contentDiv.textContent = text;
             }
-            msgDiv.appendChild(contentDiv);
+
             const timestamp = new Date().toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
             const timeSpan = document.createElement('div');
             timeSpan.className = 'message-timestamp';
             timeSpan.textContent = timestamp;
+
+            msgDiv.appendChild(headerDiv);
+            msgDiv.appendChild(contentDiv);
             msgDiv.appendChild(timeSpan);
             chatContainer.appendChild(msgDiv);
             chatContainer.scrollTo({ top: chatContainer.scrollHeight, behavior: 'smooth' });
-            if (sender === 'user') {
-                messagesSent++;
-                setTimeout(() => createSparkles(contentDiv), 100);
-            } else if (sender === 'bot') {
-                responsesReceived++;
-            }
+
+            if (sender === 'user') messagesSent++;
+            else if (sender === 'bot') responsesReceived++;
             updateDashboard();
         }
 
@@ -943,33 +1299,12 @@
                 const value = data[key];
                 if (key === "image" && value) {
                     text += `<img src="${value}" alt="${key}" class="chat-img">`;
-                } else if (key === "protocoles_detail" && typeof value === 'object') {
-                    text += `<div style="margin-top: 8px;"><strong>${key}</strong>:</div>`;
-                    for (const proto in value) {
-                        const p = value[proto];
-                        text += `<div style="margin: 8px 0; padding-left: 12px; border-left: 2px solid var(--border-light);">`;
-                        text += `<strong>${proto}</strong>: ${p.description}<br>`;
-                        text += `<em>Usage:</em> ${p.usage}<br>`;
-                        if (p.references && p.references.length > 0) {
-                            text += `<em>Références:</em> ${p.references.join(', ')}`;
-                        }
-                        text += `</div>`;
-                    }
                 } else if (Array.isArray(value)) {
                     text += `<strong>${key}</strong>: ${value.join(', ')}<br>`;
                 } else if (typeof value === 'object') {
-                    text += `<div style="margin-top: 8px;"><strong>${key}</strong>:</div>`;
+                    text += `<div style="margin-top: 12px;"><strong>${key}</strong>:</div>`;
                     for (const subKey in value) {
-                        const subVal = value[subKey];
-                        if (subKey === "image" && subVal) {
-                            text += `<img src="${subVal}" alt="${subKey}" class="chat-img">`;
-                        } else if (Array.isArray(subVal)) {
-                            text += `<div style="padding-left: 12px;"><strong>${subKey}</strong>: ${subVal.join(', ')}</div>`;
-                        } else if (typeof subVal === 'object') {
-                            text += `<div style="padding-left: 12px;"><strong>${subKey}</strong>: ${JSON.stringify(subVal)}</div>`;
-                        } else {
-                            text += `<div style="padding-left: 12px;"><strong>${subKey}</strong>: ${subVal}</div>`;
-                        }
+                        text += `<div style="padding-left: 16px; margin: 4px 0;"><strong>${subKey}</strong>: ${value[subKey]}</div>`;
                     }
                 } else {
                     text += `<strong>${key}</strong>: ${value}<br>`;
@@ -995,16 +1330,17 @@
             const questionInput = document.getElementById('question');
             let question = questionInput.value.trim();
             if (!question) return;
-            question = normalizeQuery(question); // Normalize before sending
+            question = normalizeQuery(question);
             addMessage(question, 'user');
             questionInput.value = '';
             const typingIndicator = showTypingIndicator();
+
             fetch(`/bot/chat/?question=${encodeURIComponent(question)}`)
                 .then(res => res.json())
                 .then(data => {
                     typingIndicator.remove();
                     if (data.error) {
-                        addMessage(data.error + ' Essayez de reformuler ou vérifiez l\'orthographe.', 'bot');
+                        addMessage(data.error, 'bot');
                     } else {
                         const text = formatData(data);
                         addMessage(text, 'bot', true);
@@ -1016,47 +1352,16 @@
                 });
         }
 
-        document.getElementById('question').addEventListener('focus', function(e) {
-            const input = e.target;
-            const rect = input.getBoundingClientRect();
-            for (let i = 0; i < 10; i++) {
-                setTimeout(() => {
-                    const particle = document.createElement('div');
-                    particle.className = 'particle';
-                    particle.style.left = rect.left + Math.random() * rect.width + 'px';
-                    particle.style.top = rect.top + rect.height / 2 + 'px';
-                    particle.style.background = `hsl(${217 + Math.random() * 30}, 91%, ${50 + Math.random() * 20}%)`;
-                    document.body.appendChild(particle);
-                    setTimeout(() => particle.remove(), 2000);
-                }, i * 80);
-            }
+        document.getElementById('question').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') ask();
         });
-
-        const statItems = document.querySelectorAll('.stat-item');
-        statItems.forEach(item => {
-            item.addEventListener('mouseenter', () => createSparkles(item));
-        });
-
-        const poweredText = document.querySelector('.powered-text');
-        poweredText.addEventListener('mouseenter', () => createSparkles(poweredText));
 
         window.addEventListener('load', () => {
-            const profileImg = document.getElementById('profile-img');
-            profileImg.style.opacity = '0';
-            profileImg.style.transform = 'scale(0.9)';
-            setTimeout(() => {
-                profileImg.style.transition = 'all 0.4s ease';
-                profileImg.style.opacity = '1';
-                profileImg.style.transform = 'scale(1)';
-            }, 100);
-            const msg = new SpeechSynthesisUtterance("Bonjour Ranim, comment puis-je vous aider ? Parlez clairement pour la recherche vocale.");
-            msg.lang = 'fr-FR';
-            msg.rate = 1;
-            msg.pitch = 1;
-            speechSynthesis.speak(msg);
             updateDashboard();
             getWeather();
-            document.getElementById('mic-btn').title = 'Activer la recherche vocale';
+            const msg = new SpeechSynthesisUtterance("Bonjour Ranim, je suis EmbedAI Pro, votre assistant systèmes embarqués.");
+            msg.lang = 'fr-FR';
+            speechSynthesis.speak(msg);
         });
 
         setInterval(updateDashboard, 1000);

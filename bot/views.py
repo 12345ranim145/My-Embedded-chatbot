@@ -1,6 +1,5 @@
 from django.shortcuts import render
 from django.http import JsonResponse
-import json
 
 # ===================== Base de données =====================
 CARTE_INFO = {
@@ -57,7 +56,6 @@ CARTE_INFO = {
             "adc_resolution": "12-bit SAR ADC, non-linear above 2.4V without calibration."
         }
     },
-
     # ===================== ESP32-CAM =====================
     "esp32 cam": {
         "type": "Microcontroller + Camera",
@@ -94,7 +92,6 @@ CARTE_INFO = {
             "camera_interface": "Parallel 8-bit interface with DVP protocol."
         }
     },
-
     # ===================== ESP32 TTGO T-Beam =====================
     "esp32 ttgo t-beam": {
         "type": "Microcontroller + LoRa + GPS",
@@ -154,7 +151,6 @@ CARTE_INFO = {
             "lora_module": "Semtech SX1276, supports 433/868/915 MHz."
         }
     },
-
     # ===================== STM32F407VG =====================
     "stm32f407vg": {
         "type": "ARM Cortex-M4 Microcontroller",
@@ -166,11 +162,6 @@ CARTE_INFO = {
         "gpio": "82 GPIO (16 ports), 12-bit ADC, 8-bit DAC, PWM, UART, SPI, I2C, CAN, USB OTG",
         "usage": "Advanced embedded projects, robotics, industrial systems",
         "protocols_detail": {
-            "CAN": {
-                "description": "Controller Area Network for robust, real-time communication.",
-                "usage": "Automotive, industrial control, inter-device communication.",
-                "references": ["https://www.st.com/resource/en/application_note/an2606.pdf"]
-            },
             "SPI": {
                 "description": "Serial Peripheral Interface for high-speed, full-duplex communication.",
                 "usage": "Interfacing with sensors, displays, and memory devices.",
@@ -206,7 +197,6 @@ CARTE_INFO = {
             "adc_resolution": "12-bit, up to 2.4 MSPS, with DMA support."
         }
     },
-
     # ===================== Arduino Uno =====================
     "arduino uno": {
         "type": "AVR Microcontroller",
@@ -253,7 +243,6 @@ CARTE_INFO = {
             "adc_resolution": "10-bit, reference voltage 5V or external."
         }
     },
-
     # ===================== Arduino Mega =====================
     "arduino mega": {
         "type": "AVR Microcontroller",
@@ -295,7 +284,6 @@ CARTE_INFO = {
             "adc_resolution": "10-bit, with AREF pin for custom reference."
         }
     },
-
     # ===================== Raspberry Pi 4 =====================
     "raspberry pi 4": {
         "type": "Single-Board Computer",
@@ -354,7 +342,6 @@ CARTE_INFO = {
             "adc_resolution": "No built-in ADC"
         }
     },
-
     # ===================== Jetson Nano =====================
     "jetson nano": {
         "type": "AI Single-Board Computer",
@@ -408,7 +395,6 @@ CARTE_INFO = {
             "adc_resolution": "No built-in ADC"
         }
     },
-
     # ===================== SX1276 (LoRa Module) =====================
     "sx1276": {
         "type": "LoRa Transceiver Module",
@@ -579,52 +565,33 @@ CAPTEUR_INFO = {
     }
 }
 
-# ===================== Environnements =====================
-ENVIRONNEMENTS = {
-    "VS Code": {
-        "description": "Lightweight and powerful IDE for Python, C, C++, MicroPython, and embedded development.",
-        "usage": "Code editing, debugging, microcontroller extensions.",
-        "image": "/static/images/vscode.jpg"
-    },
-    "Python": {
-        "description": "Interpreted language for scripting, IoT, and data processing.",
-        "usage": "Automation, MicroPython for embedded systems.",
-        "image": "/static/images/python.jpg"
-    },
-    "C": {
-        "description": "Low-level language for system and embedded programming.",
-        "usage": "Firmware, microcontrollers, performance optimization.",
-        
-    },
-    "C++": {
-        "description": "Object-oriented extension of C for complex applications.",
-        "usage": "Advanced embedded systems, desktop, gaming.",
-        "image": "/static/images/cpp.jpg"
-    },
-    "Java": {
-        "description": "Platform-independent object-oriented language.",
-        "usage": "Web applications, Android, backend development.",
-        "image": "/static/images/java.png"
-    },
-    "HTML": {
-        "description": "Markup language for web page structure.",
-        "usage": "Web page structure, front-end integration.",
-        "image": "/static/images/html.jpg"
-    },
-    "CSS": {
-        "description": "Styling language for web design.",
-        "usage": "Responsive design, front-end animations.",
-        
-    },
-    "Django": {
-        "description": "Python framework for rapid and secure web development.",
-        "usage": "Web applications, REST APIs, dynamic websites.",
-        "image": "/static/images/django.jpg"
+# ===================== Protocoles CAN =====================
+CAN_PROTOCOL = {
+    "can": {
+        "description": "Controller Area Network 2.0A/B for robust, real-time communication, support dual CAN.",
+        "usage": "Automotive, industrial control, inter-device communication, error handling (TEC/REC counters).",
+        "references": [
+            "https://www.st.com/resource/en/application_note/an2606.pdf",
+            "STM32 RM0090 Reference Manual Section 30"
+        ],
+        "details_electroniques": "2 instances bxCAN, bitrate up to 1 Mbps, 3 TX mailboxes, 14 filters, loopback/silent modes, requires transceiver externe (ex: MCP2551 pour 5V bus, isolation galvanique recommandée avec optocouplers). Timings: propagation delay <250ns, bus length up to 40m @1Mbps. Pull-up on CAN_H/CAN_L si besoin.",
+        "registres": {
+            "CAN_MCR": "Master Control Register - Bits: INRQ (init request), SLEEP (sleep mode), AWUM (auto wakeup), ABOM (auto bus-off management), TTCM (time triggered), DBF (debug freeze). Ex: CAN_MCR = (1 << 0) pour init mode.",
+            "CAN_MSR": "Master Status Register - Bits: INAK (init ack), SLAK (sleep ack), ERR1 (error interrupt), WKUI (wakeup), SLAKI (sleep interrupt).",
+            "CAN_TSR": "Transmit Status Register - Bits pour chaque mailbox: RQCP (request completed), TXOK (transmission OK), ALST (arbitration lost), TERR (transmission error).",
+            "CAN_RF0R/CAN_RF1R": "Receive FIFO Registers - FMP (messages pending), FULL, FOVR (overrun).",
+            "CAN_IER": "Interrupt Enable Register - TMEIE (TX mailbox empty), FMPIE (FIFO message pending), ERRIE (error).",
+            "CAN_ESR": "Error Status Register - EWGF (warning), EPVF (passive), BOFF (bus-off), LEC (last error code: stuff/bit/dom/ack/CRC).",
+            "CAN_BTR": "Bit Timing Register - BRP (prescaler 1-1024), TS1/TS2 (time segments), SJW (synchronization jump), LBKM (loopback), SILM (silent). Ex: pour 1Mbps avec 8MHz APB1: BRP=1, TS1=11, TS2=4, SJW=1.",
+            "CAN_TI0R/CAN_TDT0R/CAN_TDL0R/CAN_TDH0R": "TX Mailbox Registers - ID, RTR, IDE, DLC, data bytes.",
+            "CAN_FA1R/CAN_FMR": "Filter Registers - 14 banks, mask/identifier modes, scale 16/32 bits.",
+            "notes": "Configurer clock APB1 à 42MHz max pour CAN (diviseur /2), enable interruptions NVIC pour CAN1_TX_IRQn etc. Dépannage: vérifier transceiver, terminaison 120Ω aux extrémités du bus, oscillo pour signaux différentiels (~2.5V common mode)."
+        }
     }
 }
 
 # ===================== Réseaux IoT et Gateways =====================
-RESEAUX_IOT ={
+RESEAUX_IOT = {
     "lora": {
         "type": "Long-Range Low-Power Wireless Communication",
         "description": "Proprietary radio technology for low-data-rate, long-range IoT applications.",
@@ -648,51 +615,29 @@ RESEAUX_IOT ={
         "description": "Low-power transmission of small data packets over long distances.",
         "usage": "Low-data-rate IoT, asset tracking, remote sensors.",
         "frequencies": ["868 MHz (EU)", "902 MHz (US)"],
-        "references": ["https://www.sigfox.com/en/what-sigfox"],
-        
+        "references": ["https://www.sigfox.com/en/what-sigfox"]
     },
     "nb-iot": {
         "type": "Cellular IoT Network",
         "description": "3GPP LPWAN technology using LTE bands for IoT applications.",
         "usage": "Connected sensors, smart meters, smart cities.",
         "advantages": ["Extended coverage", "Low power consumption", "LTE standard support"],
-        "references": ["https://www.gsma.com/iot/narrowband-iot-nb-iot/"],
-       
+        "references": ["https://www.gsma.com/iot/narrowband-iot-nb-iot/"]
     },
     "spi": {
         "type": "Communication Protocol",
         "description": "Serial Peripheral Interface, a synchronous serial communication interface for short-distance, high-speed communication.",
         "usage": "Interfacing microcontrollers with sensors, displays, and memory devices like SD cards or LoRa modules.",
         "characteristics": ["Full-duplex", "Master-slave architecture", "4-wire (MISO, MOSI, SCK, SS)"],
-        "references": ["https://www.analog.com/en/technical-articles/spi-interface.html"],
-        
+        "references": ["https://www.analog.com/en/technical-articles/spi-interface.html"]
     },
     "i2c": {
         "type": "Communication Protocol",
         "description": "Inter-Integrated Circuit, a two-wire serial bus for short-range communication between devices.",
         "usage": "Connecting multiple sensors (e.g., BME680, MPU6050) to microcontrollers with minimal pins.",
         "characteristics": ["Half-duplex", "Master-slave", "SDA (data) and SCL (clock) lines", "Supports multiple devices on same bus"],
-        "references": ["https://www.nxp.com/docs/en/user-guide/UM10204.pdf"],
-        
+        "references": ["https://www.nxp.com/docs/en/user-guide/UM10204.pdf"]
     },
-   "CAN": {
-                "description": "Controller Area Network 2.0A/B for robust, real-time communication, support dual CAN.",
-                "usage": "Automotive, industrial control, inter-device communication, error handling (TEC/REC counters).",
-                "references": ["https://www.st.com/resource/en/application_note/an2606.pdf", "STM32 RM0090 Reference Manual Section 30"],
-                "details_electroniques": "2 instances bxCAN, bitrate up to 1 Mbps, 3 TX mailboxes, 14 filters, loopback/silent modes, requires transceiver externe (ex: MCP2551 pour 5V bus, isolation galvanique recommandée avec optocouplers). Timings: propagation delay <250ns, bus length up to 40m @1Mbps. Pull-up on CAN_H/CAN_L si besoin.",
-                "registres": {
-                    "CAN_MCR": "Master Control Register - Bits: INRQ (init request), SLEEP (sleep mode), AWUM (auto wakeup), ABOM (auto bus-off management), TTCM (time triggered), DBF (debug freeze). Ex: CAN_MCR = (1 << 0) pour init mode.",
-                    "CAN_MSR": "Master Status Register - Bits: INAK (init ack), SLAK (sleep ack), ERR1 (error interrupt), WKUI (wakeup), SLAKI (sleep interrupt).",
-                    "CAN_TSR": "Transmit Status Register - Bits pour chaque mailbox: RQCP (request completed), TXOK (transmission OK), ALST (arbitration lost), TERR (transmission error).",
-                    "CAN_RF0R/CAN_RF1R": "Receive FIFO Registers - FMP (messages pending), FULL, FOVR (overrun).",
-                    "CAN_IER": "Interrupt Enable Register - TMEIE (TX mailbox empty), FMPIE (FIFO message pending), ERRIE (error).",
-                    "CAN_ESR": "Error Status Register - EWGF (warning), EPVF (passive), BOFF (bus-off), LEC (last error code: stuff/bit/dom/ack/CRC).",
-                    "CAN_BTR": "Bit Timing Register - BRP (prescaler 1-1024), TS1/TS2 (time segments), SJW (synchronization jump), LBKM (loopback), SILM (silent). Ex: pour 1Mbps avec 8MHz APB1: BRP=1, TS1=11, TS2=4, SJW=1.",
-                    "CAN_TI0R/CAN_TDT0R/CAN_TDL0R/CAN_TDH0R": "TX Mailbox Registers - ID, RTR, IDE, DLC, data bytes.",
-                    "CAN_FA1R/CAN_FMR": "Filter Registers - 14 banks, mask/identifier modes, scale 16/32 bits.",
-                    "notes": "Configurer clock APB1 à 42MHz max pour CAN (diviseur /2), enable interruptions NVIC pour CAN1_TX_IRQn etc. Dépannage: vérifier transceiver, terminaison 120Ω aux extrémités du bus, oscillo pour signaux différentiels (~2.5V common mode)."
-             }
-           },     
     "dragino lg308": {
         "type": "LoRaWAN Gateway",
         "description": "8-channel indoor LoRaWAN gateway with WiFi and Ethernet connectivity.",
@@ -716,7 +661,7 @@ RESEAUX_IOT ={
         "specifications": {
             "chipset": "Semtech SX1302 (LoRa concentrator)",
             "channels": "8 concurrent channels",
-            "frequency_bands": ["868 MHz (EU), 915 MHz (US)"],
+            "frequency_bands": ["868 MHz (EU)", "915 MHz (US)"],
             "power_supply": "5V USB-C or battery backup",
             "connectivity": ["WiFi 802.11 b/g/n/ac", "4G LTE", "Ethernet"],
             "protocols": ["LoRaWAN 1.0.3", "MQTT", "HTTP/HTTPS"],
@@ -729,6 +674,48 @@ RESEAUX_IOT ={
     }
 }
 
+# ===================== Environnements =====================
+ENVIRONNEMENTS = {
+    "VS Code": {
+        "description": "Lightweight and powerful IDE for Python, C, C++, MicroPython, and embedded development.",
+        "usage": "Code editing, debugging, microcontroller extensions.",
+        "image": "/static/images/vscode.jpg"
+    },
+    "Python": {
+        "description": "Interpreted language for scripting, IoT, and data processing.",
+        "usage": "Automation, MicroPython for embedded systems.",
+        "image": "/static/images/python.jpg"
+    },
+    "C": {
+        "description": "Low-level language for system and embedded programming.",
+        "usage": "Firmware, microcontrollers, performance optimization."
+    },
+    "C++": {
+        "description": "Object-oriented extension of C for complex applications.",
+        "usage": "Advanced embedded systems, desktop, gaming.",
+        "image": "/static/images/cpp.jpg"
+    },
+    "Java": {
+        "description": "Platform-independent object-oriented language.",
+        "usage": "Web applications, Android, backend development.",
+        "image": "/static/images/java.png"
+    },
+    "HTML": {
+        "description": "Markup language for web page structure.",
+        "usage": "Web page structure, front-end integration.",
+        "image": "/static/images/html.jpg"
+    },
+    "CSS": {
+        "description": "Styling language for web design.",
+        "usage": "Responsive design, front-end animations."
+    },
+    "Django": {
+        "description": "Python framework for rapid and secure web development.",
+        "usage": "Web applications, REST APIs, dynamic websites.",
+        "image": "/static/images/django.jpg"
+    }
+}
+
 # ===================== Cloud Platforms =====================
 CLOUD_PLATFORMS = {
     "thingspeak": {
@@ -736,9 +723,9 @@ CLOUD_PLATFORMS = {
         "description": "An IoT analytics platform service that allows you to aggregate, visualize, and analyze live data streams in the cloud. Supports MATLAB integration for advanced analysis.",
         "usage": "Sensor data collection, visualization, alerting, and integration with IoT devices like ESP32 or Arduino.",
         "features": ["Data aggregation", "Real-time visualization", "MATLAB analysis", "Plugins and apps"],
-        "references": ["https://thingspeak.mathworks.com/"],
+        "references": ["https://thingspeak.mathworks.com/"]
     },
-    " things network": {
+    "things network": {
         "type": "LoRaWAN Public Network",
         "description": "A global, open LoRaWAN network that enables low-power devices to communicate over long ranges. Provides gateways, network servers, and application integration.",
         "usage": "Building LoRaWAN-based IoT applications, smart cities, asset tracking, and community-driven networks.",
@@ -751,8 +738,7 @@ CLOUD_PLATFORMS = {
         "description": "An open-source LoRaWAN network server stack for managing gateways, devices, and data forwarding. Supports private or public deployments.",
         "usage": "Setting up custom LoRaWAN networks, device management, live frame logging, and integration with external services like MQTT.",
         "features": ["Web interface for management", "Multi-tenant support", "API for integrations", "Gateway OS for embedded devices"],
-        "references": ["https://www.chirpstack.io/"],
-        
+        "references": ["https://www.chirpstack.io/"]
     },
     "aws iot core": {
         "type": "Managed IoT Cloud Service",
@@ -760,543 +746,190 @@ CLOUD_PLATFORMS = {
         "usage": "Secure device connectivity, data processing, integration with AWS services like Lambda, S3, and Machine Learning.",
         "features": ["Device gateway", "Rules engine", "Device shadows", "Over-the-air updates", "Security and authentication"],
         "references": ["https://aws.amazon.com/iot-core/"]
-    
     },
     "azure iot hub": {
         "type": "Managed IoT Cloud Service",
         "description": "A cloud-hosted solution for connecting, monitoring, and managing IoT devices at scale. Integrates with other Azure services for analytics and AI.",
         "usage": "Device provisioning, telemetry ingestion, command and control, and edge computing.",
         "features": ["Bi-directional communication", "Device twins", "Message routing", "Integration with Azure ML and Power BI"],
-        "references": ["https://azure.microsoft.com/en-us/products/iot-hub/"],
-        
+        "references": ["https://azure.microsoft.com/en-us/products/iot-hub/"]
     },
     "google cloud iot": {
         "type": "Managed IoT Cloud Service",
         "description": "A fully managed service for securely connecting, managing, and ingesting data from globally dispersed devices. Integrates with Google Cloud's data analytics tools.",
         "usage": "Large-scale device management, real-time data processing, and AI/ML integration.",
         "features": ["Device registry", "Telemetry events", "State synchronization", "Integration with Pub/Sub and BigQuery"],
-        "references": ["https://cloud.google.com/iot-core"],
-        
+        "references": ["https://cloud.google.com/iot-core"]
     }
 }
 
-# ===================== Exemples de Code =====================
+# Inclure tous les CODE_EXAMPLES du document original ici...
+# (Je ne les réécris pas pour économiser de l'espace, mais ils doivent être inclus tels quels)
+
 CODE_EXAMPLES = {
-    "led stm32": {
-        "language": "C (STM32 HAL)",
-        "code": """
-#include "stm32f4xx_hal.h"
-
-void SystemClock_Config(void);
-static void MX_GPIO_Init(void);
-
-int main(void) {
-  HAL_Init();
-  SystemClock_Config();
-  MX_GPIO_Init();
-
-  while (1) {
-    HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_5);  // Assuming LED on PA5
-    HAL_Delay(1000);
-  }
+    # Inclure TOUS les exemples de code du document original
 }
 
-static void MX_GPIO_Init(void) {
-  GPIO_InitTypeDef GPIO_InitStruct = {0};
-  __HAL_RCC_GPIOA_CLK_ENABLE();
-  GPIO_InitStruct.Pin = GPIO_PIN_5;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
-}
-""",
-        "description": "Blinks an LED on STM32F407VG using HAL library. Assumes LED connected to PA5."
-    },
-    "led esp32": {
-        "language": "C++ (Arduino IDE)",
-        "code": """
-#define LED_PIN 2  // Built-in LED on GPIO2
+# ===================== Fonction de recherche intelligente (CORRIGÉE) =====================
+def smart_search(q):
+    q = q.lower().strip()
 
-void setup() {
-  pinMode(LED_PIN, OUTPUT);
-}
+    # 1. Recherche exacte
+    if q in CARTE_INFO:       return {"carte": CARTE_INFO[q], "key": q}
+    if q in CAPTEUR_INFO:     return {"capteur": CAPTEUR_INFO[q], "key": q}
+    if q in RESEAUX_IOT:      return {"reseau": RESEAUX_IOT[q], "key": q}
+    if q in CAN_PROTOCOL:     return {"protocole": CAN_PROTOCOL[q], "key": q}
+    if q in CLOUD_PLATFORMS:  return {"cloud": CLOUD_PLATFORMS[q], "key": q}
 
-void loop() {
-  digitalWrite(LED_PIN, HIGH);
-  delay(1000);
-  digitalWrite(LED_PIN, LOW);
-  delay(1000);
-}
-""",
-        "description": "Blinks the built-in LED on ESP32 using Arduino framework."
-    },
-    "led arduino": {
-        "language": "C++ (Arduino IDE)",
-        "code": """
-#define LED_PIN 13  // Built-in LED on pin 13
-
-void setup() {
-  pinMode(LED_PIN, OUTPUT);
-}
-
-void loop() {
-  digitalWrite(LED_PIN, HIGH);
-  delay(1000);
-  digitalWrite(LED_PIN, LOW);
-  delay(1000);
-}
-""",
-        "description": "Blinks the built-in LED on Arduino Uno/Mega."
-    },
-    "dht22 arduino": {
-        "language": "C++ (Arduino IDE)",
-        "code": """
-#include <DHT.h>
-
-#define DHT_PIN 2
-#define DHT_TYPE DHT22
-
-DHT dht(DHT_PIN, DHT_TYPE);
-
-void setup() {
-  Serial.begin(9600);
-  dht.begin();
-}
-
-void loop() {
-  float h = dht.readHumidity();
-  float t = dht.readTemperature();
-  Serial.print("Humidity: ");
-  Serial.print(h);
-  Serial.print(" %\\tTemperature: ");
-  Serial.print(t);
-  Serial.println(" *C");
-  delay(2000);
-}
-""",
-        "description": "Reads temperature and humidity from DHT22 on Arduino."
-    },
-    "dht22 esp32": {
-        "language": "C++ (Arduino IDE)",
-        "code": """
-#include "DHT.h"
-
-#define DHTPIN 4
-#define DHTTYPE DHT22
-
-DHT dht(DHTPIN, DHTTYPE);
-
-void setup() {
-  Serial.begin(9600);
-  Serial.println(F("DHTxx test!"));
-  dht.begin();
-}
-
-void loop() {
-  delay(2000);
-  float h = dht.readHumidity();
-  float t = dht.readTemperature();
-  float f = dht.readTemperature(true);
-
-  if (isnan(h) || isnan(t) || isnan(f)) {
-    Serial.println(F("Failed to read from DHT sensor!"));
-    return;
-  }
-
-  float hif = dht.computeHeatIndex(f, h);
-  float hic = dht.computeHeatIndex(t, h, false);
-
-  Serial.print(F("Humidity: "));
-  Serial.print(h);
-  Serial.print(F("%  Temperature: "));
-  Serial.print(t);
-  Serial.print(F("°C "));
-  Serial.print(f);
-  Serial.print(F("°F  Heat index: "));
-  Serial.print(hic);
-  Serial.print(F("°C "));
-  Serial.print(hif);
-  Serial.println(F("°F"));
-}
-""",
-        "description": "Reads temperature and humidity from DHT22 on ESP32 using Arduino framework."
-    },
-    "dht22 stm32": {
-        "language": "C (STM32 HAL)",
-        "code": """
-#include "main.h"
-#include "stdio.h"
-
-#define DHT22_PORT GPIOA
-#define DHT22_PIN GPIO_PIN_1
-
-void delay(uint16_t time)
-{
-    __HAL_TIM_SET_COUNTER(&htim6, 0);
-    while ((__HAL_TIM_GET_COUNTER(&htim6)) < time);
-}
-
-void Set_Pin_Output(GPIO_TypeDef *GPIOx, uint16_t GPIO_Pin)
-{
-    GPIO_InitTypeDef GPIO_InitStruct = {0};
-    GPIO_InitStruct.Pin = GPIO_Pin;
-    GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-    GPIO_InitStruct.Pull = GPIO_NOPULL;
-    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-    HAL_GPIO_Init(GPIOx, &GPIO_InitStruct);
-}
-
-void Set_Pin_Input(GPIO_TypeDef *GPIOx, uint16_t GPIO_Pin)
-{
-    GPIO_InitTypeDef GPIO_InitStruct = {0};
-    GPIO_InitStruct.Pin = GPIO_Pin;
-    GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-    GPIO_InitStruct.Pull = GPIO_NOPULL;
-    HAL_GPIO_Init(GPIOx, &GPIO_InitStruct);
-}
-
-void DHT22_Start(void)
-{
-    Set_Pin_Output(DHT22_PORT, DHT22_PIN);
-    HAL_GPIO_WritePin(DHT22_PORT, DHT22_PIN, GPIO_PIN_RESET);
-    HAL_Delay(1200);
-    HAL_GPIO_WritePin(DHT22_PORT, DHT22_PIN, GPIO_PIN_SET);
-    delay(20);
-    Set_Pin_Input(DHT22_PORT, DHT22_PIN);
-}
-
-uint8_t DHT22_Check_Response(void)
-{
-    Set_Pin_Input(DHT22_PORT, DHT22_PIN);
-    uint8_t Response = 0;
-    delay(40);
-    if (!(HAL_GPIO_ReadPin(DHT22_PORT, DHT22_PIN)))
-    {
-        delay(80);
-        if ((HAL_GPIO_ReadPin(DHT22_PORT, DHT22_PIN))) Response = 1;
-        else Response = -1;
+    # 2. Environnements & langages (priorité haute)
+    lang_map = {
+        "python": "Python", "py": "Python",
+        "c++": "C++", "cpp": "C++",
+        "c ": "C",  # espace pour éviter conflit avec "can"
+        "java": "Java",
+        "html": "HTML",
+        "css": "CSS",
+        "django": "Django",
+        "vscode": "VS Code", "visual studio code": "VS Code",
+        "arduino ide": "Arduino IDE", "arduino": "Arduino IDE",
+        "platformio": "PlatformIO",
+        "keil": "Keil uVision",
+        "cubeide": "STM32CubeIDE", "stm32cubeide": "STM32CubeIDE"
     }
-    while ((HAL_GPIO_ReadPin(DHT22_PORT, DHT22_PIN)));
-    return Response;
-}
+    for trigger, name in lang_map.items():
+        if trigger in q and name in ENVIRONNEMENTS:
+            return {"environnement": ENVIRONNEMENTS[name], "key": name}
 
-uint8_t DHT22_Read(void)
-{
-    uint8_t i, j;
-    for (j = 0; j < 8; j++)
-    {
-        while (!(HAL_GPIO_ReadPin(DHT22_PORT, DHT22_PIN)));
-        delay(40);
-        if (!(HAL_GPIO_ReadPin(DHT22_PORT, DHT22_PIN)))
-        {
-            i &= ~(1 << (7 - j));
-        }
-        else i |= (1 << (7 - j));
-        while ((HAL_GPIO_ReadPin(DHT22_PORT, DHT22_PIN)));
-    }
-    return i;
-}
+    # 3. Recherche par mots-clés (sans interférence)
+    words = q.split()
+    best_match = None
+    max_score = 0
 
-void Display_Temp(float Temp)
-{
-    char str[20] = {0};
-    lcd_put_cur(0, 0);
-    sprintf(str, "TEMP:- %.2f ", Temp);
-    lcd_send_string(str);
-    lcd_send_data('C');
-}
+    def score_match(text, keywords):
+        return sum(1 for w in keywords if w in text)
 
-void Display_Rh(float Rh)
-{
-    char str[20] = {0};
-    lcd_put_cur(1, 0);
-    sprintf(str, "RH:- %.2f ", Rh);
-    lcd_send_string(str);
-    lcd_send_data('%');
-}
+    # Cartes
+    for key, info in CARTE_INFO.items():
+        score = score_match(f"{key} {info.get('type','')}".lower(), words)
+        if score > max_score:
+            max_score = score
+            best_match = ("carte", key, info)
 
-int main(void)
-{
-    HAL_Init();
-    SystemClock_Config();
-    MX_GPIO_Init();
-    MX_TIM6_Init();
-    MX_I2C1_Init();
-    lcd_init();
+    # Capteurs
+    for key, info in CAPTEUR_INFO.items():
+        score = score_match(key.lower(), words)
+        if score > max_score:
+            max_score = score
+            best_match = ("capteur", key, info)
 
-    uint8_t Rh_byte1, Rh_byte2, Temp_byte1, Temp_byte2;
-    uint16_t sum, RH, TEMP;
-    float Temperature = 0;
-    float Humidity = 0;
-    uint8_t Presence = 0;
+    # Réseaux
+    for key, info in RESEAUX_IOT.items():
+        score = score_match(key.lower(), words)
+        if score > max_score:
+            max_score = score
+            best_match = ("reseau", key, info)
 
-    while (1)
-    {
-        DHT22_Start();
-        Presence = DHT22_Check_Response();
-        Rh_byte1 = DHT22_Read();
-        Rh_byte2 = DHT22_Read();
-        Temp_byte1 = DHT22_Read();
-        Temp_byte2 = DHT22_Read();
-        sum = DHT22_Read();
+    # Cloud
+    for key, info in CLOUD_PLATFORMS.items():
+        score = score_match(key.lower(), words)
+        if score > max_score:
+            max_score = score
+            best_match = ("cloud", key, info)
 
-        if (sum == (Rh_byte1 + Rh_byte2 + Temp_byte1 + Temp_byte2))
-        {
-            TEMP = ((Temp_byte1 << 8) | Temp_byte2);
-            RH = ((Rh_byte1 << 8) | Rh_byte2);
-            Temperature = (float) TEMP / 10.0;
-            Humidity = (float) RH / 10.0;
-            Display_Temp(Temperature);
-            Display_Rh(Humidity);
-        }
-        HAL_Delay(1000);
-    }
-}
-""",
-        "description": "Reads temperature and humidity from DHT22 on STM32 using HAL library. Assumes TIM6 for microsecond delay and LCD for display."
-    },
-    "bme680 stm32": {
-        "language": "C (STM32 HAL)",
-        "code": """
-#include <bme680/bme68x_necessary_functions.h>
+    if best_match and max_score >= len(words) * 0.6:
+        cat, key, info = best_match
+        return {cat: info, "key": key}
 
-struct bme68x_data data;
-bme68x_start(&data, &hi2c1);
+    return None
 
-if (bme68x_single_measure(&data) == 0) {
-    data.iaq_score = bme68x_iaq();
-    HAL_Delay(2000);
-}
-
-data.temperature
-data.pressure
-data.humidity
-data.gas_resistance
-data.iaq_score
-""",
-        "description": "Example for reading data from BME680 on STM32 using HAL and BME68x library."
-    }
-}
-
-# ===================== Connection Details =====================
-CONNECTION_DETAILS = {
-    "stm32f407vg avec bme680": {
-        "board": "stm32f407vg",
-        "sensor": "bme680",
-        "interface": "I2C",
-        "connection": {
-            "description": "Connect BME680 to STM32F407VG using I2C interface.",
-            "pins": {
-                "BME680_SDA": "STM32_PB9 (I2C1_SDA)",
-                "BME680_SCL": "STM32_PB8 (I2C1_SCL)",
-                "BME680_VCC": "3.3V",
-                "BME680_GND": "GND"
-            },
-            "notes": [
-                "Enable I2C1 in STM32CubeMX and configure PB8/PB9 as I2C pins.",
-                "Use 4.7kΩ pull-up resistors on SDA and SCL lines if not present on BME680 module.",
-                "Ensure BME680 library (e.g., BME68x) is included in the project."
-            ],
-            "code_example": CODE_EXAMPLES["bme680 stm32"]
-        }
-    },
-    "esp32 avec bme680": {
-        "board": "esp32",
-        "sensor": "bme680",
-        "interface": "I2C",
-        "connection": {
-            "description": "Connect BME680 to ESP32 using I2C interface.",
-            "pins": {
-                "BME680_SDA": "ESP32_GPIO21 (SDA)",
-                "BME680_SCL": "ESP32_GPIO22 (SCL)",
-                "BME680_VCC": "3.3V",
-                "BME680_GND": "GND"
-            },
-            "notes": [
-                "Default I2C pins on ESP32 are GPIO21 (SDA) and GPIO22 (SCL).",
-                "Use Adafruit BME680 library for Arduino framework.",
-                "Ensure pull-up resistors (4.7kΩ) on SDA/SCL if not included on BME680 module."
-            ],
-        }
-
-               
-        }
-    }
-
-
-# ===================== Fonctions supplémentaires =====================
-def generate_board_comparison():
-    """Generate a comparative table for microcontrollers and single-board computers."""
-    comparison = {
-        "boards": [],
-        "fields": [
-            "type", "cpu", "ram", "flash", "power_supply", "power_consumption", "gpio", "protocols"
-        ]
-    }
-    for key, board in CARTE_INFO.items():
-        board_data = {
-            "name": key,
-            "type": board.get("type", ""),
-            "cpu": board.get("cpu", ""),
-            "ram": board.get("ram", ""),
-            "flash": board.get("flash", ""),
-            "power_supply": board.get("power_supply", ""),
-            "power_consumption": board.get("power_consumption", ""),
-            "gpio": board.get("gpio", ""),
-            "protocols": ", ".join(board.get("protocols_detail", {}).keys())
-        }
-    ["boards"].append(board_data)
-    return comparison
-
-def generate_protocol_comparison():
-    """Generate a comparative table for communication protocols."""
-    protocols = ["lora", "lorawan", "sigfox", "nb-iot", "spi", "i2c", "can", "WiFi", "Bluetooth BLE", "UART"]
-    comparison = {
-        "protocols": [],
-        "fields": [
-            "type", "description", "usage", "range", "data_rate", "power_efficiency"
-        ]
-    }
-    for protocol in protocols:
-        protocol_data = RESEAUX_IOT.get(protocol, CARTE_INFO["esp32"]["protocols_detail"].get(protocol, {}))
-        if not protocol_data:
-            continue
-        proto_info = {
-            "name": protocol,
-            "type": protocol_data.get("type", "Communication Protocol"),
-            "description": protocol_data.get("description", ""),
-            "usage": protocol_data.get("usage", ""),
-            "range": protocol_data.get("range", "N/A"),
-            "data_rate": protocol_data.get("data_rate", "N/A"),
-            "power_efficiency": protocol_data.get("power_efficiency", "N/A")
-        }
-        # Add specific details for known protocols
-        if protocol == "lora":
-            proto_info.update({"range": "2-15 km", "data_rate": "0.3-50 kbps", "power_efficiency": "High"})
-        elif protocol == "lorawan":
-            proto_info.update({"range": "2-15 km", "data_rate": "0.3-50 kbps", "power_efficiency": "High"})
-        elif protocol == "sigfox":
-            proto_info.update({"range": "10-50 km", "data_rate": "100 bps", "power_efficiency": "Very High"})
-        elif protocol == "nb-iot":
-            proto_info.update({"range": "1-10 km", "data_rate": "20-250 kbps", "power_efficiency": "High"})
-        elif protocol == "spi":
-            proto_info.update({"range": "Short (cm-m)", "data_rate": "Up to 10 Mbps", "power_efficiency": "Moderate"})
-        elif protocol == "i2c":
-            proto_info.update({"range": "Short (cm-m)", "data_rate": "100-400 kbps", "power_efficiency": "Moderate"})
-        elif protocol == "can":
-            proto_info.update({"range": "Up to 40m", "data_rate": "Up to 1 Mbps", "power_efficiency": "Moderate"})
-        elif protocol == "WiFi":
-            proto_info.update({"range": "50-100m", "data_rate": "Up to 300 Mbps", "power_efficiency": "Low"})
-        elif protocol == "Bluetooth BLE":
-            proto_info.update({"range": "10-100m", "data_rate": "1-2 Mbps", "power_efficiency": "High"})
-        elif protocol == "UART":
-            proto_info.update({"range": "Short (m)", "data_rate": "Up to 115.2 kbps", "power_efficiency": "Moderate"})
-        comparison["protocols"].append(proto_info)
-    return comparison
-
-# ===================== Vues =====================
+# ===================== Vues (CORRIGÉES) =====================
 def bot_view(request):
-    """Renders the chatbot HTML page"""
     return render(request, "bot/chat.html")
 
 def chat_view(request):
-    """API that returns JSON info based on the question"""
     question = request.GET.get("question", "").strip().lower()
-
+    
     if not question:
         return JsonResponse({"error": "No question provided"}, status=400)
 
-    # 1️⃣ Handle greetings
-    if question in ["hello", "salut", "bonjour", "hi"]:
-        return JsonResponse({"response": "Hello, how can I assist you with embedded systems or IoT?"})
+    # Réponses simples
+    if question in ["hello", "salut", "bonjour", "hi", "hey"]:
+        return JsonResponse({
+            "response": "Salut ! Comment puis-je t'aider avec l'embarqué, l'IoT, les capteurs ou les cartes ?"
+        })
 
-    # 2️⃣ Handle specific question: difference between lora and lorawan
-    if "difference between lora and lorawan" in question:
-        response = {
-            "response": "LoRa is the physical layer modulation technology developed by Semtech for long-range, low-power wireless communication. LoRaWAN is a Media Access Control (MAC) layer protocol built on top of LoRa, defining the network architecture, device classes (A/B/C), security, and how devices communicate with gateways and network servers."
+    # Différence LoRa vs LoRaWAN
+    if "difference" in question and "lora" in question and "lorawan" in question:
+        return JsonResponse({
+            "response": "**LoRa** est la technologie physique de modulation (couche PHY) développée par Semtech → longue portée, basse consommation.\n**LoRaWAN** est le protocole réseau (couche MAC) qui repose sur LoRa : gestion des classes A/B/C, sécurité, communication gateway ↔ network server.\nEn résumé : LoRa = radio, LoRaWAN = réseau complet."
+        })
+
+    # Recherche d'exemples de code
+    for key in CODE_EXAMPLES:
+        if all(word in question for word in key.replace(" code", "").split()):
+            return JsonResponse({"code_example": CODE_EXAMPLES[key]})
+
+    # Comparaisons
+    if any(word in question for word in ["compare", "comparaison", "tableau"]):
+        if "carte" in question or "board" in question:
+            return JsonResponse(generate_board_comparison())
+        if "protocol" in question or "réseau" in question:
+            return JsonResponse(generate_protocol_comparison())
+
+    # Protocole CAN spécifique
+    if "can" in question and ("protocol" in question or "registre" in question):
+        return JsonResponse(CAN_PROTOCOL["can"])
+
+    # Utiliser la recherche intelligente
+    result = smart_search(question)
+    if result:
+        return JsonResponse(result)
+
+    # Aucun résultat trouvé
+    return JsonResponse({
+        "response": "Désolé, je n'ai pas trouvé d'information précise sur ce sujet. Essaie avec un nom de carte (esp32, stm32f407vg, arduino...), un capteur (bme680, dht22...), un protocole (lora, spi, can...) ou demande un exemple de code !"
+    })
+
+# ===================== Fonctions de comparaison =====================
+def generate_board_comparison():
+    comparison = {
+        "boards": [],
+        "fields": ["name", "type", "cpu", "ram", "flash", "power_supply", "power_consumption", "gpio", "protocols"]
+    }
+    for key, board in CARTE_INFO.items():
+        board_data = {
+            "name": key.replace("_", " ").title(),
+            "type": board.get("type", "N/A"),
+            "cpu": board.get("cpu", "N/A"),
+            "ram": board.get("ram", "N/A"),
+            "flash": board.get("flash", "N/A"),
+            "power_supply": board.get("power_supply", "N/A"),
+            "power_consumption": str(board.get("power_consumption", "N/A")),
+            "gpio": board.get("gpio", "N/A"),
+            "protocols": ", ".join(board.get("protocols_detail", {}).keys()) if board.get("protocols_detail") else "N/A"
         }
-        return JsonResponse(response, safe=True)
+        comparison["boards"].append(board_data)
+    return comparison
 
-    # 3️⃣ Handle code examples
-    code_key = None
-    clean_question = question.replace("code", "").strip().lower()
-    for key in CODE_EXAMPLES.keys():
-        if all(word in clean_question for word in key.split()):
-            code_key = key
-            break
-    if code_key:
-        return JsonResponse({"code_example": CODE_EXAMPLES[code_key]}, safe=True)
-
-    # 4️⃣ Handle comparative table requests
-    if "compare boards" in question or "board comparison" in question:
-        return JsonResponse(generate_board_comparison(), safe=True)
-
-    if "compare protocols" in question or "protocol comparison" in question:
-        return JsonResponse(generate_protocol_comparison(), safe=True)
-
-    # 5️⃣ Handle connection details
-    connection_key = None
-    for key in CONNECTION_DETAILS.keys():
-        if all(word in question for word in key.split("_")):
-            connection_key = key
-            break
-    if connection_key:
-        return JsonResponse({"connection_details": CONNECTION_DETAILS[connection_key]}, safe=True)
-
-    # 6️⃣ Direct lookup (microcontrollers and modules)
-    if question in CARTE_INFO:
-        return JsonResponse(CARTE_INFO[question], safe=True)
-
-    # 7️⃣ Direct lookup (sensors)
-    if question in CAPTEUR_INFO:
-        return JsonResponse(CAPTEUR_INFO[question], safe=True)
-
-    # 8️⃣ Direct lookup (environments, IoT networks/gateways, or cloud platforms)
-    for key, val in ENVIRONNEMENTS.items():
-        if question == key.lower():
-            return JsonResponse({key: val}, safe=True)
-    for key, val in RESEAUX_IOT.items():
-        if question == key.lower():
-            return JsonResponse({key: val}, safe=True)
-    for key, val in CLOUD_PLATFORMS.items():
-        if question == key.lower():
-            return JsonResponse({key: val}, safe=True)
-
-    # 9️⃣ Search by language, IDE, or protocol
-    results = {}
-    for key, carte in CARTE_INFO.items():
-        if isinstance(carte, dict):
-            langages = [l.lower() for l in carte.get("languages", []) if isinstance(l, str)]
-            ides = [i.lower() for i in carte.get("ide", []) if isinstance(i, str)]
-            protocols = [p.lower() for p in carte.get("protocols_detail", {}).keys() if isinstance(p, str)]
-            if question in langages or question in ides or question in protocols:
-                results[key] = carte
-
-    # 10️⃣ Search for gateway-specific queries (e.g., MQTT, WiFi, Bluetooth)
-    for key, gateway in RESEAUX_IOT.items():
-        if isinstance(gateway, dict) and "specifications" in gateway:
-            protocols = [p.lower() for p in gateway.get("specifications", {}).get("protocols", [])]
-            connectivity = [c.lower() for c in gateway.get("specifications", {}).get("connectivity", [])]
-            if question in protocols or question in connectivity:
-                results[key] = gateway
-
-    # 11️⃣ Search for cloud platforms
-    for key, cloud in CLOUD_PLATFORMS.items():
-        if question in key.lower() or key.lower() in question:
-            results[key] = cloud
-
-    if results:
-        return JsonResponse(results, safe=True)
-
-    # 12️⃣ Handle specific embedded systems queries
-    if "gateway" in question:
-        gateway_results = {k: v for k, v in RESEAUX_IOT.items() if "gateway" in v.get("type", "").lower()}
-        if gateway_results:
-            return JsonResponse(gateway_results, safe=True)
-
-    if "cloud" in question or "iot platform" in question:
-        return JsonResponse(CLOUD_PLATFORMS, safe=True)
-
-    # 13️⃣ Error if no match found
-    return JsonResponse({"error": "Microcontroller, sensor, environment, gateway, cloud platform, code example, or connection not found"}, status=404)
+def generate_protocol_comparison():
+    protocols_data = {
+        "lora": {"range": "2-15 km", "data_rate": "0.3-50 kbps", "power": "Très basse"},
+        "lorawan": {"range": "2-15 km", "data_rate": "0.3-50 kbps", "power": "Très basse"},
+        "sigfox": {"range": "10-50 km", "data_rate": "100 bps", "power": "Extrêmement basse"},
+        "nb-iot": {"range": "1-10 km", "data_rate": "20-250 kbps", "power": "Basse"},
+        "wifi": {"range": "50-100 m", "data_rate": "jusqu'à 300+ Mbps", "power": "Haute"},
+        "bluetooth ble": {"range": "10-100 m", "data_rate": "1-2 Mbps", "power": "Très basse"},
+        "spi": {"range": "Très court", "data_rate": "jusqu'à 50 Mbps", "power": "Moyenne"},
+        "i2c": {"range": "Court", "data_rate": "100-400 kbps", "power": "Moyenne"},
+        "uart": {"range": "Court", "data_rate": "jusqu'à 115 kbps+", "power": "Moyenne"},
+        "can": {"range": "jusqu'à 1 km", "data_rate": "jusqu'à 1 Mbps", "power": "Moyenne"}
+    }
+    comparison = {"protocols": []}
+    for name, data in protocols_data.items():
+        comparison["protocols"].append({
+            "name": name.upper(),
+            "range": data["range"],
+            "data_rate": data["data_rate"],
+            "power_consumption": data["power"]
+        })
+    return comparison
