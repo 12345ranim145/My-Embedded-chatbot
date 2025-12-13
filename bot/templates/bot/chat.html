@@ -1293,25 +1293,69 @@
             updateDashboard();
         }
 
-        function formatData(data) {
-            let text = "";
-            for (const key in data) {
-                const value = data[key];
-                if (key === "image" && value) {
-                    text += `<img src="${value}" alt="${key}" class="chat-img">`;
-                } else if (Array.isArray(value)) {
-                    text += `<strong>${key}</strong>: ${value.join(', ')}<br>`;
-                } else if (typeof value === 'object') {
-                    text += `<div style="margin-top: 12px;"><strong>${key}</strong>:</div>`;
-                    for (const subKey in value) {
-                        text += `<div style="padding-left: 16px; margin: 4px 0;"><strong>${subKey}</strong>: ${value[subKey]}</div>`;
-                    }
-                } else {
-                    text += `<strong>${key}</strong>: ${value}<br>`;
-                }
+  function formatData(data) {
+    let html = '';
+
+    // Si on a un "key" (nom de la carte/capteur), on l'affiche en gros
+    if (data.key) {
+        html += `<strong style="font-size:1.3rem; color:#6366f1;">${data.key.toUpperCase()}</strong><br><br>`;
+    }
+
+    function renderObject(obj, indent = 0) {
+        let result = '';
+        const margin = '&nbsp;'.repeat(indent * 4);
+
+        for (const [key, value] of Object.entries(obj)) {
+            const formattedKey = key.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+
+            if (key === 'image' && value) {
+                result += `<img src="${value}" class="chat-img" style="max-width:100%; border-radius:12px; margin:16px 0; box-shadow:0 4px 16px rgba(0,0,0,0.3);">`;
             }
-            return text;
+            else if (key === 'tutorials' && Array.isArray(value)) {
+                result += `<br><strong style="color:#6366f1;">${formattedKey}</strong><br>`;
+                value.forEach(tuto => {
+                    const parts = tuto.split(': ');
+                    if (parts.length === 2) {
+                        result += `${margin}• <a href="${parts[1].trim()}" target="_blank" style="color:#8b5cf6; text-decoration:underline;">${parts[0].trim()}</a><br>`;
+                    } else {
+                        result += `${margin}• ${tuto}<br>`;
+                    }
+                });
+            }
+            else if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
+                result += `<br><strong style="color:#6366f1; margin-left:${indent * 16}px;">${formattedKey}</strong><br>`;
+                result += renderObject(value, indent + 1);
+            }
+            else if (Array.isArray(value)) {
+                result += `<strong style="color:#6366f1; margin-left:${indent * 16}px;">${formattedKey}</strong>: ${value.join(', ')}<br>`;
+            }
+            else {
+                result += `<span style="margin-left:${indent * 16}px; display:block;"><strong style="color:#6366f1;">${formattedKey}:</strong> ${value}</span>`;
+            }
         }
+        return result;
+    }
+
+    // On parcourt l'objet principal
+    for (const [key, value] of Object.entries(data)) {
+        if (key === 'key') continue; // déjà affiché en haut
+
+        const formattedKey = key.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+
+        if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
+            html += `<strong style="color:#6366f1; font-size:1.1rem;">${formattedKey}</strong><br>`;
+            html += renderObject(value, 1);
+        }
+        else if (Array.isArray(value)) {
+            html += `<br><strong style="color:#6366f1;">${formattedKey}</strong>: ${value.join(', ')}`;
+        }
+        else if (key !== 'image') {
+            html += `<br><strong style="color:#6366f1;">${formattedKey}</strong>: ${value}`;
+        }
+    }
+
+    return html || "Aucune information disponible.";
+}
 
         function showTypingIndicator() {
             const typingDiv = document.createElement('div');

@@ -342,6 +342,64 @@ CARTE_INFO = {
             "adc_resolution": "No built-in ADC"
         }
     },
+    
+    "raspberry pi 3": {
+        "type": "Single-Board Computer",
+        "power_supply": "5V via Micro-USB (2.5A recommandé)",
+        "power_consumption": "Idle: ~2.5W, Load: jusqu'à 5.1W",
+        "gpio_logic_voltage": "3.3V",
+        "gpio_max_current": "16 mA par pin",
+        "cpu": "Broadcom BCM2837, Quad core Cortex-A53 64-bit @ 1.2 GHz",
+        "ram": "1 GB LPDDR2",
+        "flash": "Micro-SD card",
+        "gpio": "40-pin GPIO header, I2C, SPI, UART, PWM",
+        "usage": "IoT, serveurs légers, media center, éducation",
+        "protocols_detail": {
+            "WiFi": {"description": "802.11 b/g/n", "usage": "Connexion réseau"},
+            "Bluetooth": {"description": "Bluetooth 4.1 + BLE", "usage": "Périphériques sans fil"},
+            "Ethernet": {"description": "100 Mbps", "usage": "Réseau filaire"}
+        },
+        "languages": ["Python", "C", "C++", "Java", "Scratch"],
+        "ide": ["VS Code", "Thonny", "Geany", "Arduino IDE (via GPIO)"],
+        "image": "/static/images/raspberry_pi_3.jpg"
+    },
+    "raspberry pi 2": {
+        "type": "Single-Board Computer",
+        "power_supply": "5V via Micro-USB (2A recommandé)",
+        "power_consumption": "Idle: ~2W, Load: jusqu'à 4W",
+        "gpio_logic_voltage": "3.3V",
+        "cpu": "Broadcom BCM2836, Quad core Cortex-A7 @ 900 MHz",
+        "ram": "1 GB LPDDR2",
+        "flash": "Micro-SD card",
+        "gpio": "40-pin GPIO header",
+        "usage": "Projets éducatifs, serveurs légers, IoT",
+        "protocols_detail": {
+            "Ethernet": {"description": "100 Mbps", "usage": "Réseau filaire"}
+        },
+        "languages": ["Python", "C", "C++"],
+        "ide": ["VS Code", "Thonny"],
+        "image": "/static/images/raspberry_pi_2.jpg"
+    },
+    "raspberry pi pico": {
+        "type": "Microcontroller",
+        "power_supply": "3.3V à 5.5V (via USB ou VSYS)",
+        "power_consumption": "100 mA max",
+        "gpio_logic_voltage": "3.3V",
+        "cpu": "Dual-core ARM Cortex-M0+ @ 133 MHz",
+        "ram": "264 KB SRAM",
+        "flash": "2 MB onboard",
+        "gpio": "26 GPIO, 3 ADC, 2 UART, 2 SPI, 2 I2C, PWM",
+        "usage": "Projets embarqués, capteurs, contrôle moteur, IoT léger",
+        "protocols_detail": {
+            "UART": {"description": "2 UART disponibles"},
+            "SPI": {"description": "2 SPI"},
+            "I2C": {"description": "2 I2C"}
+        },
+        "languages": ["MicroPython", "C/C++", "CircuitPython"],
+        "ide": ["Thonny", "VS Code", "Arduino IDE (RP2040)"],
+        "image": "/static/images/raspberry_pi_pico.jpg",
+        "additional_electronics": {"note": "Premier microcontrôleur Raspberry Pi, RP2040"}
+    },
     # ===================== Jetson Nano =====================
     "jetson nano": {
         "type": "AI Single-Board Computer",
@@ -1435,6 +1493,416 @@ print(f"Sorted (descending): {sorted(mixed, reverse=True)}")
     }
 }
 
+CONNECTION_DETAILS = {
+    "stm32 bme680": {
+        "board": "STM32F407VG",
+        "sensor": "BME680",
+        "interface": "I2C",
+        "connection": {
+            "SDA": "PB9 (I2C1_SDA)",
+            "SCL": "PB8 (I2C1_SCL)",
+            "VCC": "3.3V",
+            "GND": "GND",
+            "note": "Pull-up 4.7kΩ sur SDA/SCL recommandées"
+        },
+        "code_hint": "Utilise la librairie BME68x-STM32-HAL"
+    },
+    "stm32 dht22": {
+        "board": "STM32F407VG",
+        "sensor": "DHT22",
+        "interface": "1-Wire (GPIO)",
+        "connection": {
+            "DATA": "PA1 (ou n'importe quel GPIO libre)",
+            "VCC": "3.3V ou 5V",
+            "GND": "GND",
+            "note": "Résistance pull-up 4.7kΩ entre DATA et VCC"
+        }
+    },
+    "stm32 sx1276": {
+        "board": "STM32F407VG",
+        "module": "SX1276 (LoRa)",
+        "interface": "SPI + GPIO",
+        "connection": {
+            "MOSI": "PA7 (SPI1_MOSI)",
+            "MISO": "PA6 (SPI1_MISO)",
+            "SCK": "PA5 (SPI1_SCK)",
+            "NSS": "PA4 (SPI1_NSS)",
+            "DIO0": "PB0 (interrupt)",
+            "RESET": "PB1",
+            "VCC": "3.3V",
+            "GND": "GND"
+        }
+    },
+    "stm32 pir": {
+        "board": "STM32F407VG",
+        "sensor": "PIR (HC-SR501)",
+        "connection": {
+            "OUT": "PA0 (ou tout GPIO avec interruption)",
+            "VCC": "5V ou 3.3V",
+            "GND": "GND"
+        }
+    },
+    "esp32 cam pir": {
+        "board": "ESP32-CAM",
+        "sensor": "PIR",
+        "connection": {
+            "OUT": "GPIO13 (ou tout GPIO libre)",
+            "VCC": "5V (via régulateur)",
+            "GND": "GND"
+        }
+    },
+    "esp32 cam sx1276": {
+        "board": "ESP32-CAM + Module LoRa",
+        "interface": "SPI",
+        "connection": {
+            "MOSI": "GPIO23",
+            "MISO": "GPIO19",
+            "SCK": "GPIO18",
+            "NSS": "GPIO5",
+            "DIO0": "GPIO26",
+            "RESET": "GPIO14"
+        }
+    }
+}
+
+EMBEDDED_C_GUIDE = {
+    "title": "Embedded C: Pointers, Memory Addresses & Best Practices",
+    "content": """
+<strong>1. Pointer Basics in Embedded C</strong><br>
+Pointers allow direct access to memory addresses, essential for hardware registers.<br>
+<code>
+int value = 10;           // Declare an integer and initialize it to 10<br>
+int *p = &value;          // p holds the address of value<br>
+int x = *p;               // read the value pointed by p (x = 10)<br>
+*p = 50;                  // write 50 to the pointed address (value = 50)
+</code><br>
+Explanation:<br>
+- <code>&</code> gets the address of a variable.<br>
+- <code>*</code> reads/writes to that address.<br>
+Example with array:<br>
+<code>
+int arr[5] = {1,2,3,4,5};<br>
+int *ptr = arr;            // arr = &arr[0]<br>
+for(int i=0; i<5; i++) {<br>
+&nbsp;&nbsp;*(ptr+i) *= 2;  // multiply each element by 2<br>
+}
+</code><br>
+Explanation:<br>
+- <code>ptr+i</code> advances the pointer in the array.<br>
+- Useful for DMA or direct buffer manipulation.
+
+<hr>
+
+<strong>2. Direct Register Access (Memory-Mapped I/O)</strong><br>
+Embedded C allows hardware control via specific memory addresses.<br>
+<code>
+#define RCC_BASE    0x40023800UL            // RCC register base<br>
+#define RCC_AHB1ENR *(volatile uint32_t *)(RCC_BASE + 0x30) // clock register<br>
+#define GPIOA_EN    (1 << 0)               // bit to enable GPIOA<br>
+RCC_AHB1ENR |= GPIOA_EN;                 // enable GPIOA clock
+</code><br>
+Toggle GPIO in a loop:<br>
+<code>
+#define GPIOA_ODR *(volatile uint32_t *)0x40020014<br>
+while(1) {<br>
+&nbsp;&nbsp;GPIOA_ODR ^= (1<<5); // toggle PA5<br>
+&nbsp;&nbsp;for(volatile int i=0;i<100000;i++); // simple delay<br>
+}
+</code><br>
+Explanation:<br>
+- <code>^=</code> inverts the bit → toggle<br>
+- <code>volatile</code> prevents compiler from optimizing out the write<br>
+- Simple delay helps visualize blinking.
+
+<hr>
+
+<strong>3. The 'volatile' Keyword</strong><br>
+<code>
+volatile uint32_t * const reg = (uint32_t *)0x40020014;<br>
+*reg = 1 << 5;
+</code><br>
+Explanation:<br>
+- <code>volatile</code>: value may change outside program control (hardware).<br>
+- <code>const</code>: pointer itself cannot change.<br>
+- Always use for registers, flags, DMA buffers.
+
+<hr>
+
+<strong>4. Memory Sections in Embedded Systems</strong><br>
+<code>
+// CCM RAM for fast buffer<br>
+uint8_t __attribute__((section(".ccmram"))) fast_buffer[128];<br>
+// Stack and globals<br>
+static int global_var = 0;  // stored in .data<br>
+int local_var;              // stored in stack
+</code><br>
+Explanation:<br>
+- CCM/DTCM = fast memory, ideal for real-time computations.<br>
+- static = persists after function exits.<br>
+- Avoid malloc/free in real-time systems.
+
+<hr>
+
+<strong>5. Memory Size of Common Types</strong><br>
+<code>
+sizeof(char) = 1<br>
+sizeof(short) = 2<br>
+sizeof(int) = 4<br>
+sizeof(long long) = 8<br>
+sizeof(float) = 4<br>
+sizeof(double) = 8<br>
+sizeof(void*) = 4
+</code><br>
+Use fixed-width types:<br>
+<code>
+uint8_t  byte;    // 1 byte<br>
+uint16_t word;    // 2 bytes<br>
+uint32_t dword;   // 4 bytes<br>
+uint64_t qword;   // 8 bytes
+</code><br>
+Explanation:<br>
+- Always use <code>uint8_t/16/32</code> for registers and hardware.<br>
+- Avoid architecture-dependent issues.
+
+<hr>
+
+<strong>6. GPIO Examples with Loops</strong><br>
+<code>
+// PA5 output toggle example<br>
+#define GPIOA_MODER *(volatile uint32_t *)0x40020000<br>
+#define GPIOA_ODR   *(volatile uint32_t *)0x40020014<br>
+GPIOA_MODER &= ~(3<<10);    // clear mode bits<br>
+GPIOA_MODER |=  (1<<10);    // set output<br>
+for(int i=0;i<10;i++) {<br>
+&nbsp;&nbsp;GPIOA_ODR ^= (1<<5); // toggle PA5<br>
+&nbsp;&nbsp;for(volatile int j=0;j<50000;j++); // delay<br>
+}
+</code><br>
+Explanation:<br>
+- Mask bits with <code>&=~</code> before setting.<br>
+- Loop <code>for</code> for repetition, useful for LED blink test.
+
+<hr>
+
+<strong>7. Pointer Arithmetic & Arrays</strong><br>
+<code>
+int arr[5] = {10,20,30,40,50};<br>
+int *p = arr;<br>
+for(int i=0;i<5;i++) { *(p+i) += 1; }<br>
+for(int i=4;i>=0;i--) *(p+i) -= 1;
+</code><br>
+Explanation:<br>
+- Pointer arithmetic = access array via address.<br>
+- Enables simple loops and DMA manipulation.
+
+<hr>
+
+<strong>8. Pointer to Pointer</strong><br>
+<code>
+int a = 5;<br>
+int *p = &a;<br>
+int **pp = &p;<br>
+**pp = 20; // a = 20
+</code><br>
+Explanation:<br>
+- Double pointer = pointer to pointer.<br>
+- Used for pointer arrays, dynamic buffer management.
+
+<hr>
+
+<strong>9. NULL Pointers & const</strong><br>
+<code>
+int *p = NULL;<br>
+if(p != NULL) *p = 10;<br>
+const int *cp;      // read-only data<br>
+int * const pc = &a; // constant pointer
+</code><br>
+Explanation:<br>
+- Always check NULL before dereferencing.<br>
+- Use const for safety.
+
+<hr>
+
+<strong>10. Function Pointers & Callbacks</strong><br>
+<code>
+typedef void (*Callback)(void);<br>
+void led_on(void)  { GPIOA_ODR |= (1<<5); }<br>
+void led_off(void) { GPIOA_ODR &= ~(1<<5); }<br>
+Callback cb = led_on;<br>
+cb(); // call led_on
+</code><br>
+Explanation:<br>
+- Function pointers = useful for ISRs, state machines.<br>
+- Dynamic calls based on configuration.
+
+<hr>
+
+<strong>11. Pointers in Strings</strong><br>
+<code>
+char msg[] = "Hello";<br>
+char *p = msg;<br>
+for(int i=0;i<5;i++) p[i] += 1; // msg = "Ifmmp"
+</code><br>
+Explanation:<br>
+- String = character array.<br>
+- Pointer allows easy iteration.
+
+<hr>
+
+<strong>12. Pointers in Structures</strong><br>
+<code>
+typedef struct { uint8_t id; uint16_t value; } Sensor;<br>
+Sensor s; Sensor *ps = &s;<br>
+ps->value = 123;
+</code><br>
+Structure with register pointer:<br>
+<code>
+typedef struct { volatile uint32_t *reg; } Device;<br>
+Device d = { (uint32_t *)0x40020014 };<br>
+*(d.reg) = 0xFF;
+</code><br>
+Explanation:<br>
+- Pointer to register = direct hardware access via struct.<br>
+- Useful for modular drivers.
+
+<hr>
+
+<strong>13. CAN Example</strong><br>
+<code>
+typedef struct { volatile uint32_t MCR, MSR, TSR, RF0R, RF1R, IER, ESR, BTR; } CAN_TypeDef;<br>
+#define CAN1 ((CAN_TypeDef *)0x40006400)<br>
+CAN1->MCR = 0x00000001; // init<br>
+CAN1->TSR |= (1<<0);    // transmit request<br>
+while(!(CAN1->TSR & (1<<0))); // wait transmit complete
+</code><br>
+Explanation:<br>
+- Access CAN registers via struct.<br>
+- <code>while</code> loop waits for transmission complete.
+
+<hr>
+
+<strong>14. I2C Example</strong><br>
+<code>
+typedef struct { volatile uint32_t CR1, CR2, OAR1, OAR2, DR, SR1, SR2, CCR, TRISE; } I2C_TypeDef;<br>
+#define I2C1 ((I2C_TypeDef *)0x40005400)<br>
+I2C1->CR1 |= 1<<0;       // enable I2C<br>
+for(int i=0;i<10;i++) {<br>
+&nbsp;&nbsp;I2C1->DR = i;  // send data<br>
+&nbsp;&nbsp;while(!(I2C1->SR1 & (1<<7))); // wait TXE<br>
+}
+</code><br>
+Explanation:<br>
+- Loop to send multiple bytes.<br>
+- Checks TXE flag before writing.
+
+<hr>
+
+<strong>15. SPI Example</strong><br>
+<code>
+typedef struct { volatile uint32_t CR1, CR2, SR, DR; } SPI_TypeDef;<br>
+#define SPI1 ((SPI_TypeDef *)0x40013000)<br>
+for(int i=0;i<5;i++) {<br>
+&nbsp;&nbsp;while(!(SPI1->SR & (1<<1))); // wait TXE<br>
+&nbsp;&nbsp;SPI1->DR = i;               // transmit<br>
+}
+</code><br>
+Explanation:<br>
+- Wait TXE = transmit buffer empty.<br>
+- Loop to send multiple bytes.
+
+<hr>
+
+<strong>16. DMA Example</strong><br>
+<code>
+uint16_t buffer[128];<br>
+DMA1_Stream0->M0AR = (uint32_t)&buffer;<br>
+DMA1_Stream0->NDTR = 128;   // number of items<br>
+while(!(DMA1->HISR & (1<<0))); // wait transfer complete
+</code><br>
+Explanation:<br>
+- DMA = fast memory transfer without CPU.<br>
+- Use volatile for DMA buffers.
+
+<hr>
+
+<strong>17. NVIC & Function Pointers</strong><br>
+<code>
+void (* const g_pfnVectors[])(void) = { Reset_Handler, NMI_Handler, HardFault_Handler };<br>
+g_pfnVectors[1](); // call NMI_Handler
+</code><br>
+Explanation:<br>
+- Vector table = pointers to ISRs.<br>
+- Dynamic interrupt calling.
+
+<hr>
+
+<strong>18. Bit Manipulation Macros</strong><br>
+<code>
+#define SET_BIT(REG,BIT)     ((REG) |= (BIT))<br>
+#define CLR_BIT(REG,BIT)     ((REG) &= ~(BIT))<br>
+#define TOGGLE_BIT(REG,BIT)  ((REG) ^= (BIT))<br>
+#define READ_BIT(REG,BIT)    ((REG) & (BIT))<br>
+for(int i=0;i<10;i++) TOGGLE_BIT(GPIOA_ODR, 1<<5);
+</code><br>
+Explanation:<br>
+- Macros = clean and readable code.<br>
+- Widely used for GPIO and flags.
+
+<hr>
+
+<strong>19. HAL vs LL vs Bare Metal Example</strong><br>
+<code>
+// HAL<br>
+HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, GPIO_PIN_SET);<br>
+// LL<br>
+LL_GPIO_SetOutputPin(GPIOA, LL_GPIO_PIN_5);<br>
+// Bare Metal<br>
+GPIOA->ODR |= (1<<5);
+</code><br>
+Explanation:<br>
+- HAL = abstract and portable.<br>
+- LL = fast and lightweight.<br>
+- Bare Metal = full control, optimal for real-time.
+
+<hr>
+
+<strong>20. Best Practices</strong><br>
+- Initialize all pointers.<br>
+- Check NULL before access.<br>
+- Use volatile for hardware and flags.<br>
+- Use const for read-only data.<br>
+- Avoid malloc/free in real-time systems.<br>
+- Keep ISRs short and fast.<br>
+- Use fixed-size types for registers/buffers.<br>
+- Avoid recursion.<br>
+- Debug: watch, memory view, UART prints.<br>
+- Loops: avoid blocking CPU in real-time.
+
+<hr>
+
+<strong>21. Extra Tips</strong><br>
+- <code>__attribute__((packed))</code> for communication frames.<br>
+- DMA buffers = volatile.<br>
+- Use static buffers for real-time safety.<br>
+- Pointer arithmetic = check bounds.<br>
+- Function pointers = callbacks and ISR.<br>
+- Loops with delay = test LEDs or GPIO.<br>
+- Document addresses and memory mapping.
+
+<hr>
+
+<strong>Resources & Useful Google Links for Embedded C</strong><br>
+- [Embedded C Programming Basics](https://www.google.com/search?q=embedded+c+programming+basics)<br>
+- [STM32 Memory Mapping and Registers](https://www.google.com/search?q=stm32+memory+map+registers)<br>
+- [ARM Cortex-M Pointer & Volatile Guide](https://www.google.com/search?q=arm+cortex-m+volatile+pointer)<br>
+- [Embedded C Tutorials with Examples](https://www.google.com/search?q=embedded+c+tutorial+examples)<br>
+- [DMA and Peripheral Programming STM32](https://www.google.com/search?q=stm32+dma+example)<br>
+- [Function Pointers and Callbacks in Embedded C](https://www.google.com/search?q=embedded+c+function+pointers+callback)<br>
+- [GPIO Programming STM32](https://www.google.com/search?q=stm32+gpio+programming)
+"""
+}
+
+
 # ===================== Fonction de recherche intelligente (CORRIGÉE) =====================
 def smart_search(q):
     q = q.lower().strip()
@@ -1522,6 +1990,16 @@ def chat_view(request):
         return JsonResponse({
             "response": "Salut ! Comment puis-je t'aider avec l'embarqué, l'IoT, les capteurs ou les cartes ?"
         })
+     # Embedded C Guide Trigger
+    if any(word in question for word in ["pointer", "pointeur", "address", "adresse", "memory", "memoire", "register", "registre", "volatile", "embedded c", "c embarque"]):
+        return JsonResponse({"guide": EMBEDDED_C_GUIDE})
+    
+    # ===================== CONNEXIONS MATÉRIELLES =====================
+    
+    for key in CONNECTION_DETAILS:
+        if all(word in question for word in key.split()):
+            return JsonResponse({"connexion": CONNECTION_DETAILS[key]})
+
 
     # Différence LoRa vs LoRaWAN
     if "difference" in question and "lora" in question and "lorawan" in question:
@@ -1554,7 +2032,7 @@ def chat_view(request):
     return JsonResponse({
         "response": "Désolé, je n'ai pas trouvé d'information précise sur ce sujet. Essaie avec un nom de carte (esp32, stm32f407vg, arduino...), un capteur (bme680, dht22...), un protocole (lora, spi, can...) ou demande un exemple de code !"
     })
-
+       
 # ===================== Fonctions de comparaison =====================
 def generate_board_comparison():
     comparison = {
